@@ -6,7 +6,9 @@ PC_SYSTEM=$(uname -s)
 
 if [ -f "$HOME/.zshrc" ]; then
     CLI_BASH_RC="$HOME/.zshrc"
-elif [ $PC_SYSTEM = 'Darwin' ]; then
+elif [ $PC_SYSTEM = 'Darwin' ] && [ -f "$HOME/.bash_profile" ]; then
+    CLI_BASH_RC="$HOME/.bash_profile"
+elif [ $PC_SYSTEM = 'Darwin' ] && [ -f "$HOME/.bashrc" ]; then
     CLI_BASH_RC="$HOME/.bash_profile"
 else
     CLI_BASH_RC="$HOME/.bashrc"
