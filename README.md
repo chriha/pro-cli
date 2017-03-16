@@ -23,7 +23,7 @@ pro-cli is your local little environment manager. You can:
 git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-cli/setup.sh
 ```
 
-After installation you can use the `project` command with all its beauty.
+Reload your shell and use the `project` command with all its beauty.
 
 ## Commands
 
