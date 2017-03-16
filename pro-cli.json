@@ -1,0 +1,9 @@
+{
+  "env": "local",
+  "type": "php",
+  "install": {
+    "migrations": "project artisan migrate",
+    "seeds": "project artisan db:seed"
+  },
+  "scripts": {}
+}
