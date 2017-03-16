@@ -29,9 +29,11 @@ help() {
     printf "    help: project [command]\n"
     printf "\n"
     printf "    COMMANDS:\n"
-    printf "        ${BLUE}init${NORMAL}                Setup default project structure.\n"
-    printf "        ${BLUE}update${NORMAL}              Update project structure and docker images. ${YELLOW}Will overwrite pro-cli project files.${NORMAL}\n"
     printf "        ${BLUE}self-update${NORMAL}         Update pro-cli.\n"
+    printf "        ${BLUE}init${NORMAL}                Setup default project structure.\n"
+    printf "        ${BLUE}install${NORMAL}             Install application by executing the commands specified in ${BOLD}pro-cli.json${NORMAL}.\n"
+    printf "        ${BLUE}update${NORMAL}              Update project structure and docker images. ${YELLOW}Will overwrite pro-cli project files.${NORMAL}\n"
+    printf "        ${BLUE}run${NORMAL}                 Run a script that is specified in ${BOLD}pro-cli.json${NORMAL}.\n"
     printf "\n"
 
     if [ -f $PC_CONF ]; then
