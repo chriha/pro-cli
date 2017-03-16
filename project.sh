@@ -39,17 +39,17 @@ elif [ "$1" == "update" ]; then
     exit
 
 elif [ "$1" == "install" ]; then
-    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -c '.install | .[]')
+    set -f
+    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -c '.install | .[]' | sed 's/"//g')
 
     printf "${YELLOW}Installing project ...${NORMAL}\n"
 
     while read -r INSTALL_CMD; do
-        printf "Executing: $INSTALL_CMD"
-        eval "${INSTALL_CMD}" #&> /dev/null
-        printf $CLEAR_LINE
+        printf "Executing: $INSTALL_CMD\n"
+        eval $INSTALL_CMD
     done <<< "$PC_INSTALL"
 
-    printf "${GREEN}DONE!\n"
+    printf "${GREEN}DONE!${NORMAL}\n"
 
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh

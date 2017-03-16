@@ -107,7 +107,6 @@ Currently only PHP is supported. Python and others are coming soon.
 - [ ] update project configuration via `project config`; set a value `project config KEY VALUE`
 - [ ] add ability to scale locally
 - [ ] command completion
-- [ ] `project install`
 - [ ] add mailcatcher
 - [ ] provide ability to use project specific nginx conf
 - [ ] automated checks for new versions
