@@ -1,16 +1,5 @@
 # pro-cli
 
-pro-cli is your local little environment manager. You can:
-
-- use the same project structure in **every** project
-- initialize and start whole environments (web server, database, caching, etc.) in seconds
-- install the project with a single command by using the configuration file
-- every developer is using the exact same environment and tools
-- simple environment configurations with a single JSON file
-- no need to install multiple versions for each tool
-- reduce amount of necessary commands for each developer
-- simple access to log files
-
 - [Install](#install)
   - [Dependencies](#dependencies)
   - [Install pro-cli](#install-pro-cli)
@@ -24,6 +13,18 @@ pro-cli is your local little environment manager. You can:
   - [Add your node scripts to npm run](#add-your-node-scripts-to-npm-run)
 - [Supported Systems](#supported-systems)
 - [Todos](#todos)
+
+
+pro-cli is your local little environment manager. You can:
+
+- use the same project structure in **every** project
+- initialize and start whole environments (web server, database, caching, etc.) in seconds
+- install the project with a single command by using the configuration file
+- every developer is using the exact same environment and tools
+- simple environment configurations with a single JSON file
+- no need to install multiple versions for each tool
+- reduce amount of necessary commands for each developer
+- simple access to log files
 
 ## Install
 
