@@ -50,11 +50,13 @@ elif [ "$1" == "install" ]; then
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh
 elif [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
-        COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
+    COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
 
-        if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
-            eval $COMMAND
-        fi
+    shift 1
+    
+    if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
+        eval $COMMAND
+    fi
 fi
 
 . $PC_DIR/systems/docker-cli.sh

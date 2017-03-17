@@ -24,7 +24,7 @@ NORMAL="$(tput sgr0)"
 CLEAR_LINE="\r\033[K"
 
 help() {
-    SPACE="                              "
+    SPACE="                      "
     printf "    ${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
     printf "\n"
     printf "    help: project [command]\n"
