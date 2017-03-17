@@ -2,9 +2,9 @@
 
 printf "Updating pro-cli ..."
 
-PC_VERSION_OLD=$( cd $PC_DIR && git describe --abbrev=0 --tags )
+PC_VERSION_OLD=$( cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1 )
 cd $PC_DIR && git fetch -q
-PC_VERSION_NEW=$( cd $PC_DIR && git describe --abbrev=0 --tags )
+PC_VERSION_NEW=$( cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1 )
 
 if [ "$PC_VERSION_OLD" == "$PC_VERSION_NEW" ]; then
     printf "${CLEAR_LINE}${GREEN}You have the latest version: ${BOLD}${PC_VERSION_OLD}${NORMAL}\n"
