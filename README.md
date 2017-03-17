@@ -103,11 +103,7 @@ Currently only PHP is supported. Python and others are coming soon.
 
 ## TODOs
 
-- [ ] use `pro-cli.json` (`echo '{"test": {"attr":"Tyler Durden","value":true}}' | jq -r '.test.value'`)
-- [ ] update project configuration via `project config`; set a value `project config KEY VALUE`
-- [ ] add ability to scale locally
 - [ ] command completion
-- [ ] add mailcatcher
 - [ ] provide ability to use project specific nginx conf
 - [ ] automated checks for new versions
-- [ ] `project scale web 3`
+- [ ] add scaling: `project scale web 3`
