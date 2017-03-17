@@ -5,12 +5,15 @@ WDIR=$(pwd)
 
 . $PC_DIR/vars.sh
 
+# # # # # # # # # # # # # # # # # # # #
 # show help immediately
 if [ $# -eq 0 ] || [ "$1" == "help" ]; then
     help
     exit
 fi
 
+# # # # # # # # # # # # # # # # # # # #
+# project init [path] [--type=TYPE]
 if [ "$1" == "init" ]; then
     shift 1
     printf "Initializing project files ... "
@@ -18,6 +21,9 @@ if [ "$1" == "init" ]; then
     printf "${GREEN}DONE!${NORMAL}\n"
     
     exit
+
+# # # # # # # # # # # # # # # # # # # #
+# project update
 elif [ "$1" == "update" ]; then
     if [ ! -f "$WDIR/.pro-cli" ]; then
         printf "${RED}Not in a pro-cli project!${NORMAL}\n"
@@ -38,6 +44,8 @@ elif [ "$1" == "update" ]; then
 
     exit
 
+# # # # # # # # # # # # # # # # # # # #
+# project install
 elif [ "$1" == "install" ]; then
     PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -rM '.install | .[]' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
 
@@ -47,8 +55,13 @@ elif [ "$1" == "install" ]; then
 
     printf "${GREEN}DONE!${NORMAL}\n"
 
+# # # # # # # # # # # # # # # # # # # #
+# project self-update
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh
+
+# # # # # # # # # # # # # # # # # # # #
+# commands that are specified in the local config file
 elif [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
     COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
 
@@ -59,7 +72,8 @@ elif [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
     fi
 fi
 
+# # # # # # # # # # # # # # # # # # # #
+# include the systems
 . $PC_DIR/systems/docker-cli.sh
 . $PC_DIR/systems/php-cli.sh
 . $PC_DIR/systems/node-cli.sh
-

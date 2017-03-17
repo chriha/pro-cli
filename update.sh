@@ -3,14 +3,19 @@
 printf "Updating pro-cli ..."
 
 PC_VERSION_OLD=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
-cd $PC_DIR && git fetch -q
-PC_VERSION_NEW=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
+PC_VERSION_NEW=$(cd $PC_DIR && git fetch -q && git describe --tags `git rev-list --tags --max-count=1`)
 
+# # # # # # # # # # # # # # # # # # # #
+# latest version already installed
 if [ "$PC_VERSION_OLD" == "$PC_VERSION_NEW" ]; then
-    printf "${CLEAR_LINE}${GREEN}You have the latest version: ${BOLD}${PC_VERSION_OLD}${NORMAL}\n"
+    printf "${CLEAR_LINE}${GREEN}You have the latest version: ${BOLD}${PC_VERSION_OLD}-beta${NORMAL}\n"
     exit
 fi
 
+cd $PC_DIR
+
+# # # # # # # # # # # # # # # # # # # #
+# checkout the latest tag
 if git checkout -q $(git describe --tags `git rev-list --tags --max-count=1`)
 then
     printf "\n"
@@ -22,9 +27,7 @@ then
     printf '%s\n' '  \/_/     \/_/ /_/   \/_____/   \/_____/   \/_____/   \/_/'
     printf "${NORMAL}\n"
 
-    PC_VERSION=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
-
-    printf "${BLUE}Yessss! pro-cli has been updated and is now on version ${BOLD}v${PC_VERSION}${NORMAL}\n"
+    printf "${BLUE}Yessss! pro-cli has been updated and is now on version ${BOLD}v${PC_VERSION_NEW}-beta${NORMAL}\n"
 else
-    printf "\n${RED}There was an error updating. Try again later.${NORMAL}"
+    printf "\n${RED}There was an error while updating to the latest version. Try again later.${NORMAL}"
 fi
