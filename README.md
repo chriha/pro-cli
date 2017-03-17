@@ -11,6 +11,20 @@ pro-cli is your local little environment manager. You can:
 - reduce amount of necessary commands for each developer
 - simple access to log files
 
+- [Install](#install)
+  - [Dependencies](#dependencies)
+  - [Install pro-cli](#install-pro-cli)
+- [Commands](#commands)
+- [Configuration](#configuration)
+  - [Installation scripts](#installation-scripts)
+  - [Scripts](#scripts)
+- [Used Repos](#used-repos)
+- [Tips](#tips)
+  - [Use aliases](#use-aliases)
+  - [Add your node scripts to npm run](#add-your-node-scripts-to-npm-run)
+- [Supported Systems](#supported-systems)
+- [Todos](#todos)
+
 ## Install
 
 ### Dependencies
@@ -72,7 +86,7 @@ project run clean
 ## Used repos
 
 - [pro-init-php](https://github.com/chriha/pro-init-php)
-- [pro-docker-images](https://github.com/chriha/pro-docker-images)
+- [docker-images](https://github.com/chriha/docker-images)
 
 ## Tips
 
@@ -87,7 +101,7 @@ alias composer='project composer'
 ...
 ```
 
-### Add your node scripts to `npm run`
+### Add your node scripts to npm run
 
 Each project with npm has its `package.json`. You should add your scripts to it! So don't let your co-workers figure out eg. how to compile static files. Help by using `npm run`, these can be:
 
@@ -103,7 +117,10 @@ Currently only PHP is supported. Python and others are coming soon.
 
 ## TODOs
 
+- [ ] allow `project run ...` command
 - [ ] command completion
 - [ ] provide ability to use project specific nginx conf
 - [ ] automated checks for new versions
 - [ ] add scaling: `project scale web 3`
+- [ ] show commits since last version `git log --pretty=oneline --abbrev-commit TAG_OLD..TAG_NEW`
+
