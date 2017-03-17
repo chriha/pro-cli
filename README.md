@@ -91,8 +91,12 @@ project clean
 
 ## Used repos
 
+As every project can be different by its type, you'll find further information about the project structure, docker-compose files, etc. at the following respositories:
 - [pro-init-php](https://github.com/chriha/pro-init-php)
-- [docker-images](https://github.com/chriha/docker-images)
+
+### docker
+
+Nevertheless, each project has its `docker-compose.yml` which should not be touched as it will be overwritten as soon as the project structure gets updated. Instead you should create your own docker-compose file according to the `env` in `pro-cli.json`. For example, if you set the `env` to `local`, **pro-cli** will look for and use `docker-compose.local.yml`. Take a look at [pro-init-php](https://github.com/chriha/pro-init-php) for an example.
 
 ## Tips
 
