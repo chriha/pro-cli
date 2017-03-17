@@ -137,5 +137,3 @@ rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
 - [ ] provide ability to use project specific nginx conf
 - [ ] automated checks for new versions
 - [ ] add scaling: `project scale web 3`
-- [ ] show commits since last version `git log --pretty=oneline --abbrev-commit TAG_OLD..TAG_NEW`
-

@@ -28,6 +28,13 @@ then
     printf "${NORMAL}\n"
 
     printf "${BLUE}Yessss! pro-cli has been updated and is now on version ${BOLD}v${PC_VERSION_NEW}-beta${NORMAL}\n"
+    PC_CHANGES=$(git log --pretty=oneline --abbrev-commit $PC_VERSION_OLD..$PC_VERSION_NEW)
+
+    printf "\n"
+    printf "${YELLOW}Changes since your last update:${NORMAL}\n"
+    printf "============================================\n"
+    echo -e "$PC_CHANGES" | sed 's/^.\{8\}\(.*\)/- \1/g'
+
 else
     printf "\n${RED}There was an error while updating to the latest version. Try again later.${NORMAL}"
 fi
