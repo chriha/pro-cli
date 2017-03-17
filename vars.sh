@@ -69,16 +69,18 @@ help() {
         printf "\n"
     fi
 
-    COMMAND_KEYS=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.scripts | keys[]')
+    if [ -f "$WDIR/$PC_CONF_FILE" ]; then
+        COMMAND_KEYS=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.scripts | keys[]')
 
-    if [ ! -z "$COMMAND_KEYS" ]; then
-        printf "    CUSTOM COMMANDS:\n"
+        if [ ! -z "$COMMAND_KEYS" ]; then
+            printf "    CUSTOM COMMANDS:\n"
 
-        while read -r KEY; do
-            COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]')
-            COUNT=${#KEY}
-            printf "        ${BLUE}${KEY}${NORMAL}${SPACE:$COUNT}${COMMAND}\n"
-        done <<< "$COMMAND_KEYS"
+            while read -r KEY; do
+                COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]')
+                COUNT=${#KEY}
+                printf "        ${BLUE}${KEY}${NORMAL}${SPACE:$COUNT}${COMMAND}\n"
+            done <<< "$COMMAND_KEYS"
+        fi
     fi
 }
 
