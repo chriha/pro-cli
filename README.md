@@ -4,6 +4,7 @@
   - [Dependencies](#dependencies)
   - [Install pro-cli](#install-pro-cli)
 - [Commands](#commands)
+  - [Logs](#logs)
 - [Configuration](#configuration)
   - [Installation scripts](#installation-scripts)
   - [Scripts](#scripts)
@@ -18,13 +19,13 @@
 pro-cli is your local little environment manager. You can:
 
 - use the same project structure in **every** project
-- initialize and start whole environments (web server, database, caching, etc.) in seconds
-- install the project with a single command by using the configuration file
+- initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
+- install projects with a single command by using [installation scripts](#installation-scripts)
 - every developer is using the exact same environment and tools
-- simple environment configurations with a single JSON file
-- no need to install multiple versions for each tool
+- no need to install multiple versions for each tool locally, just use the `project` command
 - reduce amount of necessary commands for each developer
-- simple access to log files
+- add custom commands to your project via [scripts](#scripts)
+- simple access to log files; tail and concat all or just specific systems
 
 ## Install
 
@@ -43,6 +44,10 @@ Reload your shell and use the `project` command with all its beauty.
 ## Commands
 
 Commands are depending on the project type. List them via the `project` command. If you are inside a project, pro-cli will show you all available commands for that specific type. Outside the projects, you will just see the commands, that are specific to pro-cli.
+
+### Logs
+
+Tail logs of all or just specific services. See `project logs -h` for further help.
 
 ## Configuration
 
@@ -115,6 +120,12 @@ npm run production
 ## Supported systems
 
 Currently only PHP is supported. Python and others are coming soon.
+
+## Uninstall
+
+```bash
+rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
+```
 
 ## TODOs
 
