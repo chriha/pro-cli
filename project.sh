@@ -59,10 +59,19 @@ elif [ "$1" == "install" ]; then
 # project self-update
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh
+fi
+
+
+# # # # # # # # # # # # # # # # # # # #
+# include the systems
+. $PC_DIR/systems/docker-cli.sh
+. $PC_DIR/systems/php-cli.sh
+. $PC_DIR/systems/node-cli.sh
+
 
 # # # # # # # # # # # # # # # # # # # #
 # commands that are specified in the local config file
-elif [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
+if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
     COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
 
     shift 1
@@ -71,9 +80,3 @@ elif [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
         eval $COMMAND
     fi
 fi
-
-# # # # # # # # # # # # # # # # # # # #
-# include the systems
-. $PC_DIR/systems/docker-cli.sh
-. $PC_DIR/systems/php-cli.sh
-. $PC_DIR/systems/node-cli.sh
