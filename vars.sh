@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PC_VERSION=$( cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1 )
+PC_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+PC_VERSION=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
 PC_CONF_FILE="pro-cli.json"
 PC_CONF="$WDIR/$PC_CONF_FILE"
 PC_NODE="$WDIR/src/node_modules"

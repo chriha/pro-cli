@@ -37,7 +37,7 @@ printf '%s\n' ' \ \_\    \ \_\ \_\  \ \_____\  \ \_____\  \ \_____\  \ \_\'
 printf '%s\n' '  \/_/     \/_/ /_/   \/_____/   \/_____/   \/_____/   \/_/'
 printf "${NORMAL}\n"
 
-PC_VERSION=$( cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1 )
+PC_VERSION=$( cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1` )
 
 printf "${BLUE}Yessss! pro-cli has been installed and is now on version ${BOLD}v${PC_VERSION}${NORMAL}.\n\n"
 
