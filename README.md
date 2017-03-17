@@ -9,10 +9,12 @@
   - [Installation scripts](#installation-scripts)
   - [Scripts](#scripts)
 - [Used Repos](#used-repos)
+  - [docker](#docker)
 - [Tips](#tips)
   - [Use aliases](#use-aliases)
   - [Add your node scripts to npm run](#add-your-node-scripts-to-npm-run)
 - [Supported Systems](#supported-systems)
+- [Uninstall](#uninstall)
 - [Todos](#todos)
 
 
