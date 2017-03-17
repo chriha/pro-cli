@@ -112,5 +112,5 @@ init_project() {
     git clone -q https://github.com/chriha/pro-php.git $DIR
     rm -rf $DIR/.git $DIR/README.md
 
-    cat $PC_DIR | jq '.type = '"$TYPE"'' > $DIR/$PC_CONF_FILE
+    cat $PC_DIR/$PC_CONF_FILE | jq --arg PROJECT_TYPE $TYPE '.type = $PROJECT_TYPE' > $DIR/$PC_CONF_FILE
 }
