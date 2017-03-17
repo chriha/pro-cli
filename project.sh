@@ -40,14 +40,11 @@ elif [ "$1" == "update" ]; then
 
 elif [ "$1" == "install" ]; then
     set -f
-    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -c '.install | .[]' | sed 's/"//g')
+    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.install | .[]' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
 
     printf "${YELLOW}Installing project ...${NORMAL}\n"
 
-    while read -r INSTALL_CMD; do
-        printf "Executing: $INSTALL_CMD\n"
-        eval $INSTALL_CMD
-    done <<< "$PC_INSTALL"
+    eval $PC_INSTALL
 
     printf "${GREEN}DONE!${NORMAL}\n"
 
