@@ -39,8 +39,7 @@ elif [ "$1" == "update" ]; then
     exit
 
 elif [ "$1" == "install" ]; then
-    set -f
-    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.install | .[]' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
+    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -rM '.install | .[]' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
 
     printf "${YELLOW}Installing project ...${NORMAL}\n"
 
@@ -50,6 +49,12 @@ elif [ "$1" == "install" ]; then
 
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh
+elif [ ! -z "$1" ]; then
+        COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
+
+        if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
+            eval $COMMAND
+        fi
 fi
 
 . $PC_DIR/systems/docker-cli.sh

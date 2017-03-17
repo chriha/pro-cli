@@ -78,8 +78,8 @@ Of course you can add your own scripts to hook into pro-cli and use them as *run
 Which can then be executed as:
 
 ```bash
-project run watch
-project run clean
+project watch
+project clean
 ```
 
 
@@ -117,7 +117,6 @@ Currently only PHP is supported. Python and others are coming soon.
 
 ## TODOs
 
-- [ ] allow `project run ...` command
 - [ ] command completion
 - [ ] provide ability to use project specific nginx conf
 - [ ] automated checks for new versions
