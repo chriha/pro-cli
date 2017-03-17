@@ -55,7 +55,7 @@ help() {
         printf "\n"
     fi
 
-    if [ -f $PC_CONF ] && [ $PC_TYPE == "laravel" ]; then
+    if [ -f $PC_CONF ] && [[ $PC_TYPE == "laravel" ]]; then
         printf "    LARAVEL COMMANDS:\n"
         printf "        ${BLUE}artisan${NORMAL}${SPACE:7}Run artisan commands.\n"
         printf "        ${BLUE}tinker${NORMAL}${SPACE:6}Interact with your application.\n"
