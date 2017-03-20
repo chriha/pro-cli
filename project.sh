@@ -34,23 +34,19 @@ if [ "$1" == "init" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # project update
 elif [ "$1" == "update" ]; then
-    if [ ! -f "$WDIR/.pro-cli" ]; then
+    if [ ! -f "$WDIR/$PC_CONF_FILE" ]; then
         printf "${RED}Not in a pro-cli project!${NORMAL}\n"
         exit
     fi
 
-    printf "${YELLOW}Updating project structure ...${NORMAL} "
-    shift 1
-    init_project $@
-    printf "${GREEN}DONE!${NORMAL}\n"
+    . $PC_DIR/systems/docker-cli.sh
 
     printf "${YELLOW}Stopping application ...${NORMAL}\n"
     project down > /dev/null
     printf "${YELLOW}Updating docker images ...${NORMAL}\n"
-    docker-compose pull > /dev/null
-    printf "${GREEN}Starting application ...${NORMAL}\n"
-    project up
+    $COMPOSE pull
 
+    printf "${GREEN}Project update successfully!${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
