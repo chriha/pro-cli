@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
 PC_DIR="$HOME/.pro-cli"
-WDIR=$(pwd)
+
+# # # # # # # # # # # # # # # # # # # #
+# to enable pro-cli in the project, try to
+# fetch the working dir via Git
+if git status &> /dev/null; then
+    WDIR=$(git rev-parse --show-toplevel)
+    cd $WDIR
+else
+    WDIR=$(pwd)
+fi
 
 . $PC_DIR/vars.sh
 
