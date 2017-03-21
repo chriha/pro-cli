@@ -12,6 +12,9 @@ pro-cli is your local little environment manager. You can:
 - simple access to log files; tail and concat all or just specific systems
 - use the `project` command everywhere in your project, not only in your root
 
+See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
+
+## TOC
 
 - [Install](#install)
   - [Dependencies](#dependencies)
