@@ -85,3 +85,6 @@ if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
         eval $COMMAND
     fi
 fi
+
+printf "${YELLOW}Command not found ¯\_(ツ)_/¯${NORMAL}\n"
+
