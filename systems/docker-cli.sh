@@ -19,9 +19,11 @@ readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
 
 if [ "$1" == "status" ]; then
     $COMPOSE ps
+    exit
 elif [ "$1" == "up" ]; then
     shift 1
     $COMPOSE up -d
+    exit
 elif [ "$1" == "start" ]; then
     printf "Starting environment ... "
 
@@ -30,6 +32,8 @@ elif [ "$1" == "start" ]; then
     else
         $COMPOSE start > /dev/null && printf "${GREEN}DONE${NORMAL}\n"
     fi
+
+    exit
 elif [ "$1" == "stop" ]; then
     printf "Stopping environment ... "
 
@@ -38,13 +42,19 @@ elif [ "$1" == "stop" ]; then
     else
         $COMPOSE stop > /dev/null && printf "${GREEN}DONE${NORMAL}\n"
     fi
+
+    exit
+
 elif [ "$1" == "down" ]; then
     $COMPOSE down
+    exit
 elif [ "$1" == "compose" ]; then
     shift 1
     $COMPOSE "$@"
+    exit
 elif [ "$1" == "logs" ]; then
     shift 1
     $COMPOSE logs "$@"
+    exit
 fi
 

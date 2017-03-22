@@ -58,12 +58,14 @@ elif [ "$1" == "install" ]; then
 
     eval $PC_INSTALL
 
+    exit
     printf "${GREEN}DONE!${NORMAL}\n"
 
 # # # # # # # # # # # # # # # # # # # #
 # project self-update
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh
+    exit
 fi
 
 
@@ -83,6 +85,7 @@ if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
     
     if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
         eval $COMMAND
+        exit
     fi
 fi
 
