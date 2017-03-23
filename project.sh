@@ -80,8 +80,6 @@ fi
 # commands that are specified in the local config file
 if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
     COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
-
-    shift
     
     if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
         eval $COMMAND

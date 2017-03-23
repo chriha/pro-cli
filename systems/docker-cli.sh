@@ -20,40 +20,29 @@ readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
 # # # # # # # # # # # # # # # # # # # #
 # show all containers status
 if [ "$1" == "status" ]; then
-    $COMPOSE ps
+    shift
+    $COMPOSE ps $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # create and start all or specific containers
 elif [ "$1" == "up" ]; then
-    shift 1
-    $COMPOSE up -d
+    shift
+    $COMPOSE up -d $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # start all or specific containers
 elif [ "$1" == "start" ]; then
-    printf "Starting environment ... "
-
-    if [ ! -z "$2" ]; then
-        $COMPOSE start $2 > /dev/null && printf "${GREEN}DONE${NORMAL}\n"
-    else
-        $COMPOSE start > /dev/null && printf "${GREEN}DONE${NORMAL}\n"
-    fi
-
+    shift
+    $COMPOSE start $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop all or specific containers
 elif [ "$1" == "stop" ]; then
-    printf "Stopping environment ... "
-
-    if [ ! -z "$2" ]; then
-        $COMPOSE stop $2 > /dev/null && printf "${GREEN}DONE${NORMAL}\n"
-    else
-        $COMPOSE stop > /dev/null && printf "${GREEN}DONE${NORMAL}\n"
-    fi
-
+    shift
+    $COMPOSE stop $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -66,13 +55,13 @@ elif [ "$1" == "down" ]; then
 # run docker-compose commands
 elif [ "$1" == "compose" ]; then
     shift
-    $COMPOSE "$@"
+    $COMPOSE $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # show logs of all or specific containers
 elif [ "$1" == "logs" ]; then
     shift
-    $COMPOSE logs "$@"
+    $COMPOSE logs $@
     exit
 fi

@@ -30,7 +30,7 @@ elif [ "$1" == "test" ]; then
         exit
     fi
 
-    $RUN web ./vendor/bin/phpunit "$@"
+    $RUN web ./vendor/bin/phpunit $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
