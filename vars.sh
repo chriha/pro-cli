@@ -80,7 +80,7 @@ help() {
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
-    if [ -f $PC_CONF ]; then
+    if [ -f "$WDIR/docker-compose.yml" ]; then
         printf "    DOCKER COMMANDS:\n"
         printf "        ${BLUE}start${NORMAL}${SPACE:5}Start application.\n"
         printf "        ${BLUE}stop${NORMAL}${SPACE:4}Stop application.\n"
