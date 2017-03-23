@@ -79,11 +79,3 @@ To update **pro-cli** just use the `project self-update` command.
 ```bash
 rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
 ```
-
-## TODOs
-
-- [ ] command completion
-- [ ] provide ability to use project specific nginx conf
-- [ ] automated checks for new versions
-- [ ] add scaling: `project scale web 3`
-- [ ] add `project top` to provide display of running processes for all or by specific services
