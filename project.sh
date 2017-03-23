@@ -25,10 +25,9 @@ fi
 # project init [path] [--type=TYPE]
 if [ "$1" == "init" ]; then
     shift
-    printf "Initializing project files ... "
+    printf "Initializing project files ...\n"
     init_project $@
     printf "${GREEN}DONE!${NORMAL}\n"
-    
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -73,6 +72,7 @@ fi
 # include the systems
 . $PC_DIR/systems/docker-cli.sh
 . $PC_DIR/systems/php-cli.sh
+. $PC_DIR/systems/laravel-cli.sh
 . $PC_DIR/systems/node-cli.sh
 
 
