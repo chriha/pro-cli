@@ -1,9 +1,35 @@
 #!/usr/bin/env bash
 
-# global pro-cli directory
-PC_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+# # # # # # # # # # # # # # # # # # # #
+# to enable pro-cli in the project, try to
+# fetch the working dir via Git
+if git status &> /dev/null; then
+    WDIR=$(git rev-parse --show-toplevel)
+    cd $WDIR
+else
+    WDIR=$(pwd)
+fi
+
+# current system
+PC_SYSTEM=$(uname -s)
 # current pro-cli version
-PC_VERSION=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
+PC_VERSION=$(cd $PC_DIR && git describe --tags)
+
+if [ "$PC_SYSTEM" == "Darwin" ]; then
+    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -f %m $PC_DIR/.git/FETCH_HEAD))
+else
+    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -c %Y $PC_DIR/.git/FETCH_HEAD))
+fi
+
+# check for new version
+if [ $PC_LATEST_FETCH -gt 1800 ]; then
+    # only fetch every 30 minutes
+    PC_VERSION_NEW=$(cd $PC_DIR && git fetch -q && git describe --tags `git rev-list --tags --max-count=1`)
+else
+    PC_VERSION_NEW=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
+fi
+
+PC_VERSION_SUFFIX="-beta"
 # name of the config file
 PC_CONF_FILE="pro-cli.json"
 # path to the local config file
@@ -120,7 +146,6 @@ help() {
         fi
     fi
 }
-
 
 # # # # # # # # # # # # # # # # # # # #
 # initialize a project

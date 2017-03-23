@@ -27,7 +27,6 @@ See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 - [Supported Systems](#supported-systems)
 - [Update](#update)
 - [Uninstall](#uninstall)
-- [Todos](#todos)
 
 
 ## Install

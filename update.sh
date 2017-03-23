@@ -2,7 +2,7 @@
 
 printf "Updating pro-cli ..."
 
-PC_VERSION_OLD=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
+PC_VERSION_OLD=$(cd $PC_DIR && git describe --tags)
 PC_VERSION_NEW=$(cd $PC_DIR && git fetch -q && git describe --tags `git rev-list --tags --max-count=1`)
 
 # # # # # # # # # # # # # # # # # # # #
@@ -16,7 +16,7 @@ cd $PC_DIR
 
 # # # # # # # # # # # # # # # # # # # #
 # checkout the latest tag
-if git checkout -q $(git describe --tags `git rev-list --tags --max-count=1`)
+if git checkout -q $PC_VERSION_NEW
 then
     printf "\n"
     printf "${GREEN}"

@@ -2,17 +2,15 @@
 
 PC_DIR="$HOME/.pro-cli"
 
+. $PC_DIR/vars.sh
+
+
 # # # # # # # # # # # # # # # # # # # #
-# to enable pro-cli in the project, try to
-# fetch the working dir via Git
-if git status &> /dev/null; then
-    WDIR=$(git rev-parse --show-toplevel)
-    cd $WDIR
-else
-    WDIR=$(pwd)
+# show new version info if available
+if [ "$PC_VERSION" != "$PC_VERSION_NEW" ]; then
+    printf "\n    ${YELLOW}New version available: ${BOLD}${PC_VERSION_NEW}-beta${NORMAL}\n\n"
 fi
 
-. $PC_DIR/vars.sh
 
 # # # # # # # # # # # # # # # # # # # #
 # show help immediately
@@ -95,4 +93,3 @@ if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
 fi
 
 printf "${YELLOW}Command not found ¯\_(ツ)_/¯${NORMAL}\n"
-
