@@ -6,8 +6,8 @@ pro-cli is your local little environment manager. You can:
 - initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
 - install projects with a single command by using [installation scripts](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - every developer is using the exact same environment and tools
-- no need to install multiple versions for each tool locally, just use the `project` command
-- reduce amount of necessary commands for each developer
+- no need to install multiple versions for each tool locally
+- reduce amount of necessary commands for each developer, just use the `project` command
 - add custom commands to your project via [scripts](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - simple access to log files; tail and concat all or just specific systems
 - use the `project` command everywhere in your project, not only in your root
@@ -45,7 +45,7 @@ Reload your shell and use the `project` command with all its beauty.
 
 ## Commands
 
-Commands are depending on the project type. List them via the `project` command. If you are inside a project, pro-cli will show you all available commands for that specific type. Outside the projects, you will just see the commands, that are specific to pro-cli.
+Commands are depending on the project type. List them via the `project` command. If you are inside a project, pro-cli will show you all available commands for that specific type (PHP, Laravel, etc.). Outside the projects, you will just see the commands, that are specific to pro-cli.
 
 ### Logs
 
@@ -53,7 +53,7 @@ Tail logs of all or just specific services. See `project logs -h` for further he
 
 ## Configuration
 
-Every pro-cli project has an own [`pro-cli.json`](pro-cli.json) file which you can change to your needs.
+Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change to your needs.
 
 
 ## Used repos
@@ -67,7 +67,7 @@ Nevertheless, each project has its `docker-compose.yml` which should not be touc
 
 ## Supported systems
 
-Currently only PHP is supported. Python and others are coming soon.
+Only PHP supported right now. Python and others are coming soon.
 
 ## Update
 
