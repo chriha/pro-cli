@@ -65,14 +65,14 @@ elif [ "$1" == "down" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # run docker-compose commands
 elif [ "$1" == "compose" ]; then
-    shift 1
+    shift
     $COMPOSE "$@"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # show logs of all or specific containers
 elif [ "$1" == "logs" ]; then
-    shift 1
+    shift
     $COMPOSE logs "$@"
     exit
 fi

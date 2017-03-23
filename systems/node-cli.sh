@@ -3,14 +3,14 @@
 # # # # # # # # # # # # # # # # # # # #
 # execute npm commands
 if [ "$1" == "npm" ]; then
-    shift 1
+    shift
     $RUN node npm "$@"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # execute yarn commands
 elif [ "$1" == "yarn" ]; then
-    shift 1
+    shift
     $RUN yarn yarn "$@"
     exit
 fi

@@ -24,7 +24,7 @@ fi
 # # # # # # # # # # # # # # # # # # # #
 # project init [path] [--type=TYPE]
 if [ "$1" == "init" ]; then
-    shift 1
+    shift
     printf "Initializing project files ... "
     init_project $@
     printf "${GREEN}DONE!${NORMAL}\n"
@@ -81,7 +81,7 @@ fi
 if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
     COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
 
-    shift 1
+    shift
     
     if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
         eval $COMMAND
