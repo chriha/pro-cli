@@ -103,11 +103,19 @@ help() {
             printf "    CUSTOM COMMANDS:\n"
 
             while read -r KEY; do
+                IS_OBJECT=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" 'if (.scripts[$cmd] | type == "object") then true else false end')
+                DESCRIPTION=""
+
                 # get the command by key selection
-                COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]')
+                if [ "true" == "$IS_OBJECT" ]; then
+                    DESCRIPTION=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]["description"]')
+                else
+                    DESCRIPTION=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]')
+                fi
+
                 # string length
                 COUNT=${#KEY}
-                printf "        ${BLUE}${KEY}${NORMAL}${SPACE:$COUNT}${COMMAND}\n"
+                printf "        ${BLUE}${KEY}${NORMAL}${SPACE:$COUNT}${DESCRIPTION}\n"
             done <<< "$COMMAND_KEYS"
         fi
     fi

@@ -79,7 +79,14 @@ fi
 # # # # # # # # # # # # # # # # # # # #
 # commands that are specified in the local config file
 if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
-    COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
+    IS_OBJECT=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$1" 'if (.scripts[$cmd] | type == "object") then true else false end')
+
+    # get the command by key selection
+    if [ "true" == "$IS_OBJECT" ]; then
+        COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]["command"]')
+    else
+        COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
+    fi
     
     if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
         eval $COMMAND
