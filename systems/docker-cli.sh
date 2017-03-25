@@ -24,6 +24,10 @@ if [ "$1" == "status" ]; then
     $COMPOSE ps $@
     exit
 
+elif [ "$1" == "top" ]; then
+    $COMPOSE ps | grep 'Up\|Exit' | awk '{print $1}' | tr "\\n" " " | xargs docker stats --all --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}"
+    exit
+
 # # # # # # # # # # # # # # # # # # # #
 # create and start all or specific containers
 elif [ "$1" == "up" ]; then

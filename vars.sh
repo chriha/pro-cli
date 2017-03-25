@@ -89,6 +89,7 @@ help() {
         printf "        ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
         printf "        ${BLUE}logs${NORMAL}${SPACE:4}Show application logs.\n"
         printf "        ${BLUE}status${NORMAL}${SPACE:6}List application containers and show the status.\n"
+        printf "        ${BLUE}top${NORMAL}${SPACE:3}Display a live stream of container(s) resource usage statistics.\n"
         printf "\n"
     fi
 
