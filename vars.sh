@@ -76,6 +76,7 @@ help() {
     printf "        ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure.\n"
     printf "        ${BLUE}install${NORMAL}${SPACE:7}Install application by executing the commands specified in ${BOLD}pro-cli.json${NORMAL}.\n"
     printf "        ${BLUE}update${NORMAL}${SPACE:6}Update project structure and docker images. ${YELLOW}Will overwrite pro-cli project files.${NORMAL}\n"
+    printf "        ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
     printf "\n"
 
     # # # # # # # # # # # # # # # # # # # #

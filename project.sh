@@ -58,6 +58,23 @@ elif [ "$1" == "install" ]; then
     exit
     printf "${GREEN}DONE!${NORMAL}\n"
 
+
+# # # # # # # # # # # # # # # # # # # #
+# get and set config settings
+elif [ "$1" == "config" ]; then
+    shift
+
+    PC_SELECTION=".${1}"
+
+    if [ ! -z "$2" ]; then
+        PC_JSON=$(cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION = \"${2}\"" | jq -M .)
+        printf "$PC_JSON" > $WDIR/$PC_CONF_FILE
+    else
+        cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION"
+    fi
+
+    exit
+
 # # # # # # # # # # # # # # # # # # # #
 # project self-update
 elif [ "$1" == "self-update" ]; then
