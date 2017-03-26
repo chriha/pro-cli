@@ -68,6 +68,12 @@ elif [ "$1" == "config" ]; then
 
     if [ ! -z "$2" ]; then
         PC_JSON=$(cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION = \"${2}\"" | jq -M .)
+
+        # prevent braking the config file
+        if [ -z "$PC_JSON" ]; then
+            exit
+        fi
+
         printf "$PC_JSON" > $WDIR/$PC_CONF_FILE
     else
         cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION"
