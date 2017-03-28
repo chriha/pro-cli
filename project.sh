@@ -59,6 +59,20 @@ elif [ "$1" == "install" ]; then
     printf "${GREEN}DONE!${NORMAL}\n"
 
 # # # # # # # # # # # # # # # # # # # #
+# get or set config
+elif [ "$1" == "config" ]; then
+    shift
+
+    # set a value
+    if [ ! -z "$2" ]; then
+        cat $WDIR/$PC_CONF_FILE | jq -M ".${1} = \"${2}\"" > $WDIR/$PC_CONF_FILE
+    else
+        cat $WDIR/$PC_CONF_FILE | jq ".${1}"
+    fi
+
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # project self-update
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh
