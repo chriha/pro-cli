@@ -73,22 +73,23 @@ help() {
     printf "\n"
     printf "    COMMANDS:\n"
     printf "        ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
-    printf "        ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure.\n"
+    printf "        ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "        ${BLUE}install${NORMAL}${SPACE:7}Install application by executing the commands specified in ${BOLD}pro-cli.json${NORMAL}.\n"
-    printf "        ${BLUE}update${NORMAL}${SPACE:6}Update project structure and docker images. ${YELLOW}Will overwrite pro-cli project files.${NORMAL}\n"
+    printf "        ${BLUE}update${NORMAL}${SPACE:6}Update application by executing the commands specified in ${BOLD}pro-cli.json${NORMAL}.\n"
+    printf "        ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
     printf "\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
     if [ -f "$WDIR/docker-compose.yml" ]; then
         printf "    DOCKER COMMANDS:\n"
-        printf "        ${BLUE}start${NORMAL}${SPACE:5}Start application.\n"
-        printf "        ${BLUE}stop${NORMAL}${SPACE:4}Stop application.\n"
+        printf "        ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
+        printf "        ${BLUE}stop${NORMAL}${SPACE:4}Stop all or just the specified service.\n"
         printf "        ${BLUE}up${NORMAL}${SPACE:2}Start all docker containers and application.\n"
         printf "        ${BLUE}down${NORMAL}${SPACE:4}Stop and remove all docker containers. ${YELLOW}Removes mounted volumes${NORMAL}.\n"
         printf "        ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
-        printf "        ${BLUE}logs${NORMAL}${SPACE:4}Show application logs.\n"
-        printf "        ${BLUE}status${NORMAL}${SPACE:6}List application containers and show the status.\n"
+        printf "        ${BLUE}logs${NORMAL}${SPACE:4}Show logs of all or the specified service.\n"
+        printf "        ${BLUE}status${NORMAL}${SPACE:6}List all service containers and show their status.\n"
         printf "        ${BLUE}top${NORMAL}${SPACE:3}Display a live stream of container(s) resource usage statistics.\n"
         printf "\n"
     fi
