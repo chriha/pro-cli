@@ -67,33 +67,27 @@ elif [ "$1" == "config" ]; then
     PC_SELECTION=".${1}"
 
     if [ ! -z "$2" ]; then
-        PC_JSON=$(cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION = \"${2}\"" | jq -M .)
+        PC_VALUE=$(echo "${2}" | sed -e 's/"/\\"/g' -e 's/^\\"/"/1' -e 's/\\"$/"/')
+
+        if $(echo $2 | jq . > /dev/null 2>&1); then
+            PC_JSON=$(cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION = ${2}" | jq -M .)
+        else
+            PC_JSON=$(cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION = \"${2}\"" | jq -M .)
+        fi
 
         # prevent braking the config file
         if [ -z "$PC_JSON" ]; then
+            printf "${RED}Invalid value!${NORMAL}\n"
             exit
         fi
 
-        printf "$PC_JSON" > $WDIR/$PC_CONF_FILE
+        printf '%s' "$PC_JSON" > $WDIR/$PC_CONF_FILE
     else
         cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION"
     fi
 
     exit
 
-# # # # # # # # # # # # # # # # # # # #
-# get or set config
-elif [ "$1" == "config" ]; then
-    shift
-
-    # set a value
-    if [ ! -z "$2" ]; then
-        cat $WDIR/$PC_CONF_FILE | jq -M ".${1} = \"${2}\"" > $WDIR/$PC_CONF_FILE
-    else
-        cat $WDIR/$PC_CONF_FILE | jq ".${1}"
-    fi
-
-    exit
 
 # # # # # # # # # # # # # # # # # # # #
 # project self-update
