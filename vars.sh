@@ -15,10 +15,16 @@ PC_SYSTEM=$(uname -s)
 # current pro-cli version
 PC_VERSION=$(cd $PC_DIR && git describe --tags)
 
-if [ "$PC_SYSTEM" == "Darwin" ]; then
-    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -f %m $PC_DIR/.git/FETCH_HEAD))
+if [ -f "$PC_DIR/.git/FETCH_HEAD" ]; then
+    PC_HEAD_FILE="$PC_DIR/.git/FETCH_HEAD"
 else
-    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -c %Y $PC_DIR/.git/FETCH_HEAD))
+    PC_HEAD_FILE="$PC_DIR/.git/HEAD"
+fi
+
+if [ "$PC_SYSTEM" == "Darwin" ]; then
+    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -f %m $PC_HEAD_FILE))
+else
+    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -c %Y $PC_HEAD_FILE))
 fi
 
 # check for new version
