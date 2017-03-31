@@ -22,9 +22,11 @@ else
 fi
 
 if [ "$PC_SYSTEM" == "Darwin" ]; then
-    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -f %m $PC_HEAD_FILE))
+    PC_CHANGED=$(stat -f %m $PC_HEAD_FILE)
+    PC_LATEST_FETCH=$(expr $(date +%s) - $(printf "%.0f" $PC_CHANGED))
 else
-    PC_LATEST_FETCH=$(expr $(date +%s) - $(stat -c %Y $PC_HEAD_FILE))
+    PC_CHANGED=$(stat -c %Y $PC_HEAD_FILE)
+    PC_LATEST_FETCH=$(expr $(date +%s) - $(printf "%.0f" $PC_CHANGED))
 fi
 
 # check for new version
