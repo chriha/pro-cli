@@ -29,37 +29,6 @@ if [ "$1" == "init" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
-# project update
-elif [ "$1" == "update" ]; then
-    if [ ! -f "$WDIR/$PC_CONF_FILE" ]; then
-        printf "${RED}Not in a pro-cli project!${NORMAL}\n"
-        exit
-    fi
-
-    . $PC_DIR/systems/docker-cli.sh
-
-    printf "${YELLOW}Stopping application ...${NORMAL}\n"
-    project down > /dev/null
-    printf "${YELLOW}Updating docker images ...${NORMAL}\n"
-    $COMPOSE pull
-
-    printf "${GREEN}Project update successfully!${NORMAL}\n"
-    exit
-
-# # # # # # # # # # # # # # # # # # # #
-# project install
-elif [ "$1" == "install" ]; then
-    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -rM '.install | .[]' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
-
-    printf "${YELLOW}Installing project ...${NORMAL}\n"
-
-    eval $PC_INSTALL
-
-    exit
-    printf "${GREEN}DONE!${NORMAL}\n"
-
-
-# # # # # # # # # # # # # # # # # # # #
 # get and set config settings
 elif [ "$1" == "config" ]; then
     shift
@@ -88,7 +57,6 @@ elif [ "$1" == "config" ]; then
 
     exit
 
-
 # # # # # # # # # # # # # # # # # # # #
 # project self-update
 elif [ "$1" == "self-update" ]; then
@@ -107,20 +75,37 @@ fi
 
 # # # # # # # # # # # # # # # # # # # #
 # commands that are specified in the local config file
-if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ]; then
-    IS_OBJECT=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$1" 'if (.scripts[$cmd] | type == "object") then true else false end')
+if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ] && [[ $(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$1" '.scripts[$cmd]') != "null" ]]; then
+    PC_COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$1" 'if (.scripts[$cmd].command | type == "string") then .scripts[$cmd].command else .scripts[$cmd].command | .[] end')
 
-    # get the command by key selection
-    if [ "true" == "$IS_OBJECT" ]; then
-        COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]["command"]')
-    else
-        COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -Mr --arg cmd "$1" '.scripts[$cmd]')
+    # concat multiple commands
+    if [[ $PC_COMMAND == *$'\n'* ]]; then
+        PC_COMMAND=$(echo "$PC_COMMAND" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
     fi
-    
-    if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
-        eval $COMMAND
+
+    if [ ! -z "$PC_COMMAND" ] && [ "$PC_COMMAND" != "null" ]; then
+        eval $PC_COMMAND
         exit
     fi
+fi
+
+
+# # # # # # # # # # # # # # # # # # # #
+# still providing "project install" because we
+# don't want to brake pro-cli.json from previous versions
+if [ "$1" == "install" ] && [[ $(cat $WDIR/$PC_CONF_FILE | jq -crM '.install') != "null" ]]; then
+    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.install | .[]' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
+
+    if [ -z "$PC_INSTALL" ]; then
+        exit
+    fi
+
+    printf "${YELLOW}Installing project ...${NORMAL}\n"
+
+    eval $PC_INSTALL
+
+    printf "${GREEN}Application installed!${NORMAL}\n"
+    exit
 fi
 
 printf "${YELLOW}Command not found ¯\_(ツ)_/¯${NORMAL}\n"

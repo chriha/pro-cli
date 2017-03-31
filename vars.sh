@@ -72,11 +72,9 @@ help() {
     printf "    help: project [command]\n"
     printf "\n"
     printf "    COMMANDS:\n"
-    printf "        ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
     printf "        ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
-    printf "        ${BLUE}install${NORMAL}${SPACE:7}Install application by executing the commands specified in ${BOLD}pro-cli.json${NORMAL}.\n"
-    printf "        ${BLUE}update${NORMAL}${SPACE:6}Update application by executing the commands specified in ${BOLD}pro-cli.json${NORMAL}.\n"
     printf "        ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
+    printf "        ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
     printf "\n"
 
     # # # # # # # # # # # # # # # # # # # #
@@ -122,7 +120,7 @@ help() {
     fi
 
     # # # # # # # # # # # # # # # # # # # #
-    # show custom commands help if the local config has scripts
+    # show custom commands help
     if [ -f "$WDIR/$PC_CONF_FILE" ]; then
         # fetch script keys
         COMMAND_KEYS=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.scripts | keys[]')
@@ -131,15 +129,7 @@ help() {
             printf "    CUSTOM COMMANDS:\n"
 
             while read -r KEY; do
-                IS_OBJECT=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" 'if (.scripts[$cmd] | type == "object") then true else false end')
-                DESCRIPTION=""
-
-                # get the command by key selection
-                if [ "true" == "$IS_OBJECT" ]; then
-                    DESCRIPTION=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]["description"]')
-                else
-                    DESCRIPTION=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]')
-                fi
+                DESCRIPTION=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]["description"]')
 
                 # string length
                 COUNT=${#KEY}
