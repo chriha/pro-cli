@@ -36,5 +36,5 @@ then
     echo -e "$PC_CHANGES" | sed 's/^.\{8\}\(.*\)/- \1/g'
 
 else
-    printf "\n${RED}There was an error while updating to the latest version. Try again later.${NORMAL}"
+    printf "\n${RED}There was an error while updating to the latest version. Try again later.${NORMAL}\n"
 fi
