@@ -8,7 +8,7 @@ PC_DIR="$HOME/.pro-cli"
 # # # # # # # # # # # # # # # # # # # #
 # show new version info if available
 if [ "$PC_VERSION" != "$PC_VERSION_NEW" ]; then
-    printf "\n    ${YELLOW}New version available: ${BOLD}${PC_VERSION_NEW}-beta${NORMAL}\n\n"
+    printf "${YELLOW}New version available: ${BOLD}${PC_VERSION_NEW}-beta${NORMAL}\n\n"
 fi
 
 
