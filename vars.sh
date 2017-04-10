@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. functions.sh
+. $PC_DIR/functions.sh
 
 # # # # # # # # # # # # # # # # # # # #
 # to enable pro-cli in the project, try to
