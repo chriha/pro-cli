@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-printf "Updating pro-cli ..."
-
 PC_VERSION_OLD=$(cd $PC_DIR && git describe --tags)
 PC_VERSION_NEW=$(cd $PC_DIR && git fetch -q && git describe --tags `git rev-list --tags --max-count=1`)
 
@@ -16,9 +14,12 @@ cd $PC_DIR
 
 # # # # # # # # # # # # # # # # # # # #
 # checkout the latest tag
-if git checkout -q $PC_VERSION_NEW
-then
-    printf "\n"
+(git checkout -q $PC_VERSION_NEW) &
+spinner $! "Updating ..."
+
+current=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
+
+if [ "$PC_VERSION_NEW" == "$current" ]; then
     printf "${GREEN}"
     printf '%s\n' ' ______   ______     ______     ______     __         __   '
     printf '%s\n' '/\  == \ /\  == \   /\  __ \   /\  ___\   /\ \       /\ \  '
