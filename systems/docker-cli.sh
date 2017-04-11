@@ -32,27 +32,35 @@ elif [ "$1" == "top" ]; then
 # create and start all or specific containers
 elif [ "$1" == "up" ]; then
     shift
-    $COMPOSE up -d $@
+    ( $COMPOSE up -d $@ ) > /dev/null 2>&1 & 
+    spinner $! "Starting containers ... "
+    printf "${GREEN}Containers started!${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # start all or specific containers
 elif [ "$1" == "start" ]; then
     shift
-    $COMPOSE start $@
+    ( $COMPOSE start $@ ) > /dev/null 2>&1 & 
+    spinner $! "Starting containers ... "
+    printf "${GREEN}Containers started!${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop all or specific containers
 elif [ "$1" == "stop" ]; then
     shift
-    $COMPOSE stop $@
+    ( $COMPOSE stop $@ ) > /dev/null 2>&1 & 
+    spinner $! "Stopping containers ... "
+    printf "${GREEN}Containers stopped!${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop and destroy all containers
 elif [ "$1" == "down" ]; then
-    $COMPOSE down
+    ( $COMPOSE down ) > /dev/null 2>&1 &
+    spinner $! "Shutting down containers ... "
+    printf "${GREEN}Containers removed!${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
