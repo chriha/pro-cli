@@ -145,6 +145,36 @@ filemtime() {
 
 
 # # # # # # # # # # # # # # # # # # # #
+# check if any error occured
+has_errors() {
+    if [ ! -f $OUTPUT_FILE ] && [ ! -s $OUTPUT_FILE ]; then
+        return 1
+    fi
+
+    if grep -qi 'error\|invalid' "$OUTPUT_FILE"; then
+        printf "${RED}"
+        cat $OUTPUT_FILE
+        printf "${NORMAL}"
+        return 0
+    elif grep -qi 'warning' "$OUTPUT_FILE"; then
+        printf "${YELLOW}"
+        cat $OUTPUT_FILE
+        printf "${NORMAL}"
+        return 0
+    fi
+
+    return 1
+}
+
+
+# # # # # # # # # # # # # # # # # # # #
+# reset error file
+reset_output() {
+    echo '' > $OUTPUT_FILE
+}
+
+
+# # # # # # # # # # # # # # # # # # # #
 # spinner
 # (sleep 4) &
 # spinner $1 "A nice text ..."

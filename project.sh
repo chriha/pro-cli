@@ -4,6 +4,8 @@ PC_DIR="$HOME/.pro-cli"
 
 . $PC_DIR/vars.sh
 
+reset_output
+
 
 # # # # # # # # # # # # # # # # # # # #
 # show new version info if available
