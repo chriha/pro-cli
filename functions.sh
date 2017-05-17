@@ -191,9 +191,9 @@ spinner() {
         local tmp=${spinstr#?}
 
         if [ -z "$2" ]; then
-            printf " \b\b\b${tmp:0:1} "
+            printf "\b\b\b${tmp:0:1} "
         else
-            printf "${cl} ${tmp:0:1} ${2}"
+            printf "${cl}${tmp:0:1} ${2}"
         fi
 
         local spinstr=$tmp${spinstr%"$tmp"}
