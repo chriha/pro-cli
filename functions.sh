@@ -8,56 +8,49 @@ help() {
     # spaces until the commands descriptions starts
     SPACE="                      "
 
-    printf "    ${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
-    printf "\n"
-    printf "    help: project [command]\n"
-    printf "\n"
-    printf "    COMMANDS:\n"
-    printf "        ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
-    printf "        ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
-    printf "        ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
-    printf "\n"
+    printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
+    printf "help: project [command]\n\n"
+    printf "COMMANDS:\n"
+    printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
+    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
+    printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
     if [ -f "$WDIR/docker-compose.yml" ]; then
-        printf "    DOCKER COMMANDS:\n"
-        printf "        ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
-        printf "        ${BLUE}stop${NORMAL}${SPACE:4}Stop all or just the specified service.\n"
-        printf "        ${BLUE}up${NORMAL}${SPACE:2}Start all docker containers and application.\n"
-        printf "        ${BLUE}down${NORMAL}${SPACE:4}Stop and remove all docker containers.\n"
-        printf "        ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
-        printf "        ${BLUE}logs${NORMAL}${SPACE:4}Show logs of all or the specified service.\n"
-        printf "        ${BLUE}status${NORMAL}${SPACE:6}List all service containers and show their status.\n"
-        printf "        ${BLUE}top${NORMAL}${SPACE:3}Display a live stream of container(s) resource usage statistics.\n"
-        printf "\n"
+        printf "DOCKER COMMANDS:\n"
+        printf "    ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
+        printf "    ${BLUE}stop${NORMAL}${SPACE:4}Stop all or just the specified service.\n"
+        printf "    ${BLUE}up${NORMAL}${SPACE:2}Start all docker containers and application.\n"
+        printf "    ${BLUE}down${NORMAL}${SPACE:4}Stop and remove all docker containers.\n"
+        printf "    ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
+        printf "    ${BLUE}logs${NORMAL}${SPACE:4}Show logs of all or the specified service.\n"
+        printf "    ${BLUE}status${NORMAL}${SPACE:6}List all service containers and show their status.\n"
+        printf "    ${BLUE}top${NORMAL}${SPACE:3}Display a live stream of container(s) resource usage statistics.\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
     # show PHP commands if the current project is of type laravel or PHP
     if [[ -f $PC_CONF && ( $PC_TYPE == "laravel" || $PC_TYPE == "php" )]]; then
-        printf "    PHP COMMANDS:\n"
-        printf "        ${BLUE}composer${NORMAL}${SPACE:8}Run composer commands.\n"
-        printf "        ${BLUE}test${NORMAL}${SPACE:4}Run Unit Tests.\n"
-        printf "\n"
+        printf "PHP COMMANDS:\n"
+        printf "    ${BLUE}composer${NORMAL}${SPACE:8}Run composer commands.\n"
+        printf "    ${BLUE}test${NORMAL}${SPACE:4}Run Unit Tests.\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
     # show PHP commands if the current project is of type laravel
     if [ -f $PC_CONF ] && [[ $PC_TYPE == "laravel" ]]; then
-        printf "    LARAVEL COMMANDS:\n"
-        printf "        ${BLUE}artisan${NORMAL}${SPACE:7}Run artisan commands.\n"
-        printf "        ${BLUE}tinker${NORMAL}${SPACE:6}Interact with your application.\n"
-        printf "\n"
+        printf "LARAVEL COMMANDS:\n"
+        printf "    ${BLUE}artisan${NORMAL}${SPACE:7}Run artisan commands.\n"
+        printf "    ${BLUE}tinker${NORMAL}${SPACE:6}Interact with your application.\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
     # show npm commands help if package.json exists
     if [ -f $PC_NPM_CONFIG ]; then
-        printf "    NODE COMMANDS:\n"
-        printf "        ${BLUE}npm${NORMAL}${SPACE:3}Run npm commands.\n"
-        printf "        ${BLUE}yarn${NORMAL}${SPACE:4}Run yarn commands.\n"
-        printf "\n"
+        printf "NODE COMMANDS:\n"
+        printf "    ${BLUE}npm${NORMAL}${SPACE:3}Run npm commands.\n"
+        printf "    ${BLUE}yarn${NORMAL}${SPACE:4}Run yarn commands.\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
@@ -67,14 +60,14 @@ help() {
         COMMAND_KEYS=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.scripts | keys[]')
 
         if [ ! -z "$COMMAND_KEYS" ]; then
-            printf "    CUSTOM COMMANDS:\n"
+            printf "CUSTOM COMMANDS:\n"
 
             while read -r KEY; do
                 DESCRIPTION=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]["description"]')
 
                 # string length
                 COUNT=${#KEY}
-                printf "        ${BLUE}${KEY}${NORMAL}${SPACE:$COUNT}${DESCRIPTION}\n"
+                printf "    ${BLUE}${KEY}${NORMAL}${SPACE:$COUNT}${DESCRIPTION}\n"
             done <<< "$COMMAND_KEYS"
         fi
     fi
