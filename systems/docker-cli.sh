@@ -34,7 +34,7 @@ elif [ "$1" == "up" ]; then
     shift
     ( $COMPOSE up -d $@ ) &> $OUTPUT_FILE &
     spinner $! "Starting containers ... "
-    has_errors || printf "${GREEN}Containers started!${NORMAL}\n"
+    has_errors || printf "${GREEN}Containers started${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -43,7 +43,7 @@ elif [ "$1" == "start" ]; then
     shift
     ( $COMPOSE start $@ ) &> $OUTPUT_FILE &
     spinner $! "Starting containers ... "
-    has_errors || printf "${GREEN}Containers started!${NORMAL}\n"
+    has_errors || printf "${GREEN}Containers started${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -52,7 +52,7 @@ elif [ "$1" == "stop" ]; then
     shift
     ( $COMPOSE stop $@ ) &> $OUTPUT_FILE &
     spinner $! "Stopping containers ... "
-    has_errors || printf "${GREEN}Containers stopped!${NORMAL}\n"
+    has_errors || printf "${GREEN}Containers stopped${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -60,7 +60,7 @@ elif [ "$1" == "stop" ]; then
 elif [ "$1" == "down" ]; then
     ( $COMPOSE down ) &> $OUTPUT_FILE &
     spinner $! "Shutting down containers ... "
-    has_errors || printf "${GREEN}Containers removed!${NORMAL}\n"
+    has_errors || printf "${GREEN}Containers stopped and removed${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
