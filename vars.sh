@@ -37,6 +37,7 @@ PC_CONF_FILE="pro-cli.json"
 # path to the local config file
 PC_CONF="$WDIR/$PC_CONF_FILE"
 OUTPUT_FILE=$PC_DIR/output.log
+ASKED_FILE=$PC_DIR/asked
 
 
 # # # # # # # # # # # # # # # # # # # #

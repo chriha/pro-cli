@@ -175,6 +175,13 @@ reset_output() {
 
 
 # # # # # # # # # # # # # # # # # # # #
+# reset asked file
+reset_asked() {
+    rm $ASKED_FILE
+}
+
+
+# # # # # # # # # # # # # # # # # # # #
 # spinner
 # (sleep 4) &
 # spinner $1 "A nice text ..."

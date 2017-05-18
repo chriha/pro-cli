@@ -20,6 +20,7 @@ spinner $! "Updating ..."
 current=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
 
 if [ "$PC_VERSION_NEW" == "$current" ]; then
+    reset_asked
     printf "${GREEN}"
     printf '%s\n' ' ______   ______     ______     ______     __         __   '
     printf '%s\n' '/\  == \ /\  == \   /\  __ \   /\  ___\   /\ \       /\ \  '
