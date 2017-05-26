@@ -36,7 +36,7 @@ See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 - The amazing [jq](https://stedolan.github.io/jq/) -> [download](https://stedolan.github.io/jq/download/)
 
 ### Install pro-cli
-
+After installing *jq* via `brew install jq`, please install pro-cli via:
 ```bash
 git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-cli/setup.sh
 ```
