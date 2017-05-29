@@ -38,7 +38,7 @@ See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 ### Install pro-cli
 After installing *jq* via `brew install jq`, please install pro-cli via:
 ```bash
-git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-cli/setup.sh
+brew install jq && git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-cli/setup.sh
 ```
 
 Reload your shell and use the `project` command with all its beauty.
