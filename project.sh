@@ -72,6 +72,27 @@ elif [ "$1" == "config" ]; then
 elif [ "$1" == "self-update" ]; then
     . $PC_DIR/update.sh
     exit
+
+
+# # # # # # # # # # # # # # # # # # # #
+# project list
+elif [ "$1" == "list" ]; then
+    cat $PC_BASE_CONF | jq '.projects'
+    exit
+
+
+# # # # # # # # # # # # # # # # # # # #
+# project open PROJECT_NAME
+elif [ "$1" == "open" ]; then
+    PC_OPEN=$(cat $PC_BASE_CONF | jq -r --arg VAL "$2" '.projects[$VAL]')
+
+    if [ -z "$PC_OPEN" ]; then
+        printf "${YELLOW}Project not found ¯\_(ツ)_/¯${NORMAL}\n"
+    else
+        open_project "$PC_OPEN" "$2"
+    fi
+
+    exit
 fi
 
 

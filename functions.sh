@@ -14,6 +14,8 @@ help() {
     printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
     printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
+    printf "    ${BLUE}open${NORMAL}${SPACE:4}Open another project.\n"
+    printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
@@ -201,4 +203,45 @@ spinner() {
     done
 
     printf "${cl}"
+}
+
+
+# # # # # # # # # # # # # # # # # # # #
+# open_project
+open_project() {
+    local CDTO="$1"
+    local PROJECT_NAME="$2"
+
+    case "$TERM_PROGRAM" in
+        "iTerm.app")
+            osascript &> /dev/null <<EOF
+                tell application "iTerm"
+                    tell current window
+                        set newTab to (create tab with default profile)
+
+                        tell newTab
+                            tell current session
+                                write text "cd \"$CDTO\""
+                            end tell
+                        end tell
+                    end tell
+                end tell
+EOF
+        ;;
+        "Apple_Terminal")
+            osascript &> /dev/null <<EOF
+                tell application "System Events"
+                    tell process "Terminal" to keystroke "t" using command down
+                end tell
+
+                tell application "Terminal"
+                    activate
+                    do script with command "cd \"$CDTO\"" in selected tab of the front window
+                end tell
+EOF
+        ;;
+        *)
+            echo "New project functionality only supported in Mac Terminal and iTerm"
+        ;;
+    esac
 }

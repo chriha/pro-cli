@@ -35,10 +35,29 @@ PC_VERSION_SUFFIX="-beta"
 # name of the config file
 PC_CONF_FILE="pro-cli.json"
 # path to the local config file
+PC_BASE_CONF="$PC_DIR/config.json"
 PC_CONF="$WDIR/$PC_CONF_FILE"
 OUTPUT_FILE=$PC_DIR/output.log
 ASKED_FILE=$PC_DIR/asked
+PC_PROJECT_NAME=${PWD##*/}
 
+
+# create base config if it doesn't exist
+if [ ! -f "$PC_BASE_CONF" ]; then
+    echo '{ "projects": {} }' | jq . > $PC_BASE_CONF
+fi
+
+PC_PROJECT_EXISTS=$(cat $PC_BASE_CONF | jq --arg dir "$PC_PROJECT_NAME" '.projects | has("$dir")')
+
+if [ -f "$PC_CONF" ] && [ "$PC_PROJECT_EXISTS" == "false" ]; then
+    # JQ_PATH=".projects[\"${PC_PROJECT_NAME}]"
+
+    PC_JSON=$(cat $PC_BASE_CONF | jq --arg project $PC_PROJECT_NAME --arg dir $WDIR '.projects[$project] = $dir' | jq -M .)
+
+    if [ ! -z "$PC_JSON" ]; then
+        printf '%s' "$PC_JSON" > $PC_BASE_CONF
+    fi
+fi
 
 # # # # # # # # # # # # # # # # # # # #
 # output manipulation
