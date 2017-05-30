@@ -11,24 +11,24 @@ help() {
     printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
-    printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
-    printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
-    printf "    ${BLUE}open${NORMAL}${SPACE:4}Open another project.\n"
+    printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
+    printf "    ${BLUE}open${NORMAL}${SPACE:4}Open another project.\n"
+    printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
     if [ -f "$WDIR/docker-compose.yml" ]; then
         printf "DOCKER COMMANDS:\n"
-        printf "    ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
-        printf "    ${BLUE}stop${NORMAL}${SPACE:4}Stop all or just the specified service.\n"
-        printf "    ${BLUE}up${NORMAL}${SPACE:2}Start all docker containers and application.\n"
-        printf "    ${BLUE}down${NORMAL}${SPACE:4}Stop and remove all docker containers.\n"
         printf "    ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
+        printf "    ${BLUE}down${NORMAL}${SPACE:4}Stop and remove all docker containers.\n"
         printf "    ${BLUE}logs${NORMAL}${SPACE:4}Show logs of all or the specified service.\n"
+        printf "    ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
         printf "    ${BLUE}status${NORMAL}${SPACE:6}List all service containers and show their status.\n"
+        printf "    ${BLUE}stop${NORMAL}${SPACE:4}Stop all or just the specified service.\n"
         printf "    ${BLUE}top${NORMAL}${SPACE:3}Display a live stream of container(s) resource usage statistics.\n"
+        printf "    ${BLUE}up${NORMAL}${SPACE:2}Start all docker containers and application.\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
