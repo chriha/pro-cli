@@ -241,7 +241,7 @@ EOF
 EOF
         ;;
         *)
-            echo "New project functionality only supported in Mac Terminal and iTerm"
+            echo "Open project functionality only supported in Mac Terminal and iTerm"
         ;;
     esac
 }
