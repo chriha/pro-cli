@@ -11,11 +11,11 @@ help() {
     printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
-    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write config settings.${NORMAL}\n"
+    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write local config settings.${NORMAL}\n"
     printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
-    printf "    ${BLUE}open${NORMAL}${SPACE:4}Open another project.\n"
-    printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli.\n"
+    printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
+    printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
@@ -40,7 +40,7 @@ help() {
     fi
 
     # # # # # # # # # # # # # # # # # # # #
-    # show PHP commands if the current project is of type laravel
+    # show Laravel commands if the current project is of type laravel
     if [ -f $PC_CONF ] && [[ $PC_TYPE == "laravel" ]]; then
         printf "LARAVEL COMMANDS:\n"
         printf "    ${BLUE}artisan${NORMAL}${SPACE:7}Run artisan commands.\n"
