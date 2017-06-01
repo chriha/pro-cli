@@ -11,7 +11,7 @@ fi
 # # # # # # # # # # # # # # # # # # # #
 # disable pseudo-TTY allocation for CI (Jenkins)
 if [ ! -z "$BUILD_NUMBER" ]; then
-    TTY="--tty"
+    TTY="-T"
 fi
 
 readonly COMPOSE="docker-compose -f docker-compose$PC_COMPOSE_ENV.yml"
