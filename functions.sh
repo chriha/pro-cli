@@ -24,6 +24,7 @@ help() {
         printf "    ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
         printf "    ${BLUE}down${NORMAL}${SPACE:4}Stop and remove all docker containers.\n"
         printf "    ${BLUE}logs${NORMAL}${SPACE:4}Show logs of all or the specified service.\n"
+        printf "    ${BLUE}run${NORMAL}${SPACE:3}Run a service and execute following commands.\n"
         printf "    ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
         printf "    ${BLUE}status${NORMAL}${SPACE:6}List all service containers and show their status.\n"
         printf "    ${BLUE}stop${NORMAL}${SPACE:4}Stop all or just the specified service.\n"

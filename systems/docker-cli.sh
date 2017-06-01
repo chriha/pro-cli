@@ -71,6 +71,13 @@ elif [ "$1" == "compose" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
+# run a service and execute further commands
+elif [ "$1" == "run" ]; then
+    shift
+    $RUN $@
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # show logs of all or specific containers
 elif [ "$1" == "logs" ]; then
     shift
