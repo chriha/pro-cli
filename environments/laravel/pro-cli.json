@@ -1,0 +1,16 @@
+{
+    "env": "local",
+    "type": "laravel",
+    "scripts": {
+        "install": {
+            "command": {
+                "sample-command": "echo -e Provide your own install commands.'",
+            },
+            "description": "Installs the application."
+        },
+        "sample": {
+            "command": "echo -e 'I am just echoing ...'",
+            "description": "A sample command."
+        }
+    }
+}
