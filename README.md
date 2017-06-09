@@ -3,13 +3,13 @@
 pro-cli is your local little environment manager. You can:
 
 - quickly switch between projects that you worked on
-- use the same project structure in **every** project
-- initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
+- use the same directory structure in **every** project
+- initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds with docker compose
 - install projects with a single command by using your own [scripts](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - every developer is using the exact same environment and tools
 - no need to install multiple versions for each tool locally
 - reduce amount of necessary commands for each developer
-- simple access to log files; tail and concat all or just specific systems
+- simple access to log files; tail and concat all or just specific services
 - use the `project` command everywhere in your project, not only in your root
 
 See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
@@ -53,7 +53,7 @@ Tail logs of all or just specific services. See `project logs -h` for further he
 
 ## Configuration
 
-Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change to your needs.
+Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change to your needs. Add whole installation processes or single commands.
 
 ### docker
 
