@@ -82,7 +82,7 @@ help() {
 init_project() {
     local TYPE="laravel"
     # supported types
-    local TYPES=("php laravel")
+    local TYPES=("php laravel nodejs")
     local DIR=$1
 
     shift
@@ -105,11 +105,7 @@ init_project() {
 
     mkdir -p $DIR
 
-    git clone -q https://github.com/chriha/pro-php.git $DIR
-    rm -rf $DIR/.git $DIR/README.md
-
-    # create local config from template and set project type
-    cat $PC_DIR/$PC_CONF_FILE | jq --arg PROJECT_TYPE $TYPE '.type = $PROJECT_TYPE' > $DIR/$PC_CONF_FILE
+    cp -r "${PC_DIR}/environments/${TYPE}/" $DIR
 }
 
 

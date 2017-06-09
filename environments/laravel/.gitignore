@@ -1,0 +1,7 @@
+/.idea
+.env
+*.swp
+*.sublime-*
+*.log
+/data
+/conf/nginx/ssl/*
