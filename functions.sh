@@ -16,6 +16,7 @@ help() {
     printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
     printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
     printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
+    printf "    ${BLUE}sync${NORMAL}${SPACE:4}Sync directory structure with pro-cli.\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
@@ -107,6 +108,20 @@ init_project() {
     mkdir -p $DIR
 
     cp -r "${PC_DIR}/environments/${TYPE}/" $DIR
+}
+
+
+# # # # # # # # # # # # # # # # # # # #
+# synchronize project structure
+# project sync
+sync_structure() {
+    if [ -d $PC_DIR/environments/ ]; then
+        cp -ir "${PC_DIR}/environments/${PC_TYPE}/" $WDIR
+    else
+        printf "${RED}Unsupported project type!${NORMAL}\n"
+    fi
+
+    return 0
 }
 
 
