@@ -4,7 +4,7 @@
     "scripts": {
         "install": {
             "command": {
-                "sample-command": "echo -e Provide your own install commands.'"
+                "sample-command": "echo -e 'Provide your own install commands.'"
             },
             "description": "Installs the application."
         },
