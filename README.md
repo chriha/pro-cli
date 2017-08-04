@@ -40,13 +40,14 @@ Reload your shell and use the `project` command with all its beauty.
 
 
 ### Completions
- To use the zsh completions, add the following to your `~/.zshrc`:
- ```bash
- fpath=($HOME/.pro-cli/completions $fpath)
+To use the *zsh completions*, add the following to your `~/.zshrc`:
+```bash
+fpath=($HOME/.pro-cli/completions $fpath)
 
- autoload -U compinit
- compinit
- ```
+autoload -U compinit
+compinit
+```
+Run `project self-update` to update the completions and reload your shell via `. ~/.zshrc`.
 
 
 ## Update
