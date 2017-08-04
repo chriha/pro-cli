@@ -16,13 +16,14 @@ help() {
     printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
     printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
     printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
+    printf "    ${BLUE}sync${NORMAL}${SPACE:4}Sync directory structure with pro-cli.\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
     if [ -f "$WDIR/docker-compose.yml" ]; then
         printf "DOCKER COMMANDS:\n"
         printf "    ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
-        printf "    ${BLUE}down${NORMAL}${SPACE:4}Stop and remove all docker containers.\n"
+        printf "    ${BLUE}down${NORMAL}${SPACE:4}Stop ${YELLOW}and remove${NORMAL} all docker containers.\n"
         printf "    ${BLUE}logs${NORMAL}${SPACE:4}Show logs of all or the specified service.\n"
         printf "    ${BLUE}run${NORMAL}${SPACE:3}Run a service and execute following commands.\n"
         printf "    ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
@@ -76,13 +77,14 @@ help() {
     fi
 }
 
+
 # # # # # # # # # # # # # # # # # # # #
 # initialize a project
 # project init [path] [--type=TYPE]
 init_project() {
     local TYPE="laravel"
     # supported types
-    local TYPES=("php laravel")
+    local TYPES=("php laravel nodejs")
     local DIR=$1
 
     shift
@@ -105,11 +107,21 @@ init_project() {
 
     mkdir -p $DIR
 
-    git clone -q https://github.com/chriha/pro-php.git $DIR
-    rm -rf $DIR/.git $DIR/README.md
+    cp -r "${PC_DIR}/environments/${TYPE}/" $DIR
+}
 
-    # create local config from template and set project type
-    cat $PC_DIR/$PC_CONF_FILE | jq --arg PROJECT_TYPE $TYPE '.type = $PROJECT_TYPE' > $DIR/$PC_CONF_FILE
+
+# # # # # # # # # # # # # # # # # # # #
+# synchronize project structure
+# project sync
+sync_structure() {
+    if [ -d $PC_DIR/environments/ ]; then
+        cp -ir "${PC_DIR}/environments/${PC_TYPE}/" $WDIR
+    else
+        printf "${RED}Unsupported project type!${NORMAL}\n"
+    fi
+
+    return 0
 }
 
 

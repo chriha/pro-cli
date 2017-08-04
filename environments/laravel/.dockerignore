@@ -1,0 +1,6 @@
+.git/
+src/node_modules/
+src/storage/*
+src/_ide_helper.php
+data/
+scripts/

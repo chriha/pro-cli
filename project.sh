@@ -39,6 +39,12 @@ if [ "$1" == "init" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
+# sync directory structure with pro-cli
+elif [ "$1" == "sync" ]; then
+    sync_structure
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # get and set config settings
 elif [ "$1" == "config" ]; then
     shift

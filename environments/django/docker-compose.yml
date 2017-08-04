@@ -1,0 +1,68 @@
+version: '2'
+
+services:
+  web:
+    image: chriha/django:1.11-latest
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "${APP_PORT}:80"
+    networks:
+      - default
+    links:
+      - db
+      - redis
+      - rabbit
+      - mailcatcher
+    env_file:
+      - ./src/.env
+  db:
+    image: postgres:9.4
+    restart: always
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      DB_ROOT_PASSWORD: "${DB_ROOT_PASS}"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASS}"
+      DB_DATABASE: "${DB_NAME}"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql
+    networks:
+      - default
+  yarn:
+    image: kkarczmarczyk/node-yarn
+    volumes:
+      - ./src:/var/www
+  node:
+    image: chriha/node:7.2-latest
+    volumes:
+      - ./src:/var/www
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - default
+    command: redis-server --requirepass "${REDIS_PASS}"
+  rabbit:
+    image: rabbitmq:3.6-management
+    volumes:
+      - ./data/rabbit:/var/lib/rabbitmq@rabbit
+    networks:
+      - default
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASS}"
+    ports:
+      - "15672:15672"
+  mailcatcher:
+    image: chriha/mailcatcher:0.6-latest
+    networks:
+      - default
+    ports:
+      - "${MAILCATCHER_PORT}:1080"
+
+networks:
+  default:
+    driver: "bridge"
