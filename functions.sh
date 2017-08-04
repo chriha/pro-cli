@@ -258,3 +258,46 @@ EOF
         ;;
     esac
 }
+
+update_completions() {
+    if [ ! -d "${PC_DIR}/completions" ]; then
+        mkdir $PC_DIR/completions
+    fi
+
+    echo "#compdef project
+
+    _project() {
+        local -a commands
+            commands=(
+            'config:Read and write local config settings.'
+            'init:Setup default project structure in the specified directory.'
+            'list:List all projects.'
+            'open:Open a project in a new tab.'
+            'self-update:Update pro-cli manually.'
+            'sync:Sync directory structure with pro-cli.'
+            'compose:Run docker-compose commands.'
+            'down:Stop and remove all docker containers.'
+            'logs:Show logs of all or the specified service.'
+            'run:Run a service and execute following commands.'
+            'start:Start the specified service. Created containers expected.'
+            'status:List all service containers and show their status.'
+            'stop:Stop all or just the specified service.'
+            'top:Display a live stream of container(s) resource usage statistics.'
+            'up:Start all docker containers and application.'
+            'composer:Run composer commands.'
+            'test:Run Unit Tests.'
+            'artisan:Run artisan commands.'
+            'tinker:Interact with your application.'
+            'npm:Run npm commands.'
+            'yarn:Run yarn commands.'
+        )
+
+        if (( CURRENT == 2 )); then
+            _describe -t commands 'commands' commands
+        fi
+
+        return 0
+    }
+
+    _project" > $PC_DIR/completions/_project
+}

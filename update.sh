@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# update completions
+update_completions
+
 PC_VERSION_OLD=$(cd $PC_DIR && git describe --tags)
 PC_VERSION_NEW=$(cd $PC_DIR && git fetch -q && git describe --tags `git rev-list --tags --max-count=1`)
 

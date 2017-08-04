@@ -5,7 +5,7 @@ pro-cli is your local little environment manager. You can:
 - quickly switch between projects that you worked on
 - use the same project structure in **every** project
 - initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
-- install projects with a single command by using your own [comands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
+- install projects with a single command by using your own [commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - every developer is using the exact same environment and tools
 - no need to install multiple versions for each tool on your host
 - reduce amount of necessary commands for each developer
