@@ -19,6 +19,7 @@ See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 - [Install](#install)
   - [Dependencies](#dependencies)
   - [Install pro-cli](#install-pro-cli)
+  - [Completions](#completions)
 - [Update](#update)
 - [Uninstall](#uninstall)
 - [Configuration](#configuration)
@@ -36,6 +37,16 @@ git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-
 ```
 
 Reload your shell and use the `project` command with all its beauty.
+
+
+### Completions
+ To use the zsh completions, add the following to your `~/.zshrc`:
+ ```bash
+ fpath=($HOME/.pro-cli/completions $fpath)
+
+ autoload -U compinit
+ compinit
+ ```
 
 
 ## Update
