@@ -11,7 +11,7 @@ help() {
     printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
-    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write local config settings.${NORMAL}\n"
+    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"
     printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
     printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
@@ -24,6 +24,7 @@ help() {
         printf "DOCKER COMMANDS:\n"
         printf "    ${BLUE}compose${NORMAL}${SPACE:7}Run docker-compose commands.\n"
         printf "    ${BLUE}down${NORMAL}${SPACE:4}Stop ${YELLOW}and remove${NORMAL} all docker containers.\n"
+        printf "    ${BLUE}exec${NORMAL}${SPACE:4}Run a command in the specified service.\n"
         printf "    ${BLUE}logs${NORMAL}${SPACE:4}Show logs of all or the specified service.\n"
         printf "    ${BLUE}run${NORMAL}${SPACE:3}Run a service and execute following commands.\n"
         printf "    ${BLUE}start${NORMAL}${SPACE:5}Start the specified service. ${YELLOW}Created containers expected.${NORMAL}\n"
@@ -115,7 +116,7 @@ init_project() {
 # synchronize project structure
 # project sync
 sync_structure() {
-    if [ -d $PC_DIR/environments/ ]; then
+    if [ -d $PC_DIR/environments/ ] && [ ! -z "${PC_TYPE}" ]; then
         cp -ir "${PC_DIR}/environments/${PC_TYPE}/" $WDIR
     else
         printf "${RED}Unsupported project type!${NORMAL}\n"

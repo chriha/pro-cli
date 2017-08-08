@@ -71,6 +71,19 @@ elif [ "$1" == "compose" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
+# run a command in the specified container
+elif [ "$1" == "exec" ]; then
+    shift
+
+    if [ -z "$1" ]; then
+        printf "${RED}No service specified.${NORMAL}\n"
+    fi
+
+    $COMPOSE exec $@
+
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # run a service and execute further commands
 elif [ "$1" == "run" ]; then
     shift
