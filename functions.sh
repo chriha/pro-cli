@@ -11,7 +11,7 @@ help() {
     printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
-    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write local config settings.${NORMAL}\n"
+    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"
     printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
     printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
