@@ -115,7 +115,7 @@ init_project() {
 # synchronize project structure
 # project sync
 sync_structure() {
-    if [ -d $PC_DIR/environments/ ]; then
+    if [ -d $PC_DIR/environments/ ] && [ ! -z "${PC_TYPE}" ]; then
         cp -ir "${PC_DIR}/environments/${PC_TYPE}/" $WDIR
     else
         printf "${RED}Unsupported project type!${NORMAL}\n"
