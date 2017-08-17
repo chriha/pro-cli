@@ -64,6 +64,12 @@ elif [ "$1" == "down" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
+# restart by using down & up commands
+elif [ "$1" == "restart" ]; then
+    project down && project up
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # run docker-compose commands
 elif [ "$1" == "compose" ]; then
     shift
