@@ -23,6 +23,7 @@ See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 - [Update](#update)
 - [Uninstall](#uninstall)
 - [Configuration](#configuration)
+- [Usage](#usage)
 
 
 ## Install
@@ -63,3 +64,42 @@ rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
 ## Configuration
 Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change to your needs. Add whole installation processes or single commands.
 
+
+## Usage
+The most used commands while working with *pro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the application root (src/.), no matter from where you run the `project` command on your host.
+
+### Initalize a new project
+```shell
+project init FOLDER --type=laravel|php|nodejs
+```
+
+### Start and stop environment and its services
+```shell
+project up
+project down
+project restart
+```
+
+### Run any service specific command
+```shell
+# for the web service
+project artisan|tinker|composer|...
+# for the npm service
+project npm install|run|...
+```
+
+### Show service status and resource statistics
+```shell
+project status
+project top
+```
+
+### Open / tail logs
+```shell
+project logs SERVICE
+```
+
+### Using bash inside a container / service
+```shell
+project compose exec SERVICE bash
+```
