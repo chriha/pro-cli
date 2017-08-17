@@ -29,6 +29,7 @@ See the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 ## Install
 ### Dependencies
 - The amazing [jq](https://stedolan.github.io/jq/) -> [download](https://stedolan.github.io/jq/download/)
+- [Docker](https://docs.docker.com/engine/installation/)
 
 
 ### Install pro-cli
