@@ -280,6 +280,7 @@ update_completions() {
             'compose:Run docker-compose commands.'
             'down:Stop and remove all docker containers.'
             'logs:Show logs of all or the specified service.'
+            'restart:Shut down the environment and bring it up again.'
             'run:Run a service and execute following commands.'
             'start:Start the specified service. Created containers expected.'
             'status:List all service containers and show their status.'
