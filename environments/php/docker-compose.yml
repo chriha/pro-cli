@@ -62,6 +62,14 @@ services:
       - default
     ports:
       - "${MAILCATCHER_PORT}:1080"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "${MYADMIN_PORT}:80"
+    networks:
+      - def_network
+    links:
+      - db
 
 networks:
   default:
