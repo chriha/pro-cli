@@ -67,7 +67,7 @@ services:
     ports:
       - "${MYADMIN_PORT}:80"
     networks:
-      - def_network
+      - default
     links:
       - db
 
