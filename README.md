@@ -7,6 +7,7 @@ pro-cli is your local little environment manager. You can:
 - initialize and start whole environments (web server, database, caching server, mail server, RabbitMQ, etc.) in seconds
 - install projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - every developer is using the exact same environment and tools
+- temporarily publish the application securely to the internet (ngrok required)
 - no need to install and manage multiple versions for each PHP, NPM, MySQL, etc. on your host
 - reduce amount of necessary commands for each developer
 - simple access to log files; tail and concat all or just specific services
@@ -67,7 +68,7 @@ Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you 
 
 
 ## Usage
-The most used commands while working with *pro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the application root (src/.), no matter from where you run the `project` command on your host.
+The most used commands while working with *zro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the application root (src/.), no matter from where you run the `project` command on your host.
 
 ### Initalize a new project
 ```shell
@@ -87,6 +88,11 @@ project restart
 project artisan|tinker|composer|...
 # for the npm service
 project npm install|run|...
+```
+
+### Expose your local server securely to the internet
+```shell
+project publish
 ```
 
 ### Show service status and resource statistics
