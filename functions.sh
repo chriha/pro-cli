@@ -273,6 +273,7 @@ update_completions() {
         local -a commands
             commands=(
             'config:Read and write local config settings.'
+            'expose:Temporarily expose the application (ngrok required).'
             'init:Setup default project structure in the specified directory.'
             'list:List all projects.'
             'open:Open a project in a new tab.'
@@ -281,7 +282,6 @@ update_completions() {
             'compose:Run docker-compose commands.'
             'down:Stop and remove all docker containers.'
             'logs:Show logs of all or the specified service.'
-            'expose:Temporarily expose the application (ngrok required).'
             'restart:Shut down the environment and bring it up again.'
             'run:Run a service and execute following commands.'
             'start:Start the specified service. Created containers expected.'
