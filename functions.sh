@@ -17,6 +17,7 @@ help() {
     printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
     printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
     printf "    ${BLUE}sync${NORMAL}${SPACE:4}Sync directory structure with pro-cli.\n"
+    printf "    ${BLUE}publish${NORMAL}${SPACE:7}Temporarily publish the application (ngrok required).\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
@@ -280,6 +281,7 @@ update_completions() {
             'compose:Run docker-compose commands.'
             'down:Stop and remove all docker containers.'
             'logs:Show logs of all or the specified service.'
+            'publish:Temporarily publish the application (ngrok required).'
             'restart:Shut down the environment and bring it up again.'
             'run:Run a service and execute following commands.'
             'start:Start the specified service. Created containers expected.'

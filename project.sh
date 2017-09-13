@@ -99,6 +99,26 @@ elif [ "$1" == "open" ]; then
     fi
 
     exit
+
+
+# # # # # # # # # # # # # # # # # # # #
+# project publish
+elif [ "$1" == "publish" ]; then
+    if ! ngrok -v &> /dev/null; then
+        printf "${RED}No ngrok installed.${NORMAL} Please go to https://ngrok.com/ and install the latest version.\n"
+        exit
+    fi
+
+    PC_PORT=$(cat $WDIR/.env | grep APP_PORT | sed -e 's/APP_PORT=\(.*\)/\1/')
+
+    if [[ -z "$PC_PORT" ]]; then
+        printf "${YELLOW}No port specified in '.env'${NORMAL}\n"
+        exit
+    fi
+
+    project up
+    ngrok http $PC_PORT
+    exit
 fi
 
 
