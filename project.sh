@@ -113,10 +113,15 @@ elif [ "$1" == "expose" ]; then
         exit
     fi
 
+    if [[ ! -f $WDIR/.env ]]; then
+        printf "${RED}.env is missing.${NORMAL} Are you inside of a project?\n"
+        exit
+    fi
+
     PC_PORT=$(cat $WDIR/.env | grep APP_PORT | sed -e 's/APP_PORT=\(.*\)/\1/')
 
     if [[ -z "$PC_PORT" ]]; then
-        printf "${YELLOW}No port specified in '.env'${NORMAL}\n"
+        printf "${YELLOW}No port specified in .env${NORMAL}\n"
         exit
     fi
 

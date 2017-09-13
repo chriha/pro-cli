@@ -12,12 +12,12 @@ help() {
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
     printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"
+    printf "    ${BLUE}expose${NORMAL}${SPACE:6}Temporarily expose the application (ngrok required).\n"
     printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
     printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
     printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
     printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
     printf "    ${BLUE}sync${NORMAL}${SPACE:4}Sync directory structure with pro-cli.\n"
-    printf "    ${BLUE}expose${NORMAL}${SPACE:6}Temporarily expose the application (ngrok required).\n"
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
