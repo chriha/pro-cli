@@ -4,10 +4,10 @@ pro-cli is your local little environment manager. You can:
 
 - switch between projects that you worked on with a single command
 - use (force) the same project structure in **every** project
-- initialize and start whole environments (web server, database, caching server, mail server, RabbitMQ, etc.) in seconds
+- initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
 - install projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - every developer is using the exact same environment and tools
-- temporarily publish the application securely to the internet (ngrok required)
+- temporarily expose the application securely to the internet (ngrok required)
 - no need to install and manage multiple versions for each PHP, NPM, MySQL, etc. on your host
 - reduce amount of necessary commands for each developer
 - simple access to log files; tail and concat all or just specific services
@@ -92,7 +92,7 @@ project npm install|run|...
 
 ### Expose your local server securely to the internet
 ```shell
-project publish
+project expose
 ```
 
 ### Show service status and resource statistics

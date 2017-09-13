@@ -102,8 +102,8 @@ elif [ "$1" == "open" ]; then
 
 
 # # # # # # # # # # # # # # # # # # # #
-# project publish
-elif [ "$1" == "publish" ]; then
+# project expose
+elif [ "$1" == "expose" ]; then
     if ! ngrok -v &> /dev/null; then
         printf "${RED}No ngrok installed.${NORMAL} Please go to https://ngrok.com/ and install the latest version.\n"
         exit
