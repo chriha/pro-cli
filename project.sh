@@ -12,9 +12,9 @@ reset_output
 if [ "$PC_VERSION" != "$PC_VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
     touch $ASKED_FILE
     printf "${YELLOW}New version available: ${BOLD}${PC_VERSION_NEW}-beta${NORMAL}\n"
-    read -p "Would you like to update pro-cli now? [yes|no]: " ANSWER
+    read -p "Would you like to update pro-cli now? [y|n]: " ANSWER
 
-    if [ "$ANSWER" == "yes" ] || [ -z "$ANSWER" ]; then
+    if [ "$ANSWER" != "n" ]; then
         printf "\n"
         . $PC_DIR/update.sh
         exit
