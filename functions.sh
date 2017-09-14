@@ -111,6 +111,7 @@ init_project() {
     mkdir -p $DIR
 
     cp -r "${PC_DIR}/environments/${TYPE}/" $DIR
+    cp $DIR/.env.example $DIR/.env
 }
 
 
