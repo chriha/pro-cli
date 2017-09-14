@@ -61,4 +61,4 @@ printf "${NORMAL}\n"
 # fetch latest version
 PC_VERSION=$( cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1` )
 
-printf "${BLUE}Yessss! pro-cli has been installed and is now on version ${BOLD}v${PC_VERSION}-beta${NORMAL}.\n\n"
+printf "${BLUE}Yessss! pro-cli has been installed and is now on version ${BOLD}v${PC_VERSION}${NORMAL}.\n\n"

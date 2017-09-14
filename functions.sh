@@ -8,7 +8,7 @@ help() {
     # spaces until the commands descriptions starts
     SPACE="                      "
 
-    printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}-beta${NORMAL}\n"
+    printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}${NORMAL}\n"
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
     printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"

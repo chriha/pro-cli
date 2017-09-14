@@ -9,7 +9,7 @@ PC_VERSION_NEW=$(cd $PC_DIR && git fetch -q && git describe --tags `git rev-list
 # # # # # # # # # # # # # # # # # # # #
 # latest version already installed
 if [ "$PC_VERSION_OLD" == "$PC_VERSION_NEW" ]; then
-    printf "${CLEAR_LINE}${GREEN}You have the latest version: ${BOLD}${PC_VERSION_OLD}-beta${NORMAL}\n"
+    printf "${CLEAR_LINE}${GREEN}You have the latest version: ${BOLD}${PC_VERSION_OLD}${NORMAL}\n"
     exit
 fi
 
@@ -32,7 +32,7 @@ if [ "$PC_VERSION_NEW" == "$current" ]; then
     printf '%s\n' '  \/_/     \/_/ /_/   \/_____/   \/_____/   \/_____/   \/_/'
     printf "${NORMAL}\n"
 
-    printf "${BLUE}Yessss! pro-cli has been updated and is now on version ${BOLD}v${PC_VERSION_NEW}-beta${NORMAL}\n"
+    printf "${BLUE}Yessss! pro-cli has been updated and is now on version ${BOLD}v${PC_VERSION_NEW}${NORMAL}\n"
     PC_CHANGES=$(git log --pretty=oneline --abbrev-commit $PC_VERSION_OLD..$PC_VERSION_NEW)
 
     printf "\n"

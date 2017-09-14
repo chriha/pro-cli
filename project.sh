@@ -15,7 +15,7 @@ fi
 # show new version info if available
 if [ "$PC_VERSION" != "$PC_VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
     touch $ASKED_FILE
-    printf "${YELLOW}New version available: ${BOLD}${PC_VERSION_NEW}-beta${NORMAL}\n"
+    printf "${YELLOW}New version available: ${BOLD}${PC_VERSION_NEW}${NORMAL}\n"
     read -p "Would you like to update pro-cli now? [y|n]: " ANSWER
 
     if [ "$ANSWER" != "n" ]; then
