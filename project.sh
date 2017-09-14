@@ -158,22 +158,4 @@ if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ] && [[ $(cat $WDIR/$PC_CONF_FILE |
 fi
 
 
-# # # # # # # # # # # # # # # # # # # #
-# still providing "project install" because we
-# don't want to brake pro-cli.json from previous versions
-if [ "$1" == "install" ] && [[ $(cat $WDIR/$PC_CONF_FILE | jq -crM '.install') != "null" ]]; then
-    PC_INSTALL=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.install | .[]' | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
-
-    if [ -z "$PC_INSTALL" ]; then
-        exit
-    fi
-
-    printf "${YELLOW}Installing project ...${NORMAL}\n"
-
-    eval $PC_INSTALL
-
-    printf "${GREEN}Application installed!${NORMAL}\n"
-    exit
-fi
-
 printf "${YELLOW}Command not found ¯\_(ツ)_/¯${NORMAL}\n"
