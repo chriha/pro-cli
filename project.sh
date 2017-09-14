@@ -125,8 +125,10 @@ elif [ "$1" == "expose" ]; then
         exit
     fi
 
+    shift
+
     project up
-    ngrok http $PC_PORT
+    ngrok http $PC_PORT $@
     exit
 fi
 
