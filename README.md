@@ -72,7 +72,7 @@ The most used commands while working with *pro-cli*. Remember, every command tha
 
 ### Initalize a new project
 ```shell
-project init FOLDER --type=laravel|php|nodejs
+project init FOLDER --type=laravel|php|nodejs|django
 ```
 
 ### Start and stop environment and its services
