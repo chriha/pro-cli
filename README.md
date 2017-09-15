@@ -1,14 +1,14 @@
 # pro-cli
-- switch between projects that you worked on with a single command
-- use (force) the same project structure in **every** project
-- reduce amount of necessary commands for each developer
 - initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
 - install projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
-- every developer is using the exact same environment and tools
 - temporarily expose the application securely to the internet (ngrok required)
+- reduce amount of necessary commands for each developer
+- use the `project` command everywhere in your project, not only in your root directory
+- every developer is using the exact same environment and tools
+- use (force) the same project structure in **every** project
 - no need to install and manage multiple versions for each PHP, NPM, MySQL, etc. on your host
 - simple access to log files; tail and concat all or just specific services
-- use the `project` command everywhere in your project, not only in your root directory
+- switch between projects that you worked on with a single command
 
 See how you can [use it](#usage) or take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 
@@ -92,6 +92,7 @@ project npm install|run|...
 ngrok needs to be installed in one of your `bin` folders
 ```shell
 project expose
+project expose --auth='user:password'
 ```
 
 ### Show service status and resource statistics
