@@ -1,7 +1,7 @@
 # pro-cli
 - initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
 - install projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
-- temporarily expose the application securely to the internet (ngrok required)
+- temporarily [expose](#expose-your-local-server-securely-to-the-internet) the application securely to the internet (ngrok required)
 - reduce amount of necessary commands for each developer
 - use the `project` command everywhere in your project, not only in your root directory
 - every developer is using the exact same environment and tools
@@ -17,10 +17,10 @@ See how you can [use it](#usage) or take a look at the [wiki](https://github.com
 - [Install](#install)
   - [Dependencies](#dependencies)
   - [Install pro-cli](#install-pro-cli)
+  - [Configuration](#configuration)
   - [Completions](#completions)
 - [Update](#update)
 - [Uninstall](#uninstall)
-- [Configuration](#configuration)
 - [Usage](#usage)
 
 
@@ -38,6 +38,10 @@ git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-
 ```
 
 Reload your shell and use the `project` command with all its beauty.
+
+
+### Configuration
+Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change to your needs. Add whole installation processes or single commands.
 
 
 ### Completions
@@ -61,11 +65,9 @@ rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
 ```
 
 
-## Configuration
-Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change to your needs. Add whole installation processes or single commands.
-
-
 ## Usage
+> **It's mandatory, that the project has the according directory structure and files in order for pro-cli work properly.** See environments for structure and files.
+
 The most used commands while working with *pro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the application root (src/.), no matter from where you run the `project` command on your host.
 
 ### Initalize a new project
