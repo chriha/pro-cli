@@ -53,6 +53,14 @@ help() {
     fi
 
     # # # # # # # # # # # # # # # # # # # #
+    # show PHP commands if the current project is of type laravel or PHP
+    if [[ -f $PC_CONF && ( $PC_TYPE == "django" || $PC_TYPE == "python" )]]; then
+        printf "DJANGO COMMANDS:\n"
+        printf "    ${BLUE}python${NORMAL}${SPACE:6}Run python commands.\n"
+        printf "    ${BLUE}django${NORMAL}${SPACE:11}Run django-admin commands.\n"
+    fi
+
+    # # # # # # # # # # # # # # # # # # # #
     # show npm commands help if package.json exists
     if [ -f $PC_NPM_CONFIG ]; then
         printf "NODE COMMANDS:\n"
@@ -87,7 +95,7 @@ help() {
 init_project() {
     local TYPE="laravel"
     # supported types
-    local TYPES=("php laravel nodejs")
+    local TYPES=("php laravel nodejs django")
     local DIR=$1
 
     shift
