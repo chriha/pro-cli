@@ -41,6 +41,7 @@ help() {
     if [[ -f $PC_CONF && ( $PC_TYPE == "laravel" || $PC_TYPE == "php" )]]; then
         printf "PHP COMMANDS:\n"
         printf "    ${BLUE}composer${NORMAL}${SPACE:8}Run composer commands.\n"
+        printf "    ${BLUE}php${NORMAL}${SPACE:3}Run PHP commands.\n"
         printf "    ${BLUE}test${NORMAL}${SPACE:4}Run Unit Tests.\n"
     fi
 
@@ -302,6 +303,7 @@ update_completions() {
             'composer:Run composer commands.'
             'test:Run Unit Tests.'
             'artisan:Run artisan commands.'
+            'php:Run PHP commands.'
             'tinker:Interact with your application.'
             'npm:Run npm commands.'
             'yarn:Run yarn commands.'
