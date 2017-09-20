@@ -2,7 +2,7 @@ version: '2'
 
 services:
   web:
-    image: chriha/django:1.11
+    image: chriha/web:django1.11
     volumes:
       - ./src:/var/www
     ports:
