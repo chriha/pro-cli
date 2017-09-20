@@ -57,7 +57,8 @@ help() {
     if [[ -f $PC_CONF && ( $PC_TYPE == "django" || $PC_TYPE == "python" )]]; then
         printf "DJANGO COMMANDS:\n"
         printf "    ${BLUE}python${NORMAL}${SPACE:6}Run python commands.\n"
-        printf "    ${BLUE}django${NORMAL}${SPACE:11}Run django-admin commands.\n"
+        printf "    ${BLUE}django${NORMAL}${SPACE:11}Run application specific django commands.\n"
+        printf "    ${BLUE}django-admin${NORMAL}${SPACE:17}Run django-admin commands.\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
@@ -304,6 +305,9 @@ update_completions() {
             'tinker:Interact with your application.'
             'npm:Run npm commands.'
             'yarn:Run yarn commands.'
+            'python:Run python commands.'
+            'django:Run application specific django commands.'
+            'django-admin:Run django-admin commands.'
         )
 
         if (( CURRENT == 2 )); then
