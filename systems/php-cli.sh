@@ -8,11 +8,19 @@ if [ "$1" == "composer" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
+# run php commands
+elif [ "$1" == "php" ]; then
+    shift
+
+    $RUN web php $@
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # run tests
 elif [ "$1" == "test" ]; then
     shift
-    
-    if [ ! -d "./vendor" ]; then
+
+    if [ ! -d "./src/vendor" ]; then
         printf "${RED}Vendors not installed. Please run ${BOLD}$0 composer install${RED} first!${NORMAL}\n"
         exit
     fi

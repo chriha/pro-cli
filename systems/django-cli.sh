@@ -9,9 +9,16 @@ if [ "$1" == "python" ]; then
 
 # # # # # # # # # # # # # # # # # # # #
 # execute django-admin commands
-elif [ "$1" == "django" ]; then
+elif [ "$1" == "django-admin" ]; then
     shift
     $RUN web django-admin $@
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
+# execute django commands
+elif [ "$1" == "django" ]; then
+    shift
+    $RUN web python manage.py $@
     exit
 
 fi
