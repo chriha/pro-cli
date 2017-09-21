@@ -43,7 +43,10 @@ Reload your shell and use the `project` command with all its beauty.
 
 
 ### Configuration
-Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change to your needs. Add whole installation processes or single commands.
+Every pro-cli project has its own [`pro-cli.json`](pro-cli.json) file which you can change
+to your needs. Add whole installation processes or single commands. The `docker-compose.yml`
+is the default configuration for the services and should not be overwritten. Instead you
+should create your own `docker-compose.local.yml`, which can extend the default.
 
 
 ### Completions
@@ -70,7 +73,7 @@ rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
 ## Usage
 > **It's mandatory, that the project has the according directory structure and files in order for pro-cli to work properly.** See `environments` directory for structure and files.
 
-The most used commands while working with *pro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the application root (src/.), no matter from where you run the `project` command on your host.
+The most used commands while working with *pro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the **application root** (`src/.`), no matter from where you run the `project` command on your host.
 
 ### Initalize a new project
 ```shell
@@ -95,8 +98,7 @@ project npm install|run|...
 ### Expose your local server securely to the internet
 ngrok needs to be installed in one of your `bin` folders of your host.
 ```shell
-project expose
-project expose --auth='user:password'
+project expose [--auth='user:password']
 ```
 
 ### Show service status and resource statistics
@@ -112,5 +114,5 @@ project logs SERVICE
 
 ### Using bash inside a container / service
 ```shell
-project compose exec SERVICE bash
+project exec SERVICE bash
 ```
