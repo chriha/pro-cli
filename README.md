@@ -68,7 +68,7 @@ rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
 
 
 ## Usage
-> **It's mandatory, that the project has the according directory structure and files in order for pro-cli work properly.** See environments for structure and files.
+> **It's mandatory, that the project has the according directory structure and files in order for pro-cli to work properly.** See environments for structure and files.
 
 The most used commands while working with *pro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the application root (src/.), no matter from where you run the `project` command on your host.
 
