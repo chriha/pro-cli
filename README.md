@@ -1,6 +1,6 @@
 # pro-cli
 - initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
-- install projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
+- install even complex projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - temporarily [expose](#expose-your-local-server-securely-to-the-internet) the application securely to the internet (ngrok required)
 - reduce amount of necessary commands for each developer
 - use the `project` command everywhere in your project, not only in your root directory
@@ -68,7 +68,7 @@ rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
 
 
 ## Usage
-> **It's mandatory, that the project has the according directory structure and files in order for pro-cli to work properly.** See environments for structure and files.
+> **It's mandatory, that the project has the according directory structure and files in order for pro-cli to work properly.** See `environments` directory for structure and files.
 
 The most used commands while working with *pro-cli*. Remember, every command that is executed inside of a container / service, will be executed in the application root (src/.), no matter from where you run the `project` command on your host.
 
@@ -93,7 +93,7 @@ project npm install|run|...
 ```
 
 ### Expose your local server securely to the internet
-ngrok needs to be installed in one of your `bin` folders
+ngrok needs to be installed in one of your `bin` folders of your host.
 ```shell
 project expose
 project expose --auth='user:password'
