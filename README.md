@@ -34,11 +34,10 @@ See how you can [use it](#usage) or take a look at the [wiki](https://github.com
 
 
 ### Install pro-cli
-After installing *jq* via `brew install jq`, please install pro-cli via:
+After you installed all [dependencies](#dependencies):
 ```bash
 git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-cli/setup.sh
 ```
-
 Reload your shell and use the `project` command with all its beauty.
 
 
