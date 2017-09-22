@@ -3,6 +3,11 @@
 # # # # # # # # # # # # # # # # # # # #
 # execute artisan commands
 if [ "$1" == "artisan" ]; then
+    if ( needs_help $@ ); then
+        printf "${YELLOW}usage:${NORMAL} project artisan [command] [options]\n\n"
+        exit
+    fi
+
     shift
     $RUN web php artisan $@ 2> $OUTPUT_FILE
     exit

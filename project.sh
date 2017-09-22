@@ -34,12 +34,19 @@ if [ $# -eq 0 ] || [ "$1" == "help" ]; then
 fi
 
 # # # # # # # # # # # # # # # # # # # #
-# project init [path] [--type=TYPE]
+# project init [directory] [--type=TYPE]
 if [ "$1" == "init" ]; then
+    if ( needs_help $@ ); then
+        printf "${YELLOW}usage:${NORMAL} project init [directory] [options]\n\n"
+        printf "OPTIONS:\n"
+        printf "    ${BLUE}--type[=php]${NORMAL}${PC_HELP_SPACE:12}Specifiy the type of the project (php, laravel, nodejs, django).${NORMAL}\n"
+        exit
+    fi
+
     shift
-    printf "Initializing project files ...\n"
+    printf "Initializing project files ... "
     init_project $@
-    printf "${GREEN}DONE!${NORMAL}\n"
+    printf "${GREEN}done!${NORMAL}\n"
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -94,6 +101,11 @@ elif [ "$1" == "list" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # project open PROJECT_NAME
 elif [ "$1" == "open" ]; then
+    if ( needs_help $@ ); then
+        printf "${YELLOW}usage:${NORMAL} project open [project]\n\n"
+        exit
+    fi
+
     PC_OPEN=$(cat $PC_BASE_CONF | jq -r --arg VAL "$2" '.projects[$VAL]')
 
     if [ -z "$PC_OPEN" ]; then
@@ -108,6 +120,13 @@ elif [ "$1" == "open" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # project expose
 elif [ "$1" == "expose" ]; then
+    if ( needs_help $@ ); then
+        printf "${YELLOW}usage:${NORMAL} project expose [options]\n\n"
+        printf "OPTIONS:\n"
+        printf "    ${BLUE}--auth='user:password'${NORMAL}${PC_HELP_SPACE:22}Secure the application with basic auth.${NORMAL}\n"
+        exit
+    fi
+
     if ! ngrok -v &> /dev/null; then
         printf "${RED}No ngrok installed.${NORMAL} Please go to https://ngrok.com/ and install the latest version.\n"
         exit

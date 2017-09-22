@@ -10,6 +10,11 @@ if [ "$1" == "python" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # execute django-admin commands
 elif [ "$1" == "django-admin" ]; then
+    if ( needs_help $@ ); then
+        printf "${YELLOW}usage:${NORMAL} project django-admin [command]\n\n"
+        exit
+    fi
+
     shift
     $RUN web django-admin $@
     exit
@@ -17,6 +22,11 @@ elif [ "$1" == "django-admin" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # execute django commands
 elif [ "$1" == "django" ]; then
+    if ( needs_help $@ ); then
+        printf "${YELLOW}usage:${NORMAL} project django [command]\n\n"
+        exit
+    fi
+
     shift
     $RUN web python manage.py $@
     exit

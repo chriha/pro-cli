@@ -40,6 +40,7 @@ PC_CONF="$WDIR/$PC_CONF_FILE"
 OUTPUT_FILE=$PC_DIR/output.log
 ASKED_FILE=$PC_DIR/asked
 PC_PROJECT_NAME=${PWD##*/}
+PC_HELP_SPACE="                          "
 
 
 # create base config if it doesn't exist

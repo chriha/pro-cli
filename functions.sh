@@ -6,7 +6,7 @@ help() {
     # path to local node_modules
     PC_NPM_CONFIG="$WDIR/src/package.json"
     # spaces until the commands descriptions starts
-    SPACE="                      "
+    SPACE=$PC_HELP_SPACE
 
     printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}${NORMAL}\n"
     printf "help: project [command]\n\n"
@@ -122,6 +122,17 @@ init_project() {
 
     cp -r "${PC_DIR}/environments/${TYPE}/" $DIR
     cp $DIR/.env.example $DIR/.env && touch $DIR/src/.env
+}
+
+needs_help() {
+    # check for available parameters 
+    for i in "$@"; do
+        if [ $i == "-h" ]; then
+            return 0
+        fi
+    done
+
+    return 1
 }
 
 
