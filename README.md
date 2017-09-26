@@ -15,6 +15,8 @@ See how you can [use it](#usage), take a look at the [wiki](https://github.com/c
 
 [![asciicast](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA.png)](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA)
 
+> Supported project types: PHP (Laravel), Django, NodeJS
+
 
 ## TOC
 - [Install](#install)
