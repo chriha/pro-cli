@@ -12,7 +12,7 @@
 
 See how you can [use it](#usage) or take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
 
-[![asciicast](https://asciinema.org/a/Qgj887DdVZDe1Awj3IBjYffWc.png)](https://asciinema.org/a/Qgj887DdVZDe1Awj3IBjYffWc)
+[![asciicast](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA.png)](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA)
 
 
 ## TOC
