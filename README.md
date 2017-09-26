@@ -1,5 +1,6 @@
 # pro-cli
 - initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
+- specify the services depending on your projects needs in your own `docker-compose.local.yml`
 - install even complex projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - temporarily [expose](#expose-your-local-server-securely-to-the-internet) the application securely to the internet (ngrok required)
 - reduce amount of necessary commands for each developer
@@ -10,7 +11,7 @@
 - simple access to log files; tail and concat all or just specific services
 - switch between projects that you worked on with a single command
 
-See how you can [use it](#usage) or take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help.
+See how you can [use it](#usage), take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help or play around with the [pro-cli-example](https://github.com/chriha/pro-cli-example) project.
 
 [![asciicast](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA.png)](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA)
 
