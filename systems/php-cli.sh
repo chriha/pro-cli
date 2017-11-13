@@ -4,7 +4,7 @@
 # execute composer commands
 if [ "$1" == "composer" ]; then
     shift
-    $RUN web composer $@
+    $RUN -v "$(pwd)/temp/composer":"/.composer" web composer $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #

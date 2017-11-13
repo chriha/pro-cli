@@ -15,7 +15,7 @@ if [ ! -z "$BUILD_NUMBER" ]; then
 fi
 
 readonly COMPOSE="docker-compose -f docker-compose$PC_COMPOSE_ENV.yml"
-readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
+readonly RUN="$COMPOSE run -u $(id -u):$(id -g) --rm $TTY -w /var/www"
 
 # # # # # # # # # # # # # # # # # # # #
 # show all containers status
