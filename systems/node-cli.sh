@@ -11,7 +11,7 @@ if [ "$1" == "npm" ]; then
     fi
 
     shift
-    $RUN node npm $@
+    $RUN $PC_USER_PARAM node npm $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #

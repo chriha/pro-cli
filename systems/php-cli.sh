@@ -4,7 +4,7 @@
 # execute composer commands
 if [ "$1" == "composer" ]; then
     shift
-    $RUN -v "$(pwd)/temp/composer":"/.composer" web composer $@
+    $RUN $PC_USER_PARAM -v "$(pwd)/temp/composer":"/.composer" web composer $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -12,7 +12,7 @@ if [ "$1" == "composer" ]; then
 elif [ "$1" == "php" ]; then
     shift
 
-    $RUN web php $@
+    $RUN $PC_USER_PARAM web php $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -25,7 +25,7 @@ elif [ "$1" == "test" ]; then
         exit
     fi
 
-    $RUN web ./vendor/bin/phpunit $@
+    $RUN $PC_USER_PARAM web ./vendor/bin/phpunit $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #

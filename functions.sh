@@ -153,11 +153,9 @@ sync_structure() {
 # # # # # # # # # # # # # # # # # # # #
 # get unix timestamp from file
 filemtime() {
-    local SYSTEM=$(uname -s)
-
     local TIMESTAMP=0
 
-    if [ "$SYSTEM" == "Darwin" ]; then
+    if [ "$PC_SYSTEM" == "Darwin" ]; then
         if stat -f %y $1 &> /dev/null; then
             local CHANGED=$(stat -f %m $1)
         elif php -v &> /dev/null; then

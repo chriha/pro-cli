@@ -14,8 +14,14 @@ if [ ! -z "$BUILD_NUMBER" ]; then
     TTY="-T"
 fi
 
+if [ "$PC_SYSTEM" == "Darwin" ]; then
+    PC_USER_PARAM=""
+else
+    PC_USER_PARAM="-u $PC_USER_ID:$PC_USER_GROUP_ID"
+fi
+
 readonly COMPOSE="docker-compose -f docker-compose$PC_COMPOSE_ENV.yml"
-readonly RUN="$COMPOSE run -u $(id -u):$(id -g) --rm $TTY -w /var/www"
+readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
 
 # # # # # # # # # # # # # # # # # # # #
 # show all containers status

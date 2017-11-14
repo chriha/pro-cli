@@ -9,12 +9,12 @@ if [ "$1" == "artisan" ]; then
     fi
 
     shift
-    $RUN web php artisan $@ 2> $OUTPUT_FILE
+    $RUN $PC_USER_PARAM web php artisan $@ 2> $OUTPUT_FILE
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # interact with the application
 elif [ "$1" == "tinker" ]; then
-    $RUN web php artisan tinker 2> $OUTPUT_FILE
+    $RUN $PC_USER_PARAM web php artisan tinker 2> $OUTPUT_FILE
     exit
 fi

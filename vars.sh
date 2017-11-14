@@ -12,6 +12,10 @@ else
     WDIR=$(pwd)
 fi
 
+PC_USER_ID=$(id -u)
+PC_USER_GROUP_ID=$(id -g)
+PC_SYSTEM=$(uname -s)
+
 # current pro-cli version
 PC_VERSION=$(cd $PC_DIR && git describe --tags)
 
