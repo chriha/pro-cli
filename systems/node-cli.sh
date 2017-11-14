@@ -11,13 +11,13 @@ if [ "$1" == "npm" ]; then
     fi
 
     shift
-    $RUN $PC_USER_PARAM node npm $@
+    $RUN $PC_USER_PARAM -v "$(pwd)/temp/npm":"/.npm" node npm $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # execute yarn commands
 elif [ "$1" == "yarn" ]; then
     shift
-    $RUN yarn yarn $@
+    $RUN -v "$(pwd)/temp/yarn":"/.yarn" yarn yarn $@
     exit
 fi
