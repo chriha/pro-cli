@@ -28,8 +28,8 @@ fi
 PC_LATEST_FETCH=$(filemtime $PC_HEAD_FILE)
 
 # check for new version
-if [ $PC_LATEST_FETCH != 0 ] && [ $PC_LATEST_FETCH -gt 1800 ]; then
-    # only fetch every 30 minutes
+if [ $PC_LATEST_FETCH != 0 ] && [ $PC_LATEST_FETCH -gt 43200 ]; then
+    # only fetch every 12 hours
     PC_VERSION_NEW=$(cd $PC_DIR && git fetch -q && git describe --tags `git rev-list --tags --max-count=1`)
 elif [ $PC_LATEST_FETCH != 0 ]; then
     PC_VERSION_NEW=$(cd $PC_DIR && git describe --tags `git rev-list --tags --max-count=1`)
