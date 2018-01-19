@@ -21,6 +21,6 @@ elif [ "$1" == "tinker" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # execute laravel-echo-server commands
 elif [ "$1" == "echo" ]; then
-    $RUN $PC_USER_PARAM echo laravel-echo-server 2> $OUTPUT_FILE
+    $RUN $PC_USER_PARAM echo laravel-echo-server $@ 2> $OUTPUT_FILE
     exit
 fi
