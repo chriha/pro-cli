@@ -30,10 +30,6 @@ services:
       - ./temp/mysql:/var/lib/mysql
     networks:
       - default
-  yarn:
-    image: kkarczmarczyk/node-yarn
-    volumes:
-      - ./src:/var/www
   node:
     image: chriha/node:7.2-latest
     volumes:
@@ -70,6 +66,17 @@ services:
       - default
     links:
       - db
+  echo:
+    image: chriha/echo
+    volumes:
+      - ./conf/echo/laravel-echo-server.json:/var/www/laravel-echo-server.json
+    ports:
+      - "${ECHO_PORT}:6001"
+    networks:
+      - default
+    links:
+      - web
+      - redis
 
 networks:
   default:
