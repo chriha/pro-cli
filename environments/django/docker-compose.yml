@@ -44,7 +44,7 @@ services:
       - ./temp/redis:/data
     networks:
       - default
-    command: redis-server --requirepass "${REDIS_PASS}"
+    command: redis-server
   rabbit:
     image: rabbitmq:3.6-management
     volumes:
