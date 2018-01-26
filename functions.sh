@@ -59,8 +59,8 @@ help() {
     if [[ -f $PC_CONF && ( $PC_TYPE == "django" || $PC_TYPE == "python" )]]; then
         printf "DJANGO COMMANDS:\n"
         printf "    ${BLUE}python${NORMAL}${SPACE:6}Run python commands.\n"
-        printf "    ${BLUE}django${NORMAL}${SPACE:11}Run application specific django commands.\n"
-        printf "    ${BLUE}django-admin${NORMAL}${SPACE:17}Run django-admin commands.\n"
+        printf "    ${BLUE}django${NORMAL}${SPACE:6}Run application specific django commands.\n"
+        printf "    ${BLUE}django-admin${NORMAL}${SPACE:12}Run django-admin commands.\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
