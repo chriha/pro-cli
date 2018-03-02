@@ -38,7 +38,7 @@ help() {
 
     # # # # # # # # # # # # # # # # # # # #
     # show PHP commands if the current project is of type laravel or PHP
-    if [[ -f $PC_CONF && ( $PC_TYPE == "laravel" || $PC_TYPE == "php" )]]; then
+    if [[ -f "$PC_CONF" && ( $PC_TYPE == "laravel" || $PC_TYPE == "php" )]]; then
         printf "PHP COMMANDS:\n"
         printf "    ${BLUE}composer${NORMAL}${SPACE:8}Run composer commands.\n"
         printf "    ${BLUE}php${NORMAL}${SPACE:3}Run PHP commands.\n"
@@ -47,7 +47,7 @@ help() {
 
     # # # # # # # # # # # # # # # # # # # #
     # show Laravel commands if the current project is of type laravel
-    if [ -f $PC_CONF ] && [[ $PC_TYPE == "laravel" ]]; then
+    if [ -f "$PC_CONF" ] && [[ $PC_TYPE == "laravel" ]]; then
         printf "LARAVEL COMMANDS:\n"
         printf "    ${BLUE}artisan${NORMAL}${SPACE:7}Run artisan commands.\n"
         printf "    ${BLUE}echo${NORMAL}${SPACE:4}Execute commands for laravel-echo-server.\n"
@@ -56,7 +56,7 @@ help() {
 
     # # # # # # # # # # # # # # # # # # # #
     # show PHP commands if the current project is of type laravel or PHP
-    if [[ -f $PC_CONF && ( $PC_TYPE == "django" || $PC_TYPE == "python" )]]; then
+    if [[ -f "$PC_CONF" && ( $PC_TYPE == "django" || $PC_TYPE == "python" )]]; then
         printf "DJANGO COMMANDS:\n"
         printf "    ${BLUE}python${NORMAL}${SPACE:6}Run python commands.\n"
         printf "    ${BLUE}django${NORMAL}${SPACE:6}Run application specific django commands.\n"
@@ -65,7 +65,7 @@ help() {
 
     # # # # # # # # # # # # # # # # # # # #
     # show npm commands help if package.json exists
-    if [ -f $PC_NPM_CONFIG ]; then
+    if [ -f "$PC_NPM_CONFIG" ]; then
         printf "NODE COMMANDS:\n"
         printf "    ${BLUE}npm${NORMAL}${SPACE:3}Run npm commands.\n"
         printf "    ${BLUE}yarn${NORMAL}${SPACE:4}Run yarn commands.\n"
@@ -75,13 +75,13 @@ help() {
     # show custom commands help
     if [ -f "$WDIR/$PC_CONF_FILE" ]; then
         # fetch script keys
-        COMMAND_KEYS=$(cat $WDIR/$PC_CONF_FILE | jq -crM '.scripts | keys[]')
+        COMMAND_KEYS=$(cat "$WDIR/$PC_CONF_FILE" | jq -crM '.scripts | keys[]')
 
         if [ ! -z "$COMMAND_KEYS" ]; then
             printf "CUSTOM COMMANDS:\n"
 
             while read -r KEY; do
-                DESCRIPTION=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$KEY" '.scripts[$cmd]["description"]')
+                DESCRIPTION=$(cat "$WDIR/$PC_CONF_FILE" | jq -crM --arg cmd "$KEY" '.scripts[$cmd]["description"]')
 
                 # string length
                 COUNT=${#KEY}
