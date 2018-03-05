@@ -38,6 +38,9 @@ elif [ "$1" == "top" ]; then
 # create and start all or specific containers
 elif [ "$1" == "up" ]; then
     shift
+
+    check_ports
+
     ( $COMPOSE up -d $@ ) &> $OUTPUT_FILE &
     spinner $! "Starting containers ... "
     has_errors || printf "${GREEN}Containers started${NORMAL}\n"
@@ -47,6 +50,9 @@ elif [ "$1" == "up" ]; then
 # start all or specific containers
 elif [ "$1" == "start" ]; then
     shift
+
+    check_ports
+
     ( $COMPOSE start $@ ) &> $OUTPUT_FILE &
     spinner $! "Starting containers ... "
     has_errors || printf "${GREEN}Containers started${NORMAL}\n"

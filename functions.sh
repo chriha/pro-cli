@@ -344,3 +344,22 @@ is_service_running() {
 
     return 0
 }
+
+check_ports() {
+    if [ -z "$1" ]; then
+        local PORTS=$(cat .env | grep '_PORT=' | sed -e 's/[A-Z_]*_PORT=\(.*\)/\1/')
+    else
+        local PORTS=$1
+    fi
+
+    if [ -z "$PORTS" ]; then
+        return 0
+    fi
+
+    PORTS=$(echo $PORTS | paste -sd "," - | sed -e 's/ /,/g')
+
+    if lsof -i ":$PORTS" | grep LISTEN > /dev/null; then
+        printf "${RED}Unable to start application - ports already in use.${NORMAL}\n"
+        exit
+    fi
+}
