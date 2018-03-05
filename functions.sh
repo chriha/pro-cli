@@ -331,3 +331,16 @@ update_completions() {
 
     _project" > $PC_DIR/completions/_project
 }
+
+is_service_running() {
+    local SERVICE=$1
+    local ID=$(project compose ps -q $1)
+
+    if [[ -z "${ID// }" ]]; then
+        echo "false"
+    else
+        echo "true"
+    fi
+
+    return 0
+}

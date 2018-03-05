@@ -9,18 +9,43 @@ if [ "$1" == "artisan" ]; then
     fi
 
     shift
-    $RUN $PC_USER_PARAM web php artisan $@ 2> $OUTPUT_FILE
+
+    PC_HAS_WEB=$(is_service_running web)
+
+    if [ "$PC_HAS_WEB" == "true" ]; then
+        $COMPOSE exec web sh -c "cd /var/www && php artisan $@"
+    else
+        $RUN $PC_USER_PARAM web php artisan $@ 2> $OUTPUT_FILE
+    fi
+
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # interact with the application
 elif [ "$1" == "tinker" ]; then
-    $RUN $PC_USER_PARAM web php artisan tinker 2> $OUTPUT_FILE
+
+    PC_HAS_WEB=$(is_service_running web)
+
+    if [ "$PC_HAS_WEB" == "true" ]; then
+        $COMPOSE exec web sh -c "cd /var/www && php artisan tinker $@" 2> $OUTPUT_FILE
+    else
+        $RUN $PC_USER_PARAM web php artisan tinker 2> $OUTPUT_FILE
+    fi
+
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # execute laravel-echo-server commands
 elif [ "$1" == "echo" ]; then
-    $RUN $PC_USER_PARAM echo laravel-echo-server $@ 2> $OUTPUT_FILE
+    shift
+
+    PC_HAS_WEB=$(is_service_running web)
+
+    if [ "$PC_HAS_WEB" == "true" ]; then
+        $COMPOSE exec echo  sh -c "cd /var/www && laravel-echo-server $@" 2> $OUTPUT_FILE
+    else
+        $RUN $PC_USER_PARAM echo laravel-echo-server $@ 2> $OUTPUT_FILE
+    fi
+
     exit
 fi

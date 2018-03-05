@@ -25,7 +25,6 @@ if [ "$PC_VERSION" != "$PC_VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
     fi
 fi
 
-
 # # # # # # # # # # # # # # # # # # # #
 # show help immediately
 if [ $# -eq 0 ] || [ "$1" == "help" ]; then
@@ -150,7 +149,6 @@ elif [ "$1" == "expose" ]; then
     ngrok http $PC_PORT $@
     exit
 fi
-
 
 # # # # # # # # # # # # # # # # # # # #
 # include the systems
