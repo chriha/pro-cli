@@ -48,10 +48,5 @@ elif [ "$1" == "test" ]; then
         $RUN $PC_USER_PARAM web ./vendor/bin/phpunit $@
     fi
 
-# # # # # # # # # # # # # # # # # # # #
-# just a bit faster then the "test" command
-elif [ "$1" == "t" ]; then
-    shift
-    $COMPOSE exec web sh -c "cd /var/www && ./vendor/bin/phpunit $@"
     exit
 fi
