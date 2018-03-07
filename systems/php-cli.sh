@@ -43,7 +43,7 @@ elif [ "$1" == "test" ]; then
     fi
 
     if [ "$PC_HAS_WEB" == "true" ]; then
-        $COMPOSE exec web sh -c "cd /var/www && ./vendor/bin/phpunit $@"
+        $COMPOSE exec web sh -c "cd /var/www && ./vendor/bin/phpunit"
     else
         $RUN $PC_USER_PARAM web ./vendor/bin/phpunit $@
     fi
