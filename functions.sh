@@ -11,6 +11,7 @@ help() {
     printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}${NORMAL}\n"
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
+    printf "    ${BLUE}build${NORMAL}${SPACE:5}Start a Jenkins build.\n"
     printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"
     printf "    ${BLUE}expose${NORMAL}${SPACE:6}Temporarily expose the application (ngrok required).\n"
     printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
@@ -293,6 +294,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
+            'build:Start a Jenkins build.'
             'config:Read and write local config settings.'
             'expose:Temporarily expose the application (ngrok required).'
             'init:Setup default project structure in the specified directory.'

@@ -159,6 +159,7 @@ fi
 
 # # # # # # # # # # # # # # # # # # # #
 # include the systems
+. $PC_DIR/systems/jenkins-cli.sh
 . $PC_DIR/systems/docker-cli.sh
 . $PC_DIR/systems/php-cli.sh
 . $PC_DIR/systems/laravel-cli.sh
