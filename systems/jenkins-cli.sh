@@ -1,9 +1,34 @@
 #!/usr/bin/env bash
 
+is_build_available() {
+    local RESP_HEADERS=$(curl -sSL -u "$1" -D - -X POST "$2/$3/api/json" -H "Jenkins-Crumb: $4")
+
+    if echo $RESP_HEADERS | grep '404 Not Found'; then
+        echo "false"
+    else
+        echo "true"
+    fi
+
+    return 0
+}
+
+get_crumb() {
+    echo $(curl -u $1 -s "$2/crumbIssuer/api/json" | jq -r '.crumb')
+    return 0
+}
+
+
 # # # # # # # # # # # # # # # # # # # #
 # run jenkins builds
 if [ "$1" == "build" ]; then
     shift
+
+    JENKINS_OUTPUT=false
+
+    if [ "$1" == "-o" ] || [ "$1" == "--output" ]; then
+        shift
+        JENKINS_OUTPUT=true
+    fi
 
     JENKINS_URL=$(cat $PC_BASE_CONF | jq -r '.jenkins.url')
     JENKINS_USER=$(cat $PC_BASE_CONF | jq -r '.jenkins.user')
@@ -18,6 +43,8 @@ if [ "$1" == "build" ]; then
         printf "${YELLOW}No Jenkins token set. You can set it via:${NORMAL}\nproject config -g jenkins.user YOUR_TOKEN\n"
     fi
 
+    AUTH="$JENKINS_USER:$JENKINS_TOKEN"
+
     if [ -z "$1" ]; then
         printf "${YELLOW}No Jenkins build specified. Set it in your project's ${BLUE}pro-cli.json${NORMAL}\n"
         exit
@@ -30,6 +57,8 @@ if [ "$1" == "build" ]; then
         printf "${YELLOW}No path to this build specified. Set it in your project's ${BLUE}pro-cli.json${NORMAL}\n"
         exit
     fi
+
+    JENKINS_JOB_URL="$JENKINS_URL/job/$JENKINS_PATH"
 
     shift
     JENKINS_BUILD_TYPE="build"
@@ -52,31 +81,79 @@ if [ "$1" == "build" ]; then
         JENKINS_PARAMS=$(echo $ALL_PARAMS | jq -crM 'to_entries | map([.key, .value]) | map(join("=")) | join("&")')
     fi
 
-    JENKINS_PARAMS=${JENKINS_PARAMS:1}
+    CRUMB=$(get_crumb $AUTH $JENKINS_URL)
 
-    echo "$JENKINS_USER:$JENKINS_TOKEN"
-    echo "$JENKINS_PARAMS"
-    echo "$JENKINS_URL/job/$JENKINS_PATH/$JENKINS_BUILD_TYPE"
+    NEXT_BUILD=$(curl -u $AUTH -H "Jenkins-Crumb: $CRUMB" -X POST "$JENKINS_JOB_URL/api/json?tree=nextBuildNumber" -s)
 
-    CRUMB=$(curl -u "$JENKINS_USER:$JENKINS_TOKEN" \
-        -s "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+    if !(echo $NEXT_BUILD | jq -e . >/dev/null 2>&1); then
+        printf "${RED}Unable to fetch next build number for build status polling.${NORMAL}\n"
+        exit
+    fi
+
+    NEXT_BUILD=$(echo $NEXT_BUILD | jq -r '.nextBuildNumber')
 
     if [ -z "$JENKINS_PARAMS" ]; then
-        curl -u "$JENKINS_USER:$JENKINS_TOKEN" \
-            -X POST "$JENKINS_URL/job/$JENKINS_PATH/$JENKINS_BUILD_TYPE" \
-            -H "$CRUMB"
+        curl -u $AUTH -H "Jenkins-Crumb: $CRUMB" -X POST "$JENKINS_JOB_URL/$JENKINS_BUILD_TYPE"
     else
         JENKINS_BUILD_TYPE="buildWithParameters"
 
-        curl --data "$JENKINS_PARAMS" \
-            -u "$JENKINS_USER:$JENKINS_TOKEN" \
-            -X POST "$JENKINS_URL/job/$JENKINS_PATH/$JENKINS_BUILD_TYPE" \
-            -H "$CRUMB"
+        curl --data "$JENKINS_PARAMS" -u $AUTH -H "Jenkins-Crumb: $CRUMB" \
+            -X POST "$JENKINS_JOB_URL/$JENKINS_BUILD_TYPE"
     fi
 
-    curl -u "$JENKINS_USER:$JENKINS_TOKEN" \
-        -X POST "$JENKINS_URL/job/$JENKINS_PATH/polling" \
-        -H "$CRUMB"
+    printf "${GREEN}Build started.${NORMAL}\n"
+
+    if ! $JENKINS_OUTPUT; then
+        exit;
+    fi
+
+    printf "${YELLOW}########################################\n"
+    printf "# BUILD CONSOLE OUTPUT:\n"
+    printf "########################################${NORMAL}\n"
+    printf "Waiting for build status ..."
+
+    AVAILABLE=$(is_build_available $AUTH $JENKINS_JOB_URL $NEXT_BUILD $CRUMB)
+
+    while [ "$AVAILABLE" != "true" ]; do
+        sleep 1
+        AVAILABLE=$(is_build_available $AUTH $JENKINS_JOB_URL $NEXT_BUILD $CRUMB)
+    done
+
+    IN_PROGRESS=true
+    START="0"
+
+    printf "${CLEAR_LINE}"
+
+    HEADERS_FILE="$WDIR/temp/_jenkins-headers.txt"
+
+    if [ ! -d "$WDIR/temp" ]; then
+        mkdir -p "$WDIR/temp"
+    fi
+
+    while [ "$IN_PROGRESS" == true ]; do
+        RESPONSE=$(curl -is -u $AUTH -H "Jenkins-Crumb: $CRUMB" -D "$HEADERS_FILE" \
+            -X POST "$JENKINS_JOB_URL/$NEXT_BUILD/logText/progressiveText?start=$START")
+
+        IS_HEADER=true
+        IN_PROGRESS=false
+
+        while read -r line; do
+            if $IS_HEADER && [[ $line = $'\r' ]]; then
+                IS_HEADER=false
+            elif $IS_HEADER && ( echo "$line" | grep -q 'X-More-Data:' ); then
+                IN_PROGRESS=true
+            elif $IS_HEADER && ( echo "$line" | grep -q 'X-Text-Size:' ); then
+                START=$(cat "$HEADERS_FILE" | sed -n 's/X-Text-Size: \(.*\)$/\1/p')
+                START=${START%$'\r'}
+            elif ! $IS_HEADER; then
+                echo "$line"
+            fi
+        done <<< "$RESPONSE"
+
+        if $IN_PROGRESS; then
+            sleep 2
+        fi
+    done
 
     exit
 
