@@ -51,6 +51,19 @@ if [ "$1" == "build" ]; then
     fi
 
     JENKINS_BUILD=$1
+    JENKINS_CONFIRM=$(cat $PC_CONF | jq -r --arg BUILD "$JENKINS_BUILD" '.builds[$BUILD].confirm')
+
+    if [ "$JENKINS_CONFIRM" == "true" ]; then
+        read -p "Are you sure you want to start the build '${BLUE}${JENKINS_BUILD}${NORMAL}'? " -n 1 -r
+
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            printf "${YELLOW}Not sure, aborting.${NORMAL}\n"
+            exit
+        fi
+
+        printf "\n"
+    fi
+
     JENKINS_PATH=$(cat $PC_CONF | jq -r --arg BUILD "$JENKINS_BUILD" '.builds[$BUILD].path')
 
     if [ "$JENKINS_PATH" == "null" ] || [ -z "$JENKINS_PATH" ]; then
@@ -101,14 +114,14 @@ if [ "$1" == "build" ]; then
             -X POST "$JENKINS_JOB_URL/$JENKINS_BUILD_TYPE"
     fi
 
-    printf "${GREEN}Build started.${NORMAL}\n"
+    printf "${GREEN}Started build: ${BOLD}${JENKINS_BUILD}${NORMAL}\n"
 
     if ! $JENKINS_OUTPUT; then
         exit;
     fi
 
     printf "${YELLOW}########################################\n"
-    printf "# BUILD CONSOLE OUTPUT:\n"
+    printf "# BUILD CONSOLE OUTPUT\n"
     printf "########################################${NORMAL}\n"
     printf "Waiting for build status ..."
 
