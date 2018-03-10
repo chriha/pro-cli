@@ -3,7 +3,7 @@
 - specify the services depending on your projects needs in your own `docker-compose.local.yml`
 - install even complex projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - temporarily [expose](#expose-your-local-server-securely-to-the-internet) the application securely to the internet (ngrok required)
-- start Jenkins builds and print its console output
+- [start Jenkins builds](https://github.com/chriha/pro-cli/wiki/Jenkins) and print its console output
 - reduce amount of necessary commands for each developer
 - use the `project` command everywhere in your project, not only in your root directory
 - every developer is using the exact same environment and tools
