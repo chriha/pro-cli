@@ -20,6 +20,11 @@ help() {
     printf "    ${BLUE}sync${NORMAL}${SPACE:4}Sync directory structure with pro-cli.\n"
 
     # # # # # # # # # # # # # # # # # # # #
+    # show PHP commands if the current project is of type laravel or PHP
+    printf "JENKINS COMMANDS:\n"
+    printf "    ${BLUE}build${NORMAL}${SPACE:5}Start Jenkins build and print the console output (optional).\n"
+
+    # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
     if [ -f "$WDIR/docker-compose.yml" ]; then
         printf "DOCKER COMMANDS:\n"
@@ -293,6 +298,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
+            'build:Start a Jenkins build.'
             'config:Read and write local config settings.'
             'expose:Temporarily expose the application (ngrok required).'
             'init:Setup default project structure in the specified directory.'

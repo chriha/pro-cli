@@ -59,15 +59,22 @@ elif [ "$1" == "sync" ]; then
 elif [ "$1" == "config" ]; then
     shift
 
+    if [ "$1" == "-g" ] || [ "$1" == "--global" ]; then
+        shift
+        FILE_PATH="$PC_BASE_CONF"
+    else
+        FILE_PATH="$PC_CONF"
+    fi
+
     PC_SELECTION=".${1}"
 
     if [ ! -z "$2" ]; then
         PC_VALUE=$(echo "${2}" | sed -e 's/"/\\"/g' -e 's/^\\"/"/1' -e 's/\\"$/"/')
 
         if $(echo $2 | jq . > /dev/null 2>&1); then
-            PC_JSON=$(cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION = ${2}" | jq -M .)
+            PC_JSON=$(cat $FILE_PATH | jq "$PC_SELECTION = ${2}" | jq -M .)
         else
-            PC_JSON=$(cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION = \"${2}\"" | jq -M .)
+            PC_JSON=$(cat $FILE_PATH | jq "$PC_SELECTION = \"${2}\"" | jq -M .)
         fi
 
         # prevent braking the config file
@@ -76,9 +83,9 @@ elif [ "$1" == "config" ]; then
             exit
         fi
 
-        printf '%s' "$PC_JSON" > $WDIR/$PC_CONF_FILE
+        printf '%s' "$PC_JSON" > $FILE_PATH
     else
-        cat $WDIR/$PC_CONF_FILE | jq "$PC_SELECTION"
+        cat $FILE_PATH | jq "$PC_SELECTION"
     fi
 
     exit
@@ -152,6 +159,7 @@ fi
 
 # # # # # # # # # # # # # # # # # # # #
 # include the systems
+. $PC_DIR/systems/jenkins-cli.sh
 . $PC_DIR/systems/docker-cli.sh
 . $PC_DIR/systems/php-cli.sh
 . $PC_DIR/systems/laravel-cli.sh
