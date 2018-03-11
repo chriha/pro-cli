@@ -41,6 +41,7 @@ See how you can [use it](#usage), take a look at the [wiki](https://github.com/c
 After you installed all [dependencies](#dependencies):
 ```bash
 git clone -q https://github.com/chriha/pro-cli.git $HOME/.pro-cli && $HOME/.pro-cli/setup.sh
+sudo ln -s $HOME/.pro-cli/project.sh /usr/local/bin/project
 ```
 Reload your shell and use the `project` command with all its beauty.
 
