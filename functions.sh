@@ -11,18 +11,28 @@ help() {
     printf "${BLUE}pro-cli ${BOLD}v${PC_VERSION}${NORMAL}\n"
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
-    printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"
-    printf "    ${BLUE}expose${NORMAL}${SPACE:6}Temporarily expose the application (ngrok required).\n"
-    printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
-    printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
-    printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
-    printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
-    printf "    ${BLUE}sync${NORMAL}${SPACE:4}Sync directory structure with pro-cli.\n"
+    if [ -f "$PC_CONF" ]; then
+        printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"
+        printf "    ${BLUE}expose${NORMAL}${SPACE:6}Temporarily expose the application (ngrok required).\n"
+        printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
+        printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
+        printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
+        printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
+        printf "    ${BLUE}sync${NORMAL}${SPACE:4}Sync directory structure with pro-cli.\n"
+    else
+        printf "    ${BLUE}config${NORMAL}${SPACE:6}Read and write project configurations.${NORMAL}\n"
+        printf "    ${BLUE}init${NORMAL}${SPACE:4}Setup default project structure in the specified directory.\n"
+        printf "    ${BLUE}list${NORMAL}${SPACE:4}List all projects.\n"
+        printf "    ${BLUE}open${NORMAL}${SPACE:4}Open a project in a new tab.\n"
+        printf "    ${BLUE}self-update${NORMAL}${SPACE:11}Update pro-cli manually.\n"
+    fi
 
     # # # # # # # # # # # # # # # # # # # #
-    # show PHP commands if the current project is of type laravel or PHP
-    printf "JENKINS COMMANDS:\n"
-    printf "    ${BLUE}build${NORMAL}${SPACE:5}Start Jenkins build and print the console output (optional).\n"
+    # show Jenkins commands if local config file exists
+    if [ -f "$PC_CONF" ]; then
+        printf "JENKINS COMMANDS:\n"
+        printf "    ${BLUE}build${NORMAL}${SPACE:5}Start Jenkins build and print the console output (optional).\n"
+    fi
 
     # # # # # # # # # # # # # # # # # # # #
     # show docker commands help if local config file exists
