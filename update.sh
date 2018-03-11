@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# update completions
 update_completions
 
 PC_VERSION_OLD=$(cd $PC_DIR && git describe --tags)
@@ -17,7 +16,7 @@ cd $PC_DIR
 
 # # # # # # # # # # # # # # # # # # # #
 # checkout the latest tag
-(git checkout -q $PC_VERSION_NEW) &
+(sleep 2 && git checkout -q $PC_VERSION_NEW) &
 spinner $! "Updating ..."
 
 current=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
@@ -36,8 +35,8 @@ if [ "$PC_VERSION_NEW" == "$current" ]; then
     PC_CHANGES=$(git log --pretty=oneline --abbrev-commit $PC_VERSION_OLD..$PC_VERSION_NEW)
 
     printf "\n"
-    printf "${YELLOW}Changes since your last update:${NORMAL}\n"
-    printf "============================================\n"
+    printf "${YELLOW}Changes since your last update:\n"
+    echo "--------------------------------------------------${NORMAL}"
     echo -e "$PC_CHANGES" | sed 's/^.\{8\}\(.*\)/- \1/g'
 
 else
