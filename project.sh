@@ -6,11 +6,6 @@ PC_DIR="$HOME/.pro-cli"
 
 reset_output
 
-if ! jq --version &> /dev/null; then
-    printf "${RED}jq not installed, but is required.${NORMAL}\n"
-    exit
-fi
-
 # # # # # # # # # # # # # # # # # # # #
 # show new version info if available
 if [ "$PC_VERSION" != "$PC_VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then

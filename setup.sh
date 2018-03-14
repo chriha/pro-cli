@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if ! jq --version &> /dev/null; then
+    printf "${RED}jq not installed, but is required.${NORMAL}\n"
+    exit
+fi
+
 PC_DIR="$HOME/.pro-cli"
 
 # # # # # # # # # # # # # # # # # # # #
