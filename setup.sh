@@ -6,6 +6,7 @@ PC_DIR="$HOME/.pro-cli"
 # output manipulation
 GREEN="$(tput setaf 2)"
 BLUE="$(tput setaf 4)"
+YELLOW="$(tput setaf 3)"
 BOLD="$(tput bold)"
 NORMAL="$(tput sgr0)"
 
