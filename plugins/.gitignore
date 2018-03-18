@@ -1,0 +1,8 @@
+/*
+!.gitignore
+!/*_docker/
+!/*_php/
+!/*_laravel/
+!/*_node/
+!/*_django/
+!/*_jenkins/

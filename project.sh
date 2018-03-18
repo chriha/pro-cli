@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 
-PC_DIR="$HOME/.pro-cli"
+BASE_DIR="$HOME/.pro-cli"
 
-. $PC_DIR/vars.sh
-
-reset_output
+. "$BASE_DIR/includes/bootstrap.sh"
 
 # # # # # # # # # # # # # # # # # # # #
 # show new version info if available
-if [ "$PC_VERSION" != "$PC_VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
+if [ "$VERSION" != "$VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
     touch $ASKED_FILE
-    printf "${YELLOW}New version available: ${BOLD}${PC_VERSION_NEW}${NORMAL}\n"
-    read -p "Would you like to update pro-cli now? [y|n]: " ANSWER
+    printf "${YELLOW}New version available: ${BOLD}${VERSION_NEW}${NORMAL}\n"
+    read -p "Would you like to update pro-cli now? [y|n]: " -n 1 -r
 
-    if [ "$ANSWER" != "n" ]; then
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
         printf "\n"
-        . $PC_DIR/update.sh
+        . "$BASE_DIR/includes/update.sh"
         exit
     fi
 fi
@@ -28,18 +26,21 @@ if [ $# -eq 0 ] || [ "$1" == "help" ]; then
 fi
 
 # # # # # # # # # # # # # # # # # # # #
-# project init [directory] [--type=TYPE]
-if [ "$1" == "init" ]; then
-    if ( needs_help $@ ); then
-        printf "${YELLOW}usage:${NORMAL} project init [directory] [options]\n\n"
-        printf "OPTIONS:\n"
-        printf "    ${BLUE}--type[=php]${NORMAL}${PC_HELP_SPACE:12}Specifiy the type of the project (php, laravel, nodejs, django).${NORMAL}\n"
-        exit
+# include plugins now to allow overwriting commands
+for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d) ; do
+    if [ ! -f "$d/plugin.sh" ]; then
+        break;
     fi
 
+   . "$d/plugin.sh"
+done
+
+# # # # # # # # # # # # # # # # # # # #
+# project init [directory] [--type=TYPE]
+if [ "$1" == "init" ]; then
     shift
-    printf "Initializing project files ... "
-    init_project $@
+    ( sleep 1 && init_project $@ ) &
+    spinner $! "Initializing project files ... "
     printf "${GREEN}done!${NORMAL}\n"
     exit
 
@@ -56,9 +57,15 @@ elif [ "$1" == "config" ]; then
 
     if [ "$1" == "-g" ] || [ "$1" == "--global" ]; then
         shift
-        FILE_PATH="$PC_BASE_CONF"
+        FILE_PATH="$BASE_CONFIG"
     else
-        FILE_PATH="$PC_CONF"
+        FILE_PATH="$PROJECT_CONFIG"
+    fi
+
+    # just print the local config
+    if [ $# -eq 0 ] && [ -f "$FILE_PATH" ]; then
+        cat "$FILE_PATH" | jq .
+        exit
     fi
 
     PC_SELECTION=".${1}"
@@ -88,43 +95,35 @@ elif [ "$1" == "config" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # project self-update
 elif [ "$1" == "self-update" ]; then
-    . $PC_DIR/update.sh
+    . "$BASE_DIR/includes/update.sh"
     exit
-
 
 # # # # # # # # # # # # # # # # # # # #
 # project list
 elif [ "$1" == "list" ]; then
-    cat $PC_BASE_CONF | jq '.projects'
+    cat "$BASE_CONFIG" | jq '.projects'
     exit
-
 
 # # # # # # # # # # # # # # # # # # # #
 # project open PROJECT_NAME
 elif [ "$1" == "open" ]; then
-    if ( needs_help $@ ); then
-        printf "${YELLOW}usage:${NORMAL} project open [project]\n\n"
-        exit
-    fi
+    OPEN=$(cat "$BASE_CONFIG" | jq -r --arg VAL "$2" '.projects[$VAL]')
 
-    PC_OPEN=$(cat $PC_BASE_CONF | jq -r --arg VAL "$2" '.projects[$VAL]')
-
-    if [ -z "$PC_OPEN" ]; then
+    if [ -z "$OPEN" ]; then
         printf "${YELLOW}Project not found ¯\_(ツ)_/¯${NORMAL}\n"
     else
-        open_project "$PC_OPEN" "$2"
+        open_project "$OPEN" "$2"
     fi
 
     exit
 
-
 # # # # # # # # # # # # # # # # # # # #
 # project expose
 elif [ "$1" == "expose" ]; then
-    if ( needs_help $@ ); then
+    if [ "$2" == "-h" ] || [ "$2" == "--help" ]; then
         printf "${YELLOW}usage:${NORMAL} project expose [options]\n\n"
         printf "OPTIONS:\n"
-        printf "    ${BLUE}--auth='user:password'${NORMAL}${PC_HELP_SPACE:22}Secure the application with basic auth.${NORMAL}\n"
+        printf "    ${BLUE}--auth='user:password'${NORMAL}${HELP_SPACE:22}Secure the application with basic auth.${NORMAL}\n"
         exit
     fi
 
@@ -133,14 +132,14 @@ elif [ "$1" == "expose" ]; then
         exit
     fi
 
-    if [[ ! -f $WDIR/.env ]]; then
+    if [[ ! -f "$WDIR/.env" ]]; then
         printf "${RED}.env is missing.${NORMAL} Are you inside of a project?\n"
         exit
     fi
 
-    PC_PORT=$(cat $WDIR/.env | grep APP_PORT | sed -e 's/APP_PORT=\(.*\)/\1/')
+    PORT=$(cat "$WDIR/.env" | grep APP_PORT | sed -e 's/APP_PORT=\(.*\)/\1/')
 
-    if [[ -z "$PC_PORT" ]]; then
+    if [[ -z "$PORT" ]]; then
         printf "${YELLOW}No port specified in .env${NORMAL}\n"
         exit
     fi
@@ -148,35 +147,24 @@ elif [ "$1" == "expose" ]; then
     shift
 
     project up
-    ngrok http $PC_PORT $@
+    ngrok http $PORT $@
     exit
 fi
 
 # # # # # # # # # # # # # # # # # # # #
-# include the systems
-. $PC_DIR/systems/jenkins-cli.sh
-. $PC_DIR/systems/docker-cli.sh
-. $PC_DIR/systems/php-cli.sh
-. $PC_DIR/systems/laravel-cli.sh
-. $PC_DIR/systems/node-cli.sh
-. $PC_DIR/systems/django-cli.sh
-
-
-# # # # # # # # # # # # # # # # # # # #
 # commands that are specified in the local config file
-if [ ! -z "$1" ] && [ -f $WDIR/$PC_CONF_FILE ] && [[ $(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$1" '.scripts[$cmd]') != "null" ]]; then
-    PC_COMMAND=$(cat $WDIR/$PC_CONF_FILE | jq -crM --arg cmd "$1" 'if (.scripts[$cmd].command | type == "string") then .scripts[$cmd].command else .scripts[$cmd].command | .[] end')
+if [ ! -z "$1" ] && [ -f "$PROJECT_CONFIG" ] && [[ $(cat "$PROJECT_CONFIG" | jq -crM --arg cmd "$1" '.scripts[$cmd]') != "null" ]]; then
+    COMMAND=$(cat "$PROJECT_CONFIG" | jq -crM --arg cmd "$1" 'if (.scripts[$cmd].command | type == "string") then .scripts[$cmd].command else .scripts[$cmd].command | .[] end')
 
     # concat multiple commands
-    if [[ $PC_COMMAND == *$'\n'* ]]; then
-        PC_COMMAND=$(echo "$PC_COMMAND" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
+    if [[ $COMMAND == *$'\n'* ]]; then
+        COMMAND=$(echo "$COMMAND" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ \&\& /g')
     fi
 
-    if [ ! -z "$PC_COMMAND" ] && [ "$PC_COMMAND" != "null" ]; then
-        eval $PC_COMMAND
+    if [ ! -z "$COMMAND" ] && [ "$COMMAND" != "null" ]; then
+        eval $COMMAND
         exit
     fi
 fi
-
 
 printf "${YELLOW}Command not found ¯\_(ツ)_/¯${NORMAL}\n"
