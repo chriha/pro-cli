@@ -4,8 +4,8 @@ PC_COMPOSE_ENV=""
 TTY=""
 
 # use docker-compose file according to env and if it exists
-if [ ! -z "$PC_ENV" ] && [ -f "./docker-compose.$PC_ENV.yml" ]; then
-    readonly PC_COMPOSE_ENV=".$PC_ENV"
+if [ ! -z "$PROJECT_ENVIRONMENT" ] && [ -f "./docker-compose.${PROJECT_ENVIRONMENT}.yml" ]; then
+    readonly PC_COMPOSE_ENV=".${PROJECT_ENVIRONMENT}"
 fi
 
 # # # # # # # # # # # # # # # # # # # #
@@ -14,7 +14,7 @@ if [ ! -z "$BUILD_NUMBER" ]; then
     TTY="-T"
 fi
 
-if [ "$PC_SYSTEM" == "Darwin" ]; then
+if [ "$SYSTEM" == "Darwin" ]; then
     PC_USER_PARAM=""
 else
     PC_USER_PARAM="-u $PC_USER_ID:$PC_USER_GROUP_ID"
