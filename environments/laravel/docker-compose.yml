@@ -31,7 +31,7 @@ services:
     networks:
       - default
   node:
-    image: chriha/node:7.2-latest
+    image: chriha/node:9
     volumes:
       - ./src:/var/www
   redis:
