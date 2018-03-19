@@ -25,6 +25,32 @@ if [ $# -eq 0 ] || [ "$1" == "help" ]; then
     exit
 fi
 
+
+# # # # # # # # # # # # # # # # # # # #
+# project plugin [install|uninstall|list] [VENDOR/PLUGIN_NAME]
+if [ "$1" == "plugin" ]; then
+    shift
+
+    if [ "$1" == "install" ] && [ ! -z "$2" ]; then
+        shift
+        install_plugin $@
+        exit
+    elif [ "$1" == "uninstall" ] && [ ! -z "$2" ]; then
+        shift
+        uninstall_plugin $@
+        exit
+    elif [ "$1" == "list" ]; then
+        for i in $(find "$BASE_DIR/plugins" -mindepth 1 -maxdepth 1 -type d); do
+            echo "- ${i##*/}"
+        done
+        exit
+    fi
+
+    printf "${YELLOW}Usage:${NORMAL} project plugin [install|uninstall|list] [VENDOR/PLUGIN_NAME]\n"
+    exit
+fi
+
+
 # # # # # # # # # # # # # # # # # # # #
 # include plugins now to allow overwriting commands
 for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d) ; do
