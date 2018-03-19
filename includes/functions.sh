@@ -8,7 +8,6 @@ help() {
     printf "COMMANDS:\n"
     if [ -f "$PROJECT_CONFIG" ]; then
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.${NORMAL}\n"
-        printf "    ${BLUE}expose${NORMAL}${HELP_SPACE:6}Temporarily expose the application (ngrok required).\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
@@ -257,9 +256,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
-            'build:Start a Jenkins build.'
             'config:Read and write local config settings.'
-            'expose:Temporarily expose the application (ngrok required).'
             'init:Setup default project structure in the specified directory.'
             'list:List all projects.'
             'open:Open a project in a new tab.'
