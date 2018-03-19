@@ -27,7 +27,7 @@ fi
 
 
 # # # # # # # # # # # # # # # # # # # #
-# project plugin [install|uninstall|list] [VENDOR/PLUGIN_NAME]
+# project plugin [install|uninstall|update|list] [VENDOR/PLUGIN_NAME]
 if [ "$1" == "plugin" ]; then
     shift
 
@@ -38,6 +38,10 @@ if [ "$1" == "plugin" ]; then
     elif [ "$1" == "uninstall" ] && [ ! -z "$2" ]; then
         shift
         uninstall_plugin $@
+        exit
+    elif [ "$1" == "update" ]; then
+        shift
+        update_plugin $@
         exit
     elif [ "$1" == "list" ]; then
         for i in $(find "$BASE_DIR/plugins" -mindepth 1 -maxdepth 1 -type d); do

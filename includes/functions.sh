@@ -11,7 +11,7 @@ help() {
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
-        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:5}Install, uninstall or list plugins.\n"
+        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:5}Install, uninstall, update and list plugins.\n"
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
         printf "    ${BLUE}sync${NORMAL}${HELP_SPACE:4}Sync directory structure with pro-cli.\n"
     else
@@ -19,7 +19,7 @@ help() {
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
-        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:5}Install, uninstall or list plugins.\n"
+        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:5}Install, uninstall, update and list plugins.\n"
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
     fi
 
@@ -260,7 +260,7 @@ update_completions() {
             'init:Setup default project structure in the specified directory.'
             'list:List all projects.'
             'open:Open a project in a new tab.'
-            'plugin:Install, uninstall or list plugins.'
+            'plugin:Install, uninstall, update and list plugins.'
             'self-update:Update pro-cli manually.'
             'sync:Sync directory structure with pro-cli.'
             'compose:Run docker-compose commands.'
@@ -279,7 +279,6 @@ update_completions() {
             'php:Run PHP commands.'
             'tinker:Interact with your application.'
             'npm:Run npm commands.'
-            'yarn:Run yarn commands.'
             'python:Run python commands.'
             'django:Run application specific django commands.'
             'django-admin:Run django-admin commands.'
@@ -367,4 +366,24 @@ uninstall_plugin() {
 
     rm -rf "$BASE_DIR/plugins/$PLUGIN"
     printf "${GREEN}Plugin '${1}' uninstalled!${NORMAL}\n"
+}
+
+update_plugin() {
+    if [ -z "$1" ]; then
+        printf "${YELLOW}Please specify a plugin!${NORMAL}\n"
+        exit
+    fi
+
+    local PLUGIN=${1#*/}
+
+    if [ ! -d "$BASE_DIR/plugins/$PLUGIN" ]; then
+        printf "${YELLOW}The plugin '${1}' is not installed!${NORMAL}\n"
+        exit
+    fi
+
+    if ( cd "$BASE_DIR/plugins/$PLUGIN" && git pull ); then
+        printf "${GREEN}Plugin '${1}' successfully updated!${NORMAL}\n"
+    else
+        printf "${RED}Unable to update plugin '${1}'!${NORMAL}\n"
+    fi
 }
