@@ -59,7 +59,7 @@ fi
 # include plugins now to allow overwriting commands
 for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d) ; do
     if [ ! -f "$d/plugin.sh" ]; then
-        break;
+        continue;
     fi
 
    . "$d/plugin.sh"

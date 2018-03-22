@@ -11,7 +11,7 @@ help() {
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
-        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:5}Install, uninstall, update and list plugins.\n"
+        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:6}Install, uninstall, update and list plugins.\n"
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
         printf "    ${BLUE}sync${NORMAL}${HELP_SPACE:4}Sync directory structure with pro-cli.\n"
     else
@@ -299,9 +299,9 @@ is_service_running() {
     local ID=$(project compose ps -q $1)
 
     if [[ -z "${ID// }" ]]; then
-        echo "false"
+        return 1
     else
-        echo "true"
+        return 0
     fi
 
     return 0
