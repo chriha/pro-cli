@@ -12,7 +12,6 @@ if [ "$VERSION" != "$VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
     read -p "Would you like to update pro-cli now? [y|n]: " -n 1 -r
 
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        printf "\n"
         . "$BASE_DIR/includes/update.sh"
         exit
     fi
@@ -21,8 +20,7 @@ fi
 # # # # # # # # # # # # # # # # # # # #
 # show help immediately
 if [ $# -eq 0 ] || [ "$1" == "help" ]; then
-    help
-    exit
+    help && exit
 fi
 
 
@@ -69,8 +67,7 @@ if [ "$1" == "init" ]; then
     shift
     ( sleep 1 && init_project $@ ) &
     spinner $! "Initializing project files ... "
-    printf "${GREEN}done!${NORMAL}\n"
-    exit
+    printf "${GREEN}done!${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # sync directory structure with pro-cli
@@ -90,7 +87,7 @@ elif [ "$1" == "config" ]; then
         FILE_PATH="$PROJECT_CONFIG"
     fi
 
-    # just print the local config
+    # just print the config
     if [ $# -eq 0 ] && [ -f "$FILE_PATH" ]; then
         cat "$FILE_PATH" | jq .
         exit
@@ -108,10 +105,7 @@ elif [ "$1" == "config" ]; then
         fi
 
         # prevent braking the config file
-        if [ -z "$PC_JSON" ]; then
-            printf "${RED}Invalid value!${NORMAL}\n"
-            exit
-        fi
+        [ -z "$PC_JSON" ] && printf "${RED}Invalid value!${NORMAL}\n" && exit 1
 
         printf '%s' "$PC_JSON" > $FILE_PATH
     else
@@ -129,13 +123,13 @@ elif [ "$1" == "self-update" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # project list
 elif [ "$1" == "list" ]; then
-    cat "$BASE_CONFIG" | jq '.projects'
+    echo "$BASE_CONFIG_JSON" | jq '.projects'
     exit
 
 # # # # # # # # # # # # # # # # # # # #
 # project open PROJECT_NAME
 elif [ "$1" == "open" ]; then
-    OPEN=$(cat "$BASE_CONFIG" | jq -r --arg VAL "$2" '.projects[$VAL]')
+    OPEN=$(echo "$BASE_CONFIG_JSON" | jq -r --arg VAL "$2" '.projects[$VAL]')
 
     if [ -z "$OPEN" ]; then
         printf "${YELLOW}Project not found ¯\_(ツ)_/¯${NORMAL}\n"
@@ -148,8 +142,8 @@ fi
 
 # # # # # # # # # # # # # # # # # # # #
 # commands that are specified in the local config file
-if [ ! -z "$1" ] && [ -f "$PROJECT_CONFIG" ] && [[ $(cat "$PROJECT_CONFIG" | jq -crM --arg cmd "$1" '.scripts[$cmd]') != "null" ]]; then
-    COMMAND=$(cat "$PROJECT_CONFIG" | jq -crM --arg cmd "$1" 'if (.scripts[$cmd].command | type == "string") then .scripts[$cmd].command else .scripts[$cmd].command | .[] end')
+if [ ! -z "$1" ] && [ ! -z "$PROJECT_CONFIG_JSON" ] && [[ $(echo "$PROJECT_CONFIG_JSON" | jq -crM --arg cmd "$1" '.scripts[$cmd]') != "null" ]]; then
+    COMMAND=$(echo "$PROJECT_CONFIG_JSON" | jq -crM --arg cmd "$1" 'if (.scripts[$cmd].command | type == "string") then .scripts[$cmd].command else .scripts[$cmd].command | .[] end')
 
     # concat multiple commands
     if [[ $COMMAND == *$'\n'* ]]; then

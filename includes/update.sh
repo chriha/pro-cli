@@ -2,6 +2,8 @@
 
 update_completions
 
+printf "\n"
+
 VERSION_OLD=$(cd "$BASE_DIR" && git describe --tags)
 VERSION_NEW=$(cd "$BASE_DIR" && git fetch -q && git describe --tags `git rev-list --tags --max-count=1`)
 TIMESTAMP=$(unixtime_from_file "$HEAD_FILE")

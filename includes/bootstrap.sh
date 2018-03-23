@@ -6,6 +6,7 @@
 USER_ID=$(id -u)
 USER_GROUP_ID=$(id -g)
 SYSTEM=$(uname -s)
+IS_MAC=$([ "$SYSTEM" == "Darwin" ] && echo true)
 # output manipulation
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
@@ -18,22 +19,20 @@ CLEAR_LINE="\r\033[K"
 # # # # # # # # # # # # # # # # # # # # # # #
 # INITIALIZE PRO-CLI
 BASE_CONFIG="$BASE_DIR/config.json"
+BASE_CONFIG_JSON=$(cat "$BASE_CONFIG")
 OUTPUT_FILE="$BASE_DIR/output.log"
 ASKED_FILE="$BASE_DIR/asked"
 HELP_SPACE="                          "
 
 # create base config if it doesn't exist
-if [ ! -f "$BASE_CONFIG" ]; then
+if [ ! -f "$BASE_CONFIG" ] || [ -z "$BASE_CONFIG_JSON" ]; then
     VERSION=$(cd "$BASE_DIR" && git describe --tags)
-    echo "{ \"projects\": {}, \"version\": \"$VERSION\" }" | jq -M . > "$BASE_CONFIG"
+    store_config "$(echo "{ \"projects\": {}, \"version\": \"$VERSION\" }" | jq -c .)"
 else
-    VERSION=$(cat "$BASE_CONFIG" | jq -r ".version")
+    VERSION=$(cat "$BASE_CONFIG" | jq -r '.version | select(.!=null)')
+    VERSION=${VERSION:=$(cd "$BASE_DIR" && git describe --tags)}
 
-    # version not available, so set it
-    if [ "$VERSION" == "null" ]; then
-        VERSION=$(cd "$BASE_DIR" && git describe --tags)
-        cat "$BASE_CONFIG" | jq ".version = \"${VERSION}\"" | jq -M . > "$BASE_CONFIG"
-    fi
+    store_config "$(echo $BASE_CONFIG_JSON | jq ".version = \"${VERSION}\"" | jq -c .)"
 fi
 
 # set head file to check for latest fetch
@@ -43,9 +42,9 @@ else
     HEAD_FILE="$BASE_DIR/.git/HEAD"
 fi
 
-UPDATED_AT=$(cat "$BASE_CONFIG" | jq -r ".updated_at")
+UPDATED_AT=$(echo "$BASE_CONFIG_JSON" | jq -r ".updated_at | select(.!=null)")
 
-if [ "$UPDATED_AT" != "null" ]; then
+if [ ! -z "$UPDATED_AT" ]; then
     LATEST_FETCH=$(filemtime $UPDATED_AT)
 else
     LATEST_FETCH=9999999
@@ -57,8 +56,7 @@ if [ $LATEST_FETCH != 0 ] && [ $LATEST_FETCH -gt 43200 ]; then
     # get unix timestamp of HEAD file
     TIMESTAMP=$(unixtime_from_file "$HEAD_FILE")
     # ... and store the timestamp in the config
-    JSON=$(cat "$BASE_CONFIG" | jq ".updated_at = ${TIMESTAMP}")
-    store_config "$JSON"
+    store_config "$(echo "$BASE_CONFIG_JSON" | jq ".updated_at = ${TIMESTAMP}")"
 else
     VERSION_NEW=$VERSION
 fi
@@ -70,25 +68,25 @@ fi
 if git status &> /dev/null; then
     WDIR=$(git rev-parse --show-toplevel)
     cd "$WDIR"
-else
-    WDIR=$(pwd)
 fi
 
+WDIR=${WDIR:=$(pwd)}
+
 PROJECT_CONFIG="$WDIR/pro-cli.json"
+PROJECT_CONFIG_JSON="$(cat "$PROJECT_CONFIG")"
 PROJECT_NAME=${PWD##*/}
 PROJECT_TYPE=false
 PROJECT_ENVIRONMENT=false
 
-if [ -f "$PROJECT_CONFIG" ]; then
-    PROJECT_TYPE=$(cat "$PROJECT_CONFIG" | jq -r '.type')
-    PROJECT_ENVIRONMENT=$(cat "$PROJECT_CONFIG" | jq -r '.env')
+if [ ! -z "$PROJECT_CONFIG_JSON" ]; then
+    PROJECT_TYPE=$(echo "$PROJECT_CONFIG_JSON" | jq -r '.type')
+    PROJECT_ENVIRONMENT=$(echo "$PROJECT_CONFIG_JSON" | jq -r '.env')
 fi
 
-PROJECT_EXISTS=$(cat "$BASE_CONFIG" | jq --arg dir "$PROJECT_NAME" '.projects | has("$dir")')
+PROJECT_EXISTS=$(echo "$BASE_CONFIG_JSON" | jq --arg dir "$PROJECT_NAME" '.projects | has("$dir")')
 
 if [ "$PROJECT_EXISTS" == "false" ]; then
-    JSON=$(cat "$BASE_CONFIG" | jq --arg project "$PROJECT_NAME" --arg dir "$WDIR" '.projects[$project] = $dir' | jq -M .)
-    store_config "$JSON"
+    store_config "$(echo "$BASE_CONFIG_JSON" | jq --arg project "$PROJECT_NAME" --arg dir "$WDIR" '.projects[$project] = $dir' | jq -c .)"
 fi
 
 reset_output

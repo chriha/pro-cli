@@ -2,7 +2,7 @@
 
 if ! jq --version &> /dev/null; then
     printf "${RED}jq not installed, but is required.${NORMAL}\n"
-    exit
+    exit 1
 fi
 
 BASE_DIR="$HOME/.pro-cli"

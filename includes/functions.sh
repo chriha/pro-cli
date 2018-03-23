@@ -81,7 +81,7 @@ init_project() {
     # check if type is actually supported
     if [[ ! " ${TYPES[@]} " =~ " ${TYPE} " ]]; then
         printf "${RED}Unsupported project type!${NORMAL}\n"
-        exit
+        exit 1
     fi
 
     mkdir -p "$DIR"
@@ -130,22 +130,14 @@ unixtime_from_file() {
 
 
 filemtime() {
-    local TIMESTAMP=0
-
-    if [ ! -z "$1" ]; then
-        TIMESTAMP=$(expr $(date +%s) - $(printf "%.0f" $1))
-    fi
-
-    echo $TIMESTAMP
+    [ ! -z "$1" ] && echo $(expr $(date +%s) - $(printf "%.0f" $1)) || echo 0
 }
 
 
 # # # # # # # # # # # # # # # # # # # #
 # check if any error occured
 has_errors() {
-    if [ ! -f "$OUTPUT_FILE" ] && [ ! -s "$OUTPUT_FILE" ]; then
-        return 1
-    fi
+    [ ! -f "$OUTPUT_FILE" ] && [ ! -s "$OUTPUT_FILE" ] return 1
 
     if grep -qi 'error\|invalid' "$OUTPUT_FILE"; then
         printf "${RED}"
@@ -298,45 +290,34 @@ is_service_running() {
     local SERVICE=$1
     local ID=$(project compose ps -q $1)
 
-    if [[ -z "${ID// }" ]]; then
-        return 1
-    else
-        return 0
-    fi
+    [[ -z "${ID// }" ]] && return 1
 
     return 0
 }
 
 check_ports() {
-    if [ -z "$1" ]; then
-        local PORTS=$(cat .env | grep '_PORT=' | sed -e 's/[A-Z_]*_PORT=\(.*\)/\1/')
-    else
-        local PORTS=$1
-    fi
+    local PORTS=${1:-$(cat .env | grep '_PORT=' | sed -e 's/[A-Z_]*_PORT=\(.*\)/\1/')}
 
-    if [ -z "$PORTS" ]; then
-        return 0
-    fi
+    [ -z "$PORTS" ] && return 0
 
     PORTS=$(echo $PORTS | paste -sd "," - | sed -e 's/ /,/g')
 
     if lsof -i ":$PORTS" | grep LISTEN > /dev/null; then
         printf "${RED}Unable to start application - ports already in use.${NORMAL}\n"
-        exit
+        exit 1
     fi
 }
 
 store_config() {
     if [ ! -z "$1" ]; then
-        echo "$1" > "$BASE_CONFIG"
+        BASE_CONFIG_JSON=$(echo "$1" | jq -c .)
+        echo "$BASE_CONFIG_JSON" | jq -M . > "$BASE_CONFIG"
     fi
 }
 
 install_plugin() {
-    if [ -z "$1" ]; then
-        printf "${YELLOW}Please specify a plugin!${NORMAL}\n"
-        exit
-    fi
+    # exit the script if no plugin specified
+    [ -z "$1" ] && printf "${YELLOW}Please specify a plugin!${NORMAL}\n" && exit 1
 
     local REPO="https://github.com/${1}.git"
 
@@ -352,16 +333,14 @@ install_plugin() {
 }
 
 uninstall_plugin() {
-    if [ -z "$1" ]; then
-        printf "${YELLOW}Please specify a plugin!${NORMAL}\n"
-        exit
-    fi
+    # exit the script if no plugin specified
+    [ -z "$1" ] && printf "${YELLOW}Please specify a plugin!${NORMAL}\n" && exit
 
     local PLUGIN=${1#*/}
 
     if [ ! -d "$BASE_DIR/plugins/$PLUGIN" ]; then
         printf "${YELLOW}The plugin '${1}' is not installed!${NORMAL}\n"
-        exit
+        exit 1
     fi
 
     rm -rf "$BASE_DIR/plugins/$PLUGIN"
@@ -369,16 +348,14 @@ uninstall_plugin() {
 }
 
 update_plugin() {
-    if [ -z "$1" ]; then
-        printf "${YELLOW}Please specify a plugin!${NORMAL}\n"
-        exit
-    fi
+    # exit the script if no plugin specified
+    [ -z "$1" ] && printf "${YELLOW}Please specify a plugin!${NORMAL}\n" && exit 1
 
     local PLUGIN=${1#*/}
 
     if [ ! -d "$BASE_DIR/plugins/$PLUGIN" ]; then
         printf "${YELLOW}The plugin '${1}' is not installed!${NORMAL}\n"
-        exit
+        exit 1
     fi
 
     if ( cd "$BASE_DIR/plugins/$PLUGIN" && git pull ); then

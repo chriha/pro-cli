@@ -3,8 +3,7 @@
 # # # # # # # # # # # # # # # # # # # #
 # execute artisan commands
 if [ "$1" == "artisan" ]; then
-    shift
-    $RUN $PC_USER_PARAM web php artisan $@ 2> $OUTPUT_FILE
+    shift && $RUN $PC_USER_PARAM web php artisan $@ 2> $OUTPUT_FILE
     exit
 
 # # # # # # # # # # # # # # # # # # # #
@@ -16,7 +15,6 @@ elif [ "$1" == "tinker" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # execute laravel-echo-server commands
 elif [ "$1" == "echo" ]; then
-    shift
-    $RUN $PC_USER_PARAM echo laravel-echo-server $@ 2> $OUTPUT_FILE
+    shift && $RUN $PC_USER_PARAM echo laravel-echo-server $@ 2> $OUTPUT_FILE
     exit
 fi

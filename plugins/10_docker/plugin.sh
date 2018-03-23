@@ -14,7 +14,7 @@ if [ ! -z "$BUILD_NUMBER" ]; then
     TTY="-T"
 fi
 
-if [ "$SYSTEM" == "Darwin" ]; then
+if $IS_MAC; then
     PC_USER_PARAM=""
 else
     PC_USER_PARAM="-u $PC_USER_ID:$PC_USER_GROUP_ID"
@@ -37,26 +37,22 @@ elif [ "$1" == "top" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # create and start all or specific containers
 elif [ "$1" == "up" ]; then
-    shift
-
     check_ports
+    shift
 
     ( $COMPOSE up -d $@ ) &> $OUTPUT_FILE &
     spinner $! "Starting containers ... "
-    has_errors || printf "${GREEN}Containers started${NORMAL}\n"
-    exit
+    has_errors || printf "${GREEN}Containers started${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # start all or specific containers
 elif [ "$1" == "start" ]; then
-    shift
-
     check_ports
+    shift
 
     ( $COMPOSE start $@ ) &> $OUTPUT_FILE &
     spinner $! "Starting containers ... "
-    has_errors || printf "${GREEN}Containers started${NORMAL}\n"
-    exit
+    has_errors || printf "${GREEN}Containers started${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop all or specific containers
@@ -64,16 +60,14 @@ elif [ "$1" == "stop" ]; then
     shift
     ( $COMPOSE stop $@ ) &> $OUTPUT_FILE &
     spinner $! "Stopping containers ... "
-    has_errors || printf "${GREEN}Containers stopped${NORMAL}\n"
-    exit
+    has_errors || printf "${GREEN}Containers stopped${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop and destroy all containers
 elif [ "$1" == "down" ]; then
     ( $COMPOSE down ) &> $OUTPUT_FILE &
     spinner $! "Shutting down containers ... "
-    has_errors || printf "${GREEN}Containers stopped and removed${NORMAL}\n"
-    exit
+    has_errors || printf "${GREEN}Containers stopped and removed${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # restart by using down & up commands
@@ -93,12 +87,9 @@ elif [ "$1" == "compose" ]; then
 elif [ "$1" == "exec" ]; then
     shift
 
-    if [ -z "$1" ]; then
-        printf "${RED}No service specified.${NORMAL}\n"
-    fi
+    [ -z "$1" ] && printf "${RED}No service specified.${NORMAL}\n"
 
     $COMPOSE exec $@
-
     exit
 
 # # # # # # # # # # # # # # # # # # # #

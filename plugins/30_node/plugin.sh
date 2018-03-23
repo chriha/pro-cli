@@ -7,7 +7,7 @@ if [ "$1" == "npm" ]; then
         printf "${YELLOW}usage:${NORMAL} project npm [command]\n\n"
         printf "OPTIONS:\n"
         printf "    ${BLUE}--auth='user:password'${NORMAL}${HELP_SPACE:22}Secure the application with basic auth.${NORMAL}\n"
-        exit
+        exit 1
     fi
 
     shift
