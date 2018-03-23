@@ -26,7 +26,7 @@ help() {
     # # # # # # # # # # # # # # # # # # # #
     # show plugin help
     # TODO: need a way to overwrite help for existing commands
-    for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d); do
+    for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d | sort -t '\0' -n); do
         if [ ! -f "$d/help.sh" ]; then
             break;
         fi

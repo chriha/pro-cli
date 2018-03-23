@@ -51,16 +51,14 @@ if [ "$1" == "plugin" ]; then
     fi
 
     printf "${YELLOW}Usage:${NORMAL} project plugin [install|uninstall|list] [VENDOR/PLUGIN_NAME]\n"
-    exit
+    exit 1
 fi
 
 
 # # # # # # # # # # # # # # # # # # # #
 # include plugins now to allow overwriting commands
-for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d) ; do
-    if [ ! -f "$d/plugin.sh" ]; then
-        continue;
-    fi
+for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d | sort -t '\0' -n) ; do
+    [ ! -f "$d/plugin.sh" ] && continue
 
    . "$d/plugin.sh"
 done
