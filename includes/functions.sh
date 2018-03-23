@@ -165,7 +165,7 @@ reset_output() {
 # # # # # # # # # # # # # # # # # # # #
 # reset asked file
 reset_asked() {
-    rm "$ASKED_FILE"
+    rm -f "$ASKED_FILE"
 }
 
 
