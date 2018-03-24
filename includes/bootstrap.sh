@@ -19,7 +19,7 @@ CLEAR_LINE="\r\033[K"
 # # # # # # # # # # # # # # # # # # # # # # #
 # INITIALIZE PRO-CLI
 BASE_CONFIG="$BASE_DIR/config.json"
-BASE_CONFIG_JSON=$(cat "$BASE_CONFIG")
+BASE_CONFIG_JSON=$([ -f "$BASE_CONFIG" ] && cat "$BASE_CONFIG" || echo -n "")
 OUTPUT_FILE="$BASE_DIR/output.log"
 ASKED_FILE="$BASE_DIR/asked"
 HELP_SPACE="                          "
@@ -29,7 +29,7 @@ if [ ! -f "$BASE_CONFIG" ] || [ -z "$BASE_CONFIG_JSON" ]; then
     VERSION=$(cd "$BASE_DIR" && git describe --tags)
     store_config "$(echo "{ \"projects\": {}, \"version\": \"$VERSION\" }" | jq -c .)"
 else
-    VERSION=$(cat "$BASE_CONFIG" | jq -r '.version | select(.!=null)')
+    VERSION=$([ -f "$BASE_CONFIG" ] && cat "$BASE_CONFIG" | jq -r '.version | select(.!=null)')
     VERSION=${VERSION:=$(cd "$BASE_DIR" && git describe --tags)}
 
     store_config "$(echo $BASE_CONFIG_JSON | jq ".version = \"${VERSION}\"" | jq -c .)"
@@ -73,7 +73,7 @@ fi
 WDIR=${WDIR:=$(pwd)}
 
 PROJECT_CONFIG="$WDIR/pro-cli.json"
-PROJECT_CONFIG_JSON="$(cat "$PROJECT_CONFIG")"
+PROJECT_CONFIG_JSON="$([ -f "$PROJECT_CONFIG" ] && cat "$PROJECT_CONFIG")"
 PROJECT_NAME=${PWD##*/}
 PROJECT_TYPE=false
 PROJECT_ENVIRONMENT=false
