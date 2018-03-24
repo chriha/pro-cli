@@ -364,3 +364,11 @@ update_plugin() {
         printf "${RED}Unable to update plugin '${1}'!${NORMAL}\n"
     fi
 }
+
+yaml2json() {
+    if ! ruby -v &> /dev/null; then
+        printf "${RED}To convert YAML to JSON, ruby needs to be installed.${NORMAL}\n" && exit 1
+    fi
+
+    ruby -r yaml -r json -e 'puts YAML.load($stdin.read).to_json'
+}

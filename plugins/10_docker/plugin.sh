@@ -1,11 +1,26 @@
 #!/usr/bin/env bash
 
-PC_COMPOSE_ENV=""
+check_for_existing_volumes() {
+    $IS_MAC && return 0
+
+    local VOLUMES=$(cat "$COMPOSE_FILE" | yaml2json | jq -r '.services | map(.volumes) | add | .[]' | awk '!seen[$0]++')
+
+    while read line; do
+        VOLUME="${line%%:*}"
+
+        [ -f "$VOLUME" ] || [ -d "$VOLUME" ] && continue
+
+        # well, we don't know if it really should be a file
+        mkdir -p "$WDIR/$VOLUME"
+    done <<< "$VOLUMES"
+}
+
+COMPOSE_ENV=""
 TTY=""
 
 # use docker-compose file according to env and if it exists
 if [ ! -z "$PROJECT_ENVIRONMENT" ] && [ -f "./docker-compose.${PROJECT_ENVIRONMENT}.yml" ]; then
-    readonly PC_COMPOSE_ENV=".${PROJECT_ENVIRONMENT}"
+    readonly COMPOSE_ENV=".${PROJECT_ENVIRONMENT}"
 fi
 
 # # # # # # # # # # # # # # # # # # # #
@@ -15,12 +30,13 @@ if [ ! -z "$BUILD_NUMBER" ]; then
 fi
 
 if $IS_MAC; then
-    PC_USER_PARAM=""
+    DOCKER_USER_PARAM=""
 else
-    PC_USER_PARAM="-u $PC_USER_ID:$PC_USER_GROUP_ID"
+    DOCKER_USER_PARAM="-u $USER_ID:$USER_GROUP_ID"
 fi
 
-readonly COMPOSE="docker-compose -f docker-compose$PC_COMPOSE_ENV.yml"
+readonly COMPOSE_FILE="docker-compose$COMPOSE_ENV.yml"
+readonly COMPOSE="docker-compose -f $COMPOSE_FILE"
 readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
 
 # # # # # # # # # # # # # # # # # # # #
@@ -37,7 +53,7 @@ elif [ "$1" == "top" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # create and start all or specific containers
 elif [ "$1" == "up" ]; then
-    check_ports
+    check_for_existing_volumes && check_ports
     shift
 
     ( $COMPOSE up -d $@ ) &> $OUTPUT_FILE &
@@ -47,7 +63,7 @@ elif [ "$1" == "up" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # start all or specific containers
 elif [ "$1" == "start" ]; then
-    check_ports
+    check_for_existing_volumes && check_ports
     shift
 
     ( $COMPOSE start $@ ) &> $OUTPUT_FILE &
