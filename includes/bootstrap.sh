@@ -6,7 +6,7 @@
 USER_ID=$(id -u)
 USER_GROUP_ID=$(id -g)
 SYSTEM=$(uname -s)
-IS_MAC=$([ "$SYSTEM" == "Darwin" ] && echo true)
+IS_MAC=$([ "$SYSTEM" == "Darwin" ] && echo true || echo false)
 # output manipulation
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
