@@ -93,23 +93,23 @@ elif [ "$1" == "config" ]; then
         exit
     fi
 
-    PC_SELECTION=".${1}"
+    SELECTION=".${1}"
 
     if [ ! -z "$2" ]; then
-        PC_VALUE=$(echo "${2}" | sed -e 's/"/\\"/g' -e 's/^\\"/"/1' -e 's/\\"$/"/')
+        #PC_VALUE=$(echo "${2}" | sed -e 's/"/\\"/g' -e 's/^\\"/"/1' -e 's/\\"$/"/')
 
         if $(echo $2 | jq . > /dev/null 2>&1); then
-            PC_JSON=$(cat $FILE_PATH | jq "$PC_SELECTION = ${2}" | jq -M .)
+            JSON=$(cat $FILE_PATH | jq "$SELECTION = ${2}" | jq -M .)
         else
-            PC_JSON=$(cat $FILE_PATH | jq "$PC_SELECTION = \"${2}\"" | jq -M .)
+            JSON=$(cat $FILE_PATH | jq "$SELECTION = \"${2}\"" | jq -M .)
         fi
 
         # prevent braking the config file
-        [ -z "$PC_JSON" ] && printf "${RED}Invalid value!${NORMAL}\n" && exit 1
+        [ -z "$JSON" ] && printf "${RED}Invalid value!${NORMAL}\n" && exit 1
 
-        printf '%s' "$PC_JSON" > $FILE_PATH
+        printf '%s' "$JSON" > $FILE_PATH
     else
-        cat $FILE_PATH | jq "$PC_SELECTION"
+        cat $FILE_PATH | jq "$SELECTION"
     fi
 
     exit

@@ -11,7 +11,7 @@ if [ "$1" == "npm" ]; then
     fi
 
     shift
-    $RUN $PC_USER_PARAM -v "$(pwd)/temp/npm":"/.npm" node npm $@
+    $RUN $DOCKER_USER_PARAM -v "$(pwd)/temp/npm":"/.npm" node npm $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
