@@ -321,7 +321,7 @@ install_plugin() {
 
     local REPO="https://github.com/${1}.git"
 
-    if [ $1 == ^https://* ]; then
+    if [[ $1 =~ ^https://* ]]; then
         REPO="$1"
     fi
 
