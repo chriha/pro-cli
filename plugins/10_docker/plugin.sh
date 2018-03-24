@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-PC_COMPOSE_ENV=""
+COMPOSE_ENV=""
 TTY=""
 
 # use docker-compose file according to env and if it exists
 if [ ! -z "$PROJECT_ENVIRONMENT" ] && [ -f "./docker-compose.${PROJECT_ENVIRONMENT}.yml" ]; then
-    readonly PC_COMPOSE_ENV=".${PROJECT_ENVIRONMENT}"
+    readonly COMPOSE_ENV=".${PROJECT_ENVIRONMENT}"
 fi
 
 # # # # # # # # # # # # # # # # # # # #
@@ -15,12 +15,12 @@ if [ ! -z "$BUILD_NUMBER" ]; then
 fi
 
 if $IS_MAC; then
-    PC_USER_PARAM=""
+    DOCKER_USER_PARAM=""
 else
-    PC_USER_PARAM="-u $PC_USER_ID:$PC_USER_GROUP_ID"
+    DOCKER_USER_PARAM="-u $USER_ID:$USER_GROUP_ID"
 fi
 
-readonly COMPOSE="docker-compose -f docker-compose$PC_COMPOSE_ENV.yml"
+readonly COMPOSE="docker-compose -f docker-compose$COMPOSE_ENV.yml"
 readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
 
 # # # # # # # # # # # # # # # # # # # #
