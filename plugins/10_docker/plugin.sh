@@ -3,6 +3,10 @@
 check_for_existing_volumes() {
     $IS_MAC && return 0
 
+    if ! ruby -v &> /dev/null; then
+        printf "${RED}To convert YAML to JSON, ruby needs to be installed.${NORMAL}\n" && exit 1
+    fi
+
     local VOLUMES=$(cat "$COMPOSE_FILE" | yaml2json | jq -r '.services | map(.volumes) | add | .[]' | awk '!seen[$0]++')
 
     while read line; do
@@ -53,7 +57,8 @@ elif [ "$1" == "top" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # create and start all or specific containers
 elif [ "$1" == "up" ]; then
-    check_for_existing_volumes && check_ports
+    ! $IS_MAC && check_for_existing_volumes
+    check_ports
     shift
 
     ( $COMPOSE up -d $@ ) &> $OUTPUT_FILE &
@@ -63,7 +68,8 @@ elif [ "$1" == "up" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # start all or specific containers
 elif [ "$1" == "start" ]; then
-    check_for_existing_volumes && check_ports
+    ! $IS_MAC && check_for_existing_volumes
+    check_ports
     shift
 
     ( $COMPOSE start $@ ) &> $OUTPUT_FILE &
