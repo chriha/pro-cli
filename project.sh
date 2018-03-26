@@ -42,7 +42,7 @@ if [ "$1" == "plugin" ]; then
         update_plugin $@
         exit
     elif [ "$1" == "list" ]; then
-        for i in $(find "$BASE_DIR/plugins" -mindepth 1 -maxdepth 1 -type d); do
+        for i in $(find "$BASE_DIR/plugins" -mindepth 1 -maxdepth 1 -type d | sort -t '\0' -n); do
             echo "- ${i##*/}"
         done
         exit
