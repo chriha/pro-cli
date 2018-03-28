@@ -309,8 +309,10 @@ check_ports() {
 }
 
 store_config() {
-    if [ ! -z "$1" ]; then
-        BASE_CONFIG_JSON=$(echo "$1" | jq -c .)
+    BASE_CONFIG_JSON=$(echo "$1" | jq -c . 2>/dev/null)
+
+    # needs to be valid JSON
+    if [ ! -z "$BASE_CONFIG_JSON" ] && [[ $t == {* ]]; then
         echo "$BASE_CONFIG_JSON" | jq -M . > "$BASE_CONFIG"
     fi
 }

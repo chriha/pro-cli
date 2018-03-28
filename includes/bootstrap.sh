@@ -25,14 +25,14 @@ ASKED_FILE="$BASE_DIR/asked"
 HELP_SPACE="                          "
 
 # create base config if it doesn't exist
-if [ ! -f "$BASE_CONFIG" ] || [ -z "$BASE_CONFIG_JSON" ]; then
+if [ ! -f "$BASE_CONFIG" ] || [ -z "$BASE_CONFIG_JSON" ] || [ -z $(echo "$BASE_CONFIG_JSON" | jq -c . 2>/dev/null) ] || [[ $t != {* ]]; then
     VERSION=$(cd "$BASE_DIR" && git describe --tags)
-    store_config "$(echo "{ \"projects\": {}, \"version\": \"$VERSION\" }" | jq -c .)"
+    store_config $(echo "{ \"projects\": {}, \"version\": \"$VERSION\" }" | jq -c .)
 else
     VERSION=$([ -f "$BASE_CONFIG" ] && cat "$BASE_CONFIG" | jq -r '.version | select(.!=null)')
     VERSION=${VERSION:=$(cd "$BASE_DIR" && git describe --tags)}
 
-    store_config "$(echo $BASE_CONFIG_JSON | jq ".version = \"${VERSION}\"" | jq -c .)"
+    store_config $(echo $BASE_CONFIG_JSON | jq ".version = \"${VERSION}\"" | jq -c .)
 fi
 
 # set head file to check for latest fetch
