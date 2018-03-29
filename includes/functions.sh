@@ -67,7 +67,6 @@ init_project() {
     for i in "$@"; do
         case $i in
         -t=*|--type=*)
-            # save type parameter if available
             TYPE="${i#*=}"
             shift
             ;;
@@ -79,15 +78,22 @@ init_project() {
     done
 
     # check if type is actually supported
-    if [[ ! " ${TYPES[@]} " =~ " ${TYPE} " ]]; then
-        printf "${RED}Unsupported project type!${NORMAL}\n"
-        exit 1
+    if [[ ${TYPES[@]} =~ ${TYPE} ]]; then
+        mkdir -p "$DIR"
+        cp -r "${BASE_DIR}/environments/${TYPE}/" "$DIR"
+        cp "$DIR/.env.example" "$DIR/.env" && touch "$DIR/src/.env"
+
+        return 0
     fi
 
-    mkdir -p "$DIR"
+    for d in $(find "$BASE_DIR/plugins" -mindepth 1 -maxdepth 1 -type d | sort -t '\0' -n); do
+        [ ! -f "$d/init.sh" ] && continue
 
-    cp -r "${BASE_DIR}/environments/${TYPE}/" "$DIR"
-    cp "$DIR/.env.example" "$DIR/.env" && touch "$DIR/src/.env"
+       . "$d/init.sh"
+    done
+
+    printf "${RED}unsupported project type!${NORMAL}\n"
+    exit 1
 }
 
 
