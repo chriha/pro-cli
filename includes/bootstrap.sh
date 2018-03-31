@@ -8,13 +8,13 @@ USER_GROUP_ID=$(id -g)
 SYSTEM=$(uname -s)
 IS_MAC=$([ "$SYSTEM" == "Darwin" ] && echo true || echo false)
 # output manipulation
-RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-BLUE="$(tput setaf 4)"
-BOLD="$(tput bold)"
-NORMAL="$(tput sgr0)"
-CLEAR_LINE="\r\033[K"
+readonly RED="$(tput setaf 1)"
+readonly GREEN="$(tput setaf 2)"
+readonly YELLOW="$(tput setaf 3)"
+readonly BLUE="$(tput setaf 4)"
+readonly BOLD="$(tput bold)"
+readonly NORMAL="$(tput sgr0)"
+readonly CLEAR_LINE="\r\033[K"
 
 # # # # # # # # # # # # # # # # # # # # # # #
 # INITIALIZE PRO-CLI
