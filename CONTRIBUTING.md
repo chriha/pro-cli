@@ -46,6 +46,8 @@ their GitHub handle (starting with `@`) in your message.
 
 ## Submitting Pull Requests
 
+Consider the [Shell Style Guide](https://google.github.io/styleguide/shell.xml) when writing code.
+
 ### Getting started
 
 You should be familiar with the basics of [contributing on GitHub](https://help.github.com/articles/using-pull-requests)
