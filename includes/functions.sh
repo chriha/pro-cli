@@ -68,7 +68,7 @@ help_plugins() {
         printf "${YELLOW}USAGE:${NORMAL}\n"
         printf "project plugins show [options] [argument]\n"
         printf "\n${YELLOW}ARGUMENTS:${NORMAL}\n"
-        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:6}Plugin to show. Can be an official plugin, Github repo or repository URL.${NORMAL}\n"
+        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:6}Plugin ID from the official plugins list.${NORMAL}\n"
         printf "\n${YELLOW}OPTIONS:${NORMAL}\n"
         printf "    ${BLUE}-i, --installed${NORMAL}${HELP_SPACE:15}List all installed plugins.${NORMAL}\n"
         printf "    ${BLUE}-a, --available${NORMAL}${HELP_SPACE:15}List all available plugins.${NORMAL}\n"
