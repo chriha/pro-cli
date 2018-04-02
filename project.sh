@@ -29,13 +29,12 @@ fi
 if [ "$1" == "plugin" ]; then
     shift
 
-    if [ "$1" == "install" ] && [ ! -z "$2" ]; then
-        shift
-        install_plugin $@
-        exit
+    if [ "$1" == "install" ]; then
+        [ ! -z "$2" ] && shift && install_plugin $@ && exit
+
+        install_project_plugins && exit
     elif [ "$1" == "uninstall" ] && [ ! -z "$2" ]; then
-        shift
-        uninstall_plugin $@
+        shift && uninstall_plugin $@
         exit
     elif [ "$1" == "update" ]; then
         shift

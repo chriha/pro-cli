@@ -301,6 +301,12 @@ is_service_running() {
     return 0
 }
 
+#######################################
+# Check if ports are already in use
+#
+# Globals:
+#   WDIR
+#######################################
 check_ports() {
     local PORTS=${1:-$(cat "$WDIR/.env" | grep '_PORT=' | sed -e 's/[A-Z_]*_PORT=\(.*\)/\1/')}
 
@@ -309,11 +315,18 @@ check_ports() {
     PORTS=$(echo $PORTS | paste -sd "," - | sed -e 's/ /,/g')
 
     if lsof -i ":$PORTS" | grep LISTEN > /dev/null; then
-        printf "${RED}Unable to start application - ports already in use.${NORMAL}\n"
-        exit 1
+        err "Unable to start application - ports already in use." && exit 1
     fi
 }
 
+#######################################
+# Store new JSON config
+#
+# Globals:
+#   BASE_CONFIG_JSON
+# Arguments:
+#   CONFIG_JSON
+#######################################
 store_config() {
     BASE_CONFIG_JSON=$(echo "$1" | jq -c . 2>/dev/null)
 
@@ -323,58 +336,154 @@ store_config() {
     fi
 }
 
+#######################################
+# Print error messages
+#
+# Arguments:
+#   ERROR_MESSAGES
+#######################################
+err() {
+    #printf "[$(date +'%Y-%m-%d %H:%M:%S')]: ${RED}$@${NORMAL}\n" >&2
+    printf "${RED}$@${NORMAL}\n" >&2
+}
+
+#######################################
+# Print warnings
+#
+# Arguments:
+#   WARNINGS
+#######################################
+warn() {
+    printf "${YELLOW}$@${NORMAL}\n" >&2
+}
+
+#######################################
+# Print success message
+#
+# Arguments:
+#   MESSAGE
+#######################################
+succ() {
+    printf "${GREEN}$@${NORMAL}\n" >&2
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# install plugins required in project
+#
+# Globals:
+#   PROJECT_CONFIG_JSON
+# # # # # # # # # # # # # # # # # # # #
+install_project_plugins() {
+    local PROJECT_REQUIREMENTS=$(echo "$PROJECT_CONFIG_JSON" | jq -r '.require | .[]')
+
+    [ -z "$PROJECT_REQUIREMENTS" ] && warn "Nothing to do." && exit
+
+    # loop through each requirement and check if it's installed
+    while read -r PLUGIN; do
+        local NAME=${PLUGIN#*/}
+
+        [ -d "$BASE_DIR/plugins/$NAME" ] && continue
+
+        install_plugin $PLUGIN
+    done <<< "$PROJECT_REQUIREMENTS"
+
+    exit
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Compare two versions
+# https://stackoverflow.com/a/4025065
+#
+# Globals:
+#   BASE_DIR
+#   GREEN
+#   NORMAL
+# Arguments:
+#   PLUGIN (vendor/name)
+# # # # # # # # # # # # # # # # # # # #
 install_plugin() {
-    # exit the script if no plugin specified
-    [ -z "$1" ] && printf "${YELLOW}Please specify a plugin!${NORMAL}\n" && exit 1
+    [ -z "$1" ] && warn "Please specify a plugin to install!" && exit 1
 
-    local REPO="https://github.com/${1}.git"
+    local REPO=$(get_repo_url "$1")
+    local NAME=${1#*/}
 
-    if [[ $1 =~ ^https://* ]]; then
-        REPO="$1"
-    fi
-
-    if ( cd "$BASE_DIR/plugins/." && git clone "$REPO" ); then
-        printf "${GREEN}Plugin '${1}' installed!${NORMAL}\n"
+    if [ -d "${BASE_DIR}/plugins/${NAME}" ]; then
+        warn "The plugin '${1}' is already installed!" && return 0
+    elif ( cd "${BASE_DIR}/plugins/." && git clone -q "${REPO}" ); then
+        succ "Plugin '${1}' installed!"
     else
-        printf "${RED}Plugin '${1}' could not be installed!${NORMAL}\n"
+        err "Plugin '${1}' could not be installed!"
     fi
 }
 
+# # # # # # # # # # # # # # # # # # # #
+# uninstall the specified plugin
+#
+# Arguments:
+#   PLUGIN_NAME
+# # # # # # # # # # # # # # # # # # # #
 uninstall_plugin() {
-    # exit the script if no plugin specified
-    [ -z "$1" ] && printf "${YELLOW}Please specify a plugin!${NORMAL}\n" && exit
+    [ -z "$1" ] && warn "Please specify a plugin!" && exit
 
     local PLUGIN=${1#*/}
 
-    if [ ! -d "$BASE_DIR/plugins/$PLUGIN" ]; then
-        printf "${YELLOW}The plugin '${1}' is not installed!${NORMAL}\n"
-        exit 1
+    if [ ! -d "${BASE_DIR}/plugins/${PLUGIN}" ]; then
+        warn "The plugin '${1}' is not installed!" && exit 1
     fi
 
-    rm -rf "$BASE_DIR/plugins/$PLUGIN"
-    printf "${GREEN}Plugin '${1}' uninstalled!${NORMAL}\n"
+    rm -rf "${BASE_DIR}/plugins/${PLUGIN}"
+    succ "Plugin '${1}' uninstalled!"
 }
 
+# # # # # # # # # # # # # # # # # # # #
+# updates the specified plugin
+#
+# Globals:
+#   BASE_DIR
+#   GREEN
+# Arguments:
+#   PLUGIN_NAME / REPO_URL
+#   VERSION / BRANCH
+# # # # # # # # # # # # # # # # # # # #
 update_plugin() {
     # exit the script if no plugin specified
-    [ -z "$1" ] && printf "${YELLOW}Please specify a plugin!${NORMAL}\n" && exit 1
+    [ -z "$1" ] && warn "Please specify a plugin!" && exit 1
 
     local PLUGIN=${1#*/}
 
     if [ ! -d "$BASE_DIR/plugins/$PLUGIN" ]; then
-        printf "${YELLOW}The plugin '${1}' is not installed!${NORMAL}\n"
-        exit 1
+        warn "The plugin '${1}' is not installed!" && exit 1
     fi
 
-    if ( cd "$BASE_DIR/plugins/$PLUGIN" && git pull ); then
-        printf "${GREEN}Plugin '${1}' successfully updated!${NORMAL}\n"
-    else
-        printf "${RED}Unable to update plugin '${1}'!${NORMAL}\n"
+    if cd "$BASE_DIR/plugins/$PLUGIN" && git pull -q; then
+        succ "Plugin '${1}' successfully updated!" && return 0
     fi
+
+    err "Unable to update plugin '${1}'!" && exit 1
 }
 
+# # # # # # # # # # # # # # # # # # # #
+# convert yaml to json
+# # # # # # # # # # # # # # # # # # # #
 yaml2json() {
     if ! ruby -v &> /dev/null; then exit 1; fi
 
     ruby -r yaml -r json -e 'puts YAML.load($stdin.read).to_json'
+}
+
+#######################################
+# Get the URL of a repository
+#
+# Todo:
+#   - fetch URL to repo from plugins list
+#
+# Arguments:
+#   PLUGIN_NAME
+#######################################
+get_repo_url() {
+    if [[ $1 =~ ^https://* ]]; then
+        echo "$1"
+    else
+        echo "https://github.com/${1}.git"
+    fi
 }
