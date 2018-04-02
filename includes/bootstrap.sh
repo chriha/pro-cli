@@ -18,6 +18,7 @@ readonly CLEAR_LINE="\r\033[K"
 
 # # # # # # # # # # # # # # # # # # # # # # #
 # INITIALIZE PRO-CLI
+readonly PLUGINS_LIST_URL="https://rawgit.com/pro-cli/plugins/master/list.json"
 BASE_CONFIG="$BASE_DIR/config.json"
 BASE_CONFIG_JSON=$([ -f "$BASE_CONFIG" ] && cat "$BASE_CONFIG" || echo -n "")
 OUTPUT_FILE="$BASE_DIR/output.log"

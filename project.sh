@@ -25,30 +25,46 @@ fi
 
 
 # # # # # # # # # # # # # # # # # # # #
-# project plugin [install|uninstall|update|list] [VENDOR/PLUGIN_NAME]
-if [ "$1" == "plugin" ]; then
+# project plugins [install|uninstall|update|list] [VENDOR/PLUGIN_NAME]
+if [ "$1" == "plugins" ]; then
     shift
+
+    [ -z "$1" ] && help_plugins && exit 0
 
     if [ "$1" == "install" ]; then
         [ ! -z "$2" ] && shift && install_plugin $@ && exit
 
         install_project_plugins && exit
     elif [ "$1" == "uninstall" ] && [ ! -z "$2" ]; then
-        shift && uninstall_plugin $@
-        exit
+        shift && uninstall_plugin $@ && exit
     elif [ "$1" == "update" ]; then
+        shift && update_plugin $@ && exit
+    elif [ "$1" == "show" ]; then
         shift
-        update_plugin $@
-        exit
-    elif [ "$1" == "list" ]; then
-        for i in $(find "$BASE_DIR/plugins" -mindepth 1 -maxdepth 1 -type d | sort -t '\0' -n); do
-            echo "- ${i##*/}"
-        done
+
+        [ -z "$1" ] && help_plugins "show" && exit 0
+
+        case $1 in
+        -i|--installed)
+            for i in $(find "$BASE_DIR/plugins" -mindepth 1 -maxdepth 1 -type d | sort -t '\0' -n); do
+                echo "${i##*/}"
+            done
+            ;;
+        -h|--help) help_plugins "show" ;;
+        -a|--available)
+            LIST=$(curl -H 'Cache-Control: no-cache' -s "$PLUGINS_LIST_URL")
+            echo "$LIST" | jq -r '. | .[] | .title + " - " + .description' | sort -t '\0' -n
+            exit
+            ;;
+        *)
+            LIST=$(curl -H 'Cache-Control: no-cache' -s "$PLUGINS_LIST_URL")
+            echo "$LIST" | jq ". | .[] | select( .id == \"$1\")"
+            ;;
+        esac
+
         exit
     fi
 
-    printf "${YELLOW}Usage:${NORMAL} project plugin [install|uninstall|list] [VENDOR/PLUGIN_NAME]\n"
-    exit 1
 fi
 
 

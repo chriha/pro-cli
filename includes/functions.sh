@@ -11,7 +11,7 @@ help() {
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
-        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:6}Install, uninstall, update and list plugins.\n"
+        printf "    ${BLUE}plugins${NORMAL}${HELP_SPACE:7}Install, uninstall, update and list plugins.\n"
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
         printf "    ${BLUE}sync${NORMAL}${HELP_SPACE:4}Sync directory structure with pro-cli.\n"
     else
@@ -19,7 +19,7 @@ help() {
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
-        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:6}Install, uninstall, update and list plugins.\n"
+        printf "    ${BLUE}plugins${NORMAL}${HELP_SPACE:7}Install, uninstall, update and list plugins.\n"
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
     fi
 
@@ -51,6 +51,28 @@ help() {
                 printf "    ${BLUE}${KEY}${NORMAL}${HELP_SPACE:$COUNT}${DESCRIPTION}\n"
             done <<< "$COMMAND_KEYS"
         fi
+    fi
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Show how to use the plugins command
+# # # # # # # # # # # # # # # # # # # #
+help_plugins() {
+    if [ -z "$1" ]; then
+        printf "${YELLOW}COMMANDS:${NORMAL}\n"
+        printf "    ${BLUE}install${NORMAL}${HELP_SPACE:7}Install project's required plugins or specify one.${NORMAL}\n"
+        printf "    ${BLUE}uninstall${NORMAL}${HELP_SPACE:9}Uninstall the specified plugin.\n"
+        printf "    ${BLUE}update${NORMAL}${HELP_SPACE:6}Update the specified plugin.\n"
+        printf "    ${BLUE}show${NORMAL}${HELP_SPACE:4}List all or a specific plugin.\n"
+    elif [ "$1" == "show" ]; then
+        printf "${YELLOW}USAGE:${NORMAL}\n"
+        printf "project plugins show [options] [argument]\n"
+        printf "\n${YELLOW}ARGUMENTS:${NORMAL}\n"
+        printf "    ${BLUE}plugin${NORMAL}${HELP_SPACE:6}Plugin to show. Can be an official plugin, Github repo or repository URL.${NORMAL}\n"
+        printf "\n${YELLOW}OPTIONS:${NORMAL}\n"
+        printf "    ${BLUE}-i, --installed${NORMAL}${HELP_SPACE:15}List all installed plugins.${NORMAL}\n"
+        printf "    ${BLUE}-a, --available${NORMAL}${HELP_SPACE:15}List all available plugins.${NORMAL}\n"
+        printf "    ${BLUE}-h, --help${NORMAL}${HELP_SPACE:10}Show this help.${NORMAL}\n"
     fi
 }
 
@@ -258,7 +280,7 @@ update_completions() {
             'init:Setup default project structure in the specified directory.'
             'list:List all projects.'
             'open:Open a project in a new tab.'
-            'plugin:Install, uninstall, update and list plugins.'
+            'plugins:Install, uninstall, update and list plugins.'
             'self-update:Update pro-cli manually.'
             'sync:Sync directory structure with pro-cli.'
             'compose:Run docker-compose commands.'
