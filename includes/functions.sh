@@ -323,12 +323,12 @@ is_service_running() {
     return 0
 }
 
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 # Check if ports are already in use
 #
 # Globals:
 #   WDIR
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 check_ports() {
     local PORTS=${1:-$(cat "$WDIR/.env" | grep '_PORT=' | sed -e 's/[A-Z_]*_PORT=\(.*\)/\1/')}
 
@@ -341,14 +341,14 @@ check_ports() {
     fi
 }
 
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 # Store new JSON config
 #
 # Globals:
 #   BASE_CONFIG_JSON
 # Arguments:
 #   CONFIG_JSON
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 store_config() {
     BASE_CONFIG_JSON=$(echo "$1" | jq -c . 2>/dev/null)
 
@@ -358,33 +358,33 @@ store_config() {
     fi
 }
 
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 # Print error messages
 #
 # Arguments:
 #   ERROR_MESSAGES
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 err() {
     #printf "[$(date +'%Y-%m-%d %H:%M:%S')]: ${RED}$@${NORMAL}\n" >&2
     printf "${RED}$@${NORMAL}\n" >&2
 }
 
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 # Print warnings
 #
 # Arguments:
 #   WARNINGS
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 warn() {
     printf "${YELLOW}$@${NORMAL}\n" >&2
 }
 
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 # Print success message
 #
 # Arguments:
 #   MESSAGE
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 succ() {
     printf "${GREEN}$@${NORMAL}\n" >&2
 }
@@ -493,7 +493,7 @@ yaml2json() {
     ruby -r yaml -r json -e 'puts YAML.load($stdin.read).to_json'
 }
 
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 # Get the URL of a repository
 #
 # Todo:
@@ -501,7 +501,7 @@ yaml2json() {
 #
 # Arguments:
 #   PLUGIN_NAME
-#######################################
+# # # # # # # # # # # # # # # # # # # #
 get_repo_url() {
     if [[ $1 =~ ^https://* ]]; then
         echo "$1"
