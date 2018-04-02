@@ -302,7 +302,7 @@ is_service_running() {
 }
 
 check_ports() {
-    local PORTS=${1:-$(cat .env | grep '_PORT=' | sed -e 's/[A-Z_]*_PORT=\(.*\)/\1/')}
+    local PORTS=${1:-$(cat "$WDIR/.env" | grep '_PORT=' | sed -e 's/[A-Z_]*_PORT=\(.*\)/\1/')}
 
     [ -z "$PORTS" ] && return 0
 
