@@ -26,7 +26,7 @@ ASKED_FILE="$BASE_DIR/asked"
 HELP_SPACE="                          "
 
 # create base config if it doesn't exist
-if [ ! -f "$BASE_CONFIG" ] || [ -z "$BASE_CONFIG_JSON" ] || [ -z $(echo "$BASE_CONFIG_JSON" | jq -c . 2>/dev/null) ] || [[ $t != {* ]]; then
+if [ ! -f "$BASE_CONFIG" ] || [ -z "$BASE_CONFIG_JSON" ] || [ -z $(echo "$BASE_CONFIG_JSON" | jq -c . 2>/dev/null) ] || [[ $BASE_CONFIG_JSON != {* ]]; then
     VERSION=$(cd "$BASE_DIR" && git describe --tags)
     store_config $(echo "{ \"projects\": {}, \"version\": \"$VERSION\" }" | jq -c .)
 else
