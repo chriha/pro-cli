@@ -2,7 +2,7 @@ version: '2'
 
 services:
   web:
-    image: chriha/web:php7.1
+    image: procli/php:7.2
     volumes:
       - ./src:/var/www
     ports:
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./src:/var/www
   node:
-    image: chriha/node:9
+    image: procli/node:9
     volumes:
       - ./src:/var/www
   redis:
@@ -57,7 +57,7 @@ services:
     ports:
       - "15672:15672"
   mailcatcher:
-    image: chriha/mailcatcher:0.6-latest
+    image: procli/mailcatcher
     networks:
       - default
     ports:
