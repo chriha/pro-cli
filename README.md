@@ -71,7 +71,7 @@ To manually update **pro-cli** just use the `project self-update` command.
 
 ## Uninstall
 ```bash
-rm -rf $HOME/.pro-cli && rm $HOME/.bin/project
+rm -rf $HOME/.pro-cli && rm /usr/local/bin/project
 ```
 
 
