@@ -118,7 +118,7 @@ elif [ "$1" == "exec" ]; then
 # run a service and execute further commands
 elif [ "$1" == "run" ]; then
     shift
-    $RUN $@
+    $RUN $DOCKER_USER_PARAM $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
