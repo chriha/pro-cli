@@ -14,7 +14,7 @@ services:
     volumes:
       - ./src:/var/www
   node:
-    image: chriha/node:7.2-latest
+    image: procli/node:9
     volumes:
       - ./src:/var/www
 
