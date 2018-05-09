@@ -41,7 +41,15 @@ fi
 
 readonly COMPOSE_FILE="docker-compose$COMPOSE_ENV.yml"
 readonly COMPOSE="docker-compose -f $COMPOSE_FILE"
-readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
+
+# # # # # # # # # # # # # # # # # # # #
+# set default workdir only if none is given
+if [[ $* == *\ -w* ]]; then
+    readonly RUN="$COMPOSE run --rm $TTY"
+else
+    readonly RUN="$COMPOSE run --rm $TTY -w /var/www"
+fi
+
 
 # # # # # # # # # # # # # # # # # # # #
 # show all containers status
