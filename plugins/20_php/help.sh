@@ -7,4 +7,5 @@ if [[ -f "$PROJECT_CONFIG" && ( "$PROJECT_TYPE" == "laravel" || "$PROJECT_TYPE" 
     printf "    ${BLUE}composer${NORMAL}${HELP_SPACE:8}Run composer commands.\n"
     printf "    ${BLUE}php${NORMAL}${HELP_SPACE:3}Run PHP commands.\n"
     printf "    ${BLUE}test${NORMAL}${HELP_SPACE:4}Run Unit Tests.\n"
+    printf "    ${BLUE}xdebug${NORMAL}${HELP_SPACE:4}Enable / disable Xdebug.\n"
 fi
