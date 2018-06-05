@@ -37,6 +37,8 @@ if [ ! -f "$BASE_CONFIG" ]; then
     echo "{ \"projects\": {}, \"version\": \"${VERSION}\" }" | jq -M . > "$BASE_CONFIG"
 fi
 
+. "${BASE_DIR}/includes/functions.sh"
+
 TIMESTAMP=$(unixtime_from_file "$HEAD_FILE")
 JSON=$(cat "$BASE_CONFIG" | jq ".updated_at = ${TIMESTAMP}" | jq -M .)
 store_config "$JSON"
