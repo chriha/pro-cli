@@ -104,7 +104,7 @@ project npm install|run|...
 ngrok needs to be installed in one of your `bin` folders of your host.
 ```shell
 # install the ngrok plugin for pro-cli
-project plugin install chriha/pro-cli-ngrok
+project plugins install pro-cli/ngrok
 # expose your application using ngrok
 project expose [--auth='user:password']
 ```
