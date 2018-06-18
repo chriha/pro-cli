@@ -17,6 +17,10 @@ if [ "$VERSION" != "$VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
     fi
 fi
 
+if can_show_hint && [ "$1" != "hints" ]; then
+    random_hint && sleep 5
+fi
+
 # # # # # # # # # # # # # # # # # # # #
 # show help immediately
 if [ $# -eq 0 ] || [ "$1" == "help" ]; then
@@ -136,6 +140,12 @@ elif [ "$1" == "self-update" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
+# project self-update
+elif [ "$1" == "hints" ]; then
+    random_hint
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # project list
 elif [ "$1" == "list" ]; then
     echo "$BASE_CONFIG_JSON" | jq '.projects'
@@ -172,3 +182,4 @@ if [ ! -z "$1" ] && [ ! -z "$PROJECT_CONFIG_JSON" ] && [[ $(echo "$PROJECT_CONFI
 fi
 
 printf "${YELLOW}Command not found ¯\_(ツ)_/¯${NORMAL}\n"
+
