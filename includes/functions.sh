@@ -8,6 +8,7 @@ help() {
     printf "COMMANDS:\n"
     if [ -f "$PROJECT_CONFIG" ]; then
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.${NORMAL}\n"
+        printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
@@ -16,6 +17,7 @@ help() {
         printf "    ${BLUE}sync${NORMAL}${HELP_SPACE:4}Sync directory structure with pro-cli.\n"
     else
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.${NORMAL}\n"
+        printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
@@ -277,6 +279,7 @@ update_completions() {
         local -a commands
             commands=(
             'config:Read and write local config settings.'
+            'hints:Show a random hint.'
             'init:Setup default project structure in the specified directory.'
             'list:List all projects.'
             'open:Open a project in a new tab.'
@@ -510,9 +513,42 @@ get_repo_url() {
     fi
 }
 
+
+# # # # # # # # # # # # # # # # # # # #
+# Show random hint
+# # # # # # # # # # # # # # # # # # # #
 random_hint() {
-    local JSON=$(cat "${BASE_DIR}/hints.json")
-    local LENGTH=$(echo "$JSON" | jq 'length')
-    local KEY=$(($RANDOM % $LENGTH))
-    echo "$JSON" | jq -r ".[$KEY]"
+    local JSON=$(cat "$HINTS_FILE")
+    local LENGTH=$(echo $JSON | jq '. | keys | length')
+    local INDEX=$(($RANDOM % $LENGTH))
+    local KEY=$(printf "$JSON" | jq -r ". | keys | .[$INDEX]")
+
+    local HINT_DESC=$(echo "$JSON" | jq -r --arg string "$KEY" '.[$string].description')
+    local HINT_CMD=$(echo "$JSON" | jq -r --arg string "$KEY" '.[$string].command')
+
+    printf "\n"
+    printf "${BLUE}${HINT_DESC}${NORMAL}\n"
+    [ ! -z "$HINT_CMD" ] && printf "    ${HINT_CMD}\n"
+    printf "\n"
 }
+
+
+# # # # # # # # # # # # # # # # # # # #
+# Check if a random hint can be shown
+# # # # # # # # # # # # # # # # # # # #
+can_show_hint() {
+    local CHECK=$(echo "$BASE_CONFIG_JSON" | jq -r '.hints.enabled | select(.==false)')
+
+    [ ! -z "$CHECK" ] && return 1
+
+    local SHOWN=$(echo "$BASE_CONFIG_JSON" | jq -r '.hints.shown_at | select(.!=null)')
+    local TIME=$(date +%Y%m%d%H)
+
+    [ ! -z "$SHOWN" ] && [ "$SHOWN" = "$TIME" ] && return 1
+
+    local JSON=$(echo $BASE_CONFIG_JSON | jq ".hints.shown_at = \"${TIME}\"" | jq -M .)
+    store_config "$JSON"
+
+    return 0
+}
+

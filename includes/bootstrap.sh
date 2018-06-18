@@ -18,8 +18,12 @@ readonly CLEAR_LINE="\r\033[K"
 
 # # # # # # # # # # # # # # # # # # # # # # #
 # INITIALIZE PRO-CLI
+readonly CACHE_DIR="$BASE_DIR/cache"
+readonly CURDAY=$(date +%Y%m%d)
+readonly BASE_CONFIG="$BASE_DIR/config.json"
 readonly PLUGINS_LIST_URL="https://rawgit.com/pro-cli/plugins/master/list.json"
-BASE_CONFIG="$BASE_DIR/config.json"
+readonly HINTS_LIST_URL="https://rawgit.com/pro-cli/hints/master/list.json"
+readonly HINTS_FILE="$CACHE_DIR/hints.$CURDAY.json"
 BASE_CONFIG_JSON=$([ -f "$BASE_CONFIG" ] && cat "$BASE_CONFIG" || echo -n "")
 OUTPUT_FILE="$BASE_DIR/output.log"
 ASKED_FILE="$BASE_DIR/asked"
@@ -35,6 +39,8 @@ else
 
     store_config $(echo $BASE_CONFIG_JSON | jq ".version = \"${VERSION}\"" | jq -c .)
 fi
+
+mkdir -p "$BASE_DIR/cache"
 
 # set head file to check for latest fetch
 if [ -f "$BASE_DIR/.git/FETCH_HEAD" ]; then
@@ -61,6 +67,15 @@ if [ $LATEST_FETCH != 0 ] && [ $LATEST_FETCH -gt 43200 ]; then
 else
     VERSION_NEW=$VERSION
 fi
+
+# cache latest hints
+if [ ! -f "$HINTS_FILE" ]; then
+    rm -f "$CACHE_DIR/hints.*.json"
+    echo "$HINTS_FILE"
+    touch "$HINTS_FILE"
+    curl -H 'Cache-Control: no-cache' -s "$HINTS_LIST_URL" | jq -r . > "$HINTS_FILE"
+fi
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # #
@@ -91,3 +106,4 @@ if [ "$PROJECT_EXISTS" == "false" ]; then
 fi
 
 reset_output
+
