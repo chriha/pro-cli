@@ -172,3 +172,17 @@ if [ ! -z "$1" ] && [ ! -z "$PROJECT_CONFIG_JSON" ] && [[ $(echo "$PROJECT_CONFI
 fi
 
 printf "${YELLOW}Command not found ¯\_(ツ)_/¯${NORMAL}\n"
+
+
+
+printf "\n${YELLOW}----------------8<------------------------[ cut off hint here ]------------------${NORMAL}\n"
+JSON=$(cat "/Users/chris/code/projects/pro-cli/hints/list.json")
+LENGTH=$(echo "$JSON" | jq '. | keys | length')
+INDEX=$(($RANDOM % $LENGTH))
+KEY=$(printf "$JSON" | jq -r ". | keys | .[$INDEX]")
+
+HINT_DESC=$(echo "$JSON" | jq -r --arg string "$KEY" '.[$string].description')
+HINT_CMD=$(echo "$JSON" | jq -r --arg string "$KEY" '.[$string].command')
+
+printf "${BLUE}${HINT_DESC}${NORMAL}\n"
+[ ! -z "$HINT_CMD" ] && printf "    ${HINT_CMD}\n"

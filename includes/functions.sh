@@ -509,3 +509,10 @@ get_repo_url() {
         echo "https://github.com/${1}.git"
     fi
 }
+
+random_hint() {
+    local JSON=$(cat "${BASE_DIR}/hints.json")
+    local LENGTH=$(echo "$JSON" | jq 'length')
+    local KEY=$(($RANDOM % $LENGTH))
+    echo "$JSON" | jq -r ".[$KEY]"
+}
