@@ -71,7 +71,6 @@ fi
 # cache latest hints
 if [ ! -f "$HINTS_FILE" ]; then
     rm -f "$CACHE_DIR/hints.*.json"
-    echo "$HINTS_FILE"
     touch "$HINTS_FILE"
     curl -H 'Cache-Control: no-cache' -s "$HINTS_LIST_URL" | jq -r . > "$HINTS_FILE"
 fi
