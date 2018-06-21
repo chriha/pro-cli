@@ -552,3 +552,14 @@ can_show_hint() {
     return 0
 }
 
+# # # # # # # # # # # # # # # # # # # #
+# Check if the web instance is running
+# # # # # # # # # # # # # # # # # # # #
+is_web_running() {
+    if ! project status | grep 'web_1.*Up' >/dev/null; then
+        return 1
+    fi
+
+    return 0
+}
+
