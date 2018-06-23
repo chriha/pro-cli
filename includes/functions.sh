@@ -401,7 +401,7 @@ succ() {
 install_project_plugins() {
     local PROJECT_REQUIREMENTS=$(echo "$PROJECT_CONFIG_JSON" | jq -r '.require | .[]')
 
-    [ -z "$PROJECT_REQUIREMENTS" ] && warn "Nothing to do." && exit
+    [ -z "$PROJECT_REQUIREMENTS" ] && warn "No dependencies found." && exit
 
     # loop through each requirement and check if it's installed
     while read -r PLUGIN; do
