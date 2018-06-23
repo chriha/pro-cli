@@ -493,11 +493,13 @@ update_plugin() {
         warn "The plugin '${1}' is not installed!" && exit 1
     fi
 
+    printf "Updating plugin '$PLUGIN' ... "
+
     if cd "$BASE_DIR/plugins/$PLUGIN" && git pull -q; then
-        succ "Plugin '${1}' successfully updated!" && return 0
+        succ "done" && return 0
     fi
 
-    err "Unable to update plugin '${1}'!" && exit 1
+    err "\nUnable to update plugin '${1}'!" && exit 1
 }
 
 # # # # # # # # # # # # # # # # # # # #
