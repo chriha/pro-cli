@@ -407,9 +407,17 @@ install_project_plugins() {
     while read -r PLUGIN; do
         local NAME=${PLUGIN#*/}
 
-        [ -d "$BASE_DIR/plugins/$NAME" ] && continue
+        if [ -d "$BASE_DIR/plugins/$NAME" ]; then
+            read -p "'$NAME' is already installed. Would you like to update? [y|n]: " -n 1 -r
+            printf "\n"
 
-        install_plugin $PLUGIN
+            [[ ! $REPLY =~ ^[Yy]$ ]] && continue
+
+            update_plugin $NAME
+        else
+            install_plugin $PLUGIN
+        fi
+
     done <<< "$PROJECT_REQUIREMENTS"
 
     exit
@@ -433,7 +441,12 @@ install_plugin() {
     local NAME=${1#*/}
 
     if [ -d "${BASE_DIR}/plugins/${NAME}" ]; then
-        warn "The plugin '${1}' is already installed!" && return 0
+        read -p "'${NAME}' is already installed. Would you like to update? [y|n]: " -n 1 -r
+        printf "\n"
+
+        [[ ! $REPLY =~ ^[Yy]$ ]] && return 0
+
+        update_plugin $NAME
     elif ( cd "${BASE_DIR}/plugins/." && git clone -q "${REPO}" ); then
         succ "Plugin '${1}' installed!"
     else
