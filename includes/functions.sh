@@ -523,8 +523,10 @@ yaml2json() {
 get_repo_url() {
     if [[ $1 =~ ^https://* ]]; then
         echo "$1"
-    else
+    elif [[ "$1" == */* ]]; then
         echo "https://github.com/${1}.git"
+    else
+        echo "https://github.com/pro-cli/${1}.git"
     fi
 }
 
