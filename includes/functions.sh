@@ -65,6 +65,7 @@ help_plugins() {
         printf "    ${BLUE}install${NORMAL}${HELP_SPACE:7}Install project's required plugins or specify one.${NORMAL}\n"
         printf "    ${BLUE}uninstall${NORMAL}${HELP_SPACE:9}Uninstall the specified plugin.\n"
         printf "    ${BLUE}update${NORMAL}${HELP_SPACE:6}Update the specified plugin.\n"
+        printf "    ${BLUE}search${NORMAL}${HELP_SPACE:6}Search for a specific plugin.\n"
         printf "    ${BLUE}show${NORMAL}${HELP_SPACE:4}List all or a specific plugin.\n"
     elif [ "$1" == "show" ]; then
         printf "${YELLOW}USAGE:${NORMAL}\n"
