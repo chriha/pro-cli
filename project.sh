@@ -43,6 +43,13 @@ if [ "$1" == "plugins" ]; then
         shift && uninstall_plugin $@ && exit
     elif [ "$1" == "update" ]; then
         shift && update_plugin $@ && exit
+    elif [ "$1" == "search" ]; then
+        [ -z "$2" ] && err "Please specify a search parameter." && exit
+        shift
+
+        LIST=$(curl -H 'Cache-Control: no-cache' -s "$PLUGINS_LIST_URL")
+        echo "$LIST" | jq -r --arg S "$1" '.[] | select((.id | match($S; "i")) or (.title | match($S; "i")) or (.description | match($S; "i"))) | .title + " - " + .description' | sort -t '\0' -n
+        exit
     elif [ "$1" == "show" ]; then
         shift
 
