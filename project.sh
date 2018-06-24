@@ -18,7 +18,10 @@ if [ "$VERSION" != "$VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
 fi
 
 if can_show_hint && [ "$1" != "hints" ]; then
-    random_hint && sleep 5
+    echo "${YELLOW}Hourly hint --------------------------------------${NORMAL}"
+    random_hint
+    echo "${YELLOW}--------------------------------------------------${NORMAL}"
+    sleep 5
 fi
 
 # # # # # # # # # # # # # # # # # # # #

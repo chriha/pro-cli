@@ -543,10 +543,8 @@ random_hint() {
     local HINT_DESC=$(echo "$JSON" | jq -r --arg string "$KEY" '.[$string].description')
     local HINT_CMD=$(echo "$JSON" | jq -r --arg string "$KEY" '.[$string].command')
 
-    printf "\n"
     printf "${BLUE}${HINT_DESC}${NORMAL}\n"
     [ ! -z "$HINT_CMD" ] && printf "    ${HINT_CMD}\n"
-    printf "\n"
 }
 
 
