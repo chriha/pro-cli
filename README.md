@@ -35,7 +35,6 @@ See how you can [use it](#usage), take a look at the [wiki](https://github.com/c
 ### Dependencies
 - The amazing [jq](https://stedolan.github.io/jq/) -> [download](https://stedolan.github.io/jq/download/)
 - [Docker](https://docs.docker.com/engine/installation/)
-- [ngrok](https://ngrok.com/) (optional) to use the [expose](#expose-your-local-server-securely-to-the-internet) command
 
 
 ### Install pro-cli
@@ -104,7 +103,7 @@ project npm install|run|...
 ngrok needs to be installed in one of your `bin` folders of your host.
 ```shell
 # install the ngrok plugin for pro-cli
-project plugins install pro-cli/ngrok
+project plugins install ngrok
 # expose your application using ngrok
 project expose [--auth='user:password']
 ```
