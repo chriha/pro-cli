@@ -15,6 +15,8 @@ if [ "$VERSION" != "$VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then
         . "$BASE_DIR/includes/update.sh"
         exit
     fi
+
+    echo
 fi
 
 if can_show_hint && [ "$1" != "hints" ]; then
