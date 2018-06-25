@@ -102,7 +102,8 @@ elif [ "$1" == "down" ]; then
 # # # # # # # # # # # # # # # # # # # #
 # restart by using down & up commands
 elif [ "$1" == "restart" ]; then
-    project down && project up
+    shift
+    project down && project up $@
     exit
 
 # # # # # # # # # # # # # # # # # # # #
