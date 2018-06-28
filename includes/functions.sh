@@ -579,3 +579,23 @@ is_web_running() {
     return 0
 }
 
+# # # # # # # # # # # # # # # # # # # #
+# Checks if specific parameters are provided
+#
+# Arguments:
+#   PARAMETER_TO_CHECK
+#   AVAILABLE_PARAMETERS
+# # # # # # # # # # # # # # # # # # # #
+has_parameter() {
+    local SEARCH="$1"
+    shift
+
+    while test $# -gt 0; do
+        [ "$1" == "$SEARCH" ] && return 0
+
+        shift
+    done
+
+    return 1
+}
+
