@@ -76,7 +76,6 @@ if [ ! -f "$HINTS_FILE" ]; then
 fi
 
 
-
 # # # # # # # # # # # # # # # # # # # # # # #
 # INITIALIZE LOCAL PROJECT
 # to enable pro-cli in the project, try to fetch the working dir via Git
@@ -91,11 +90,10 @@ PROJECT_CONFIG="$WDIR/pro-cli.json"
 PROJECT_CONFIG_JSON="$([ -f "$PROJECT_CONFIG" ] && cat "$PROJECT_CONFIG")"
 PROJECT_NAME=${PWD##*/}
 PROJECT_TYPE=false
-PROJECT_ENVIRONMENT=false
+PROJECT_ENVIRONMENT=$(get_env)
 
 if [ ! -z "$PROJECT_CONFIG_JSON" ]; then
     PROJECT_TYPE=$(echo "$PROJECT_CONFIG_JSON" | jq -r '.type')
-    PROJECT_ENVIRONMENT=$(echo "$PROJECT_CONFIG_JSON" | jq -r '.env')
 fi
 
 PROJECT_EXISTS=$(echo "$BASE_CONFIG_JSON" | jq --arg dir "$PROJECT_NAME" '.projects | has("$dir")')

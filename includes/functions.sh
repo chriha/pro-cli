@@ -599,3 +599,36 @@ has_parameter() {
     return 1
 }
 
+# # # # # # # # # # # # # # # # # # # #
+# Returns the specified environment
+# # # # # # # # # # # # # # # # # # # #
+get_env() {
+    local ENV=$(echo "$PROJECT_CONFIG_JSON" | jq -r '.env | select(.!=null)')
+
+    [ ! -z "$ENV" ] && echo "$ENV" && return 0
+
+    ENV=$(grep "^ENV=" "${WDIR}/.env" | sed -e 's/^ENV=\(.*\)/\1/')
+
+    if [ -z "$ENV" ]; then
+        ENV="local"
+    fi
+
+    echo "$ENV" && return 0
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Checks for specific environment
+#
+# Arguments:
+#   ENVIRONMENT
+# # # # # # # # # # # # # # # # # # # #
+is_env() {
+    if grep "^ENV=${1}" "${WDIR}/.env" >/dev/null; then
+        return 0
+    elif ! grep "^ENV=" "${WDIR}/.env" >/dev/null && [ "$1" == "production" ]; then
+        return 0
+    fi
+
+    return 1
+}
+
