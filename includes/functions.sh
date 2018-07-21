@@ -607,6 +607,8 @@ get_env() {
 
     [ ! -z "$ENV" ] && echo "$ENV" && return 0
 
+    [ ! -f "${WDIR}/.env" ] && return 0
+
     ENV=$(grep "^ENV=" "${WDIR}/.env" | sed -e 's/^ENV=\(.*\)/\1/')
 
     if [ -z "$ENV" ]; then
