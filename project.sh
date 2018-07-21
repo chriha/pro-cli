@@ -101,6 +101,35 @@ if [ "$1" == "init" ]; then
     printf "${GREEN}done!${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
+# clone project and run install command if available
+elif [ "$1" == "clone" ]; then
+    shift
+
+    [ -f "$PROJECT_CONFIG" ] && printf "${RED}You can't clone into another project.${NORMAL}\n" && exit
+
+    CLONE_DIR=$([ ! -z "$2" ] && echo "$2" || basename -s .git "$1")
+    printf "${YELLOW}Cloning project into '${CLONE_DIR}' ... ${NORMAL}"
+
+    ! git clone -q $@ && exit
+
+    printf "${GREEN}done${NORMAL}\n"
+
+    [ ! -f "${CLONE_DIR}/pro-cli.json" ] && exit
+
+    cd "$CLONE_DIR"
+    CLONE_INSTALL=$(cat pro-cli.json | jq -r '.scripts.install | select(.!=null)')
+
+    [ -z "$(cat pro-cli.json | jq -r '.scripts.install | select(.!=null)')" ] && exit
+
+    read -p "${YELLOW}Would you like to install the project?${NORMAL} [y|n]: " -n 1 -r
+    printf "\n"
+
+    [[ ! $REPLY =~ ^[Yy]$ ]] && exit
+
+    project install
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # sync directory structure with pro-cli
 elif [ "$1" == "sync" ]; then
     sync_structure

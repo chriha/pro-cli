@@ -16,6 +16,7 @@ help() {
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
         printf "    ${BLUE}sync${NORMAL}${HELP_SPACE:4}Sync directory structure with pro-cli.\n"
     else
+        printf "    ${BLUE}clone${NORMAL}${HELP_SPACE:5}Clone Git repo and install project.${NORMAL}\n"
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.${NORMAL}\n"
         printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
@@ -279,6 +280,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
+            'clone:Clone Git repo and install project."
             'config:Read and write local config settings.'
             'hints:Show a random hint.'
             'init:Setup default project structure in the specified directory.'
@@ -633,4 +635,3 @@ is_env() {
 
     return 1
 }
-
