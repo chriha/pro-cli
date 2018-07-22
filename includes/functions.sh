@@ -280,7 +280,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
-            'clone:Clone Git repo and install project."
+            'clone:Clone Git repo and install project.'
             'config:Read and write local config settings.'
             'hints:Show a random hint.'
             'init:Setup default project structure in the specified directory.'
