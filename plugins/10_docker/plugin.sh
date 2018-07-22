@@ -70,8 +70,8 @@ elif [ "$1" == "up" ]; then
     shift
 
     ( $COMPOSE up -d $@ ) &> $OUTPUT_FILE &
-    spinner $! "Starting containers ... "
-    has_errors || printf "${GREEN}Containers started${NORMAL}\n" && exit
+    spinner $! "${YELLOW}Starting containers ... ${NORMAL}"
+    has_errors || printf "${YELLOW}Starting containers ... ${NORMAL}${GREEN}done${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # start all or specific containers
@@ -81,23 +81,23 @@ elif [ "$1" == "start" ]; then
     shift
 
     ( $COMPOSE start $@ ) &> $OUTPUT_FILE &
-    spinner $! "Starting containers ... "
-    has_errors || printf "${GREEN}Containers started${NORMAL}\n" && exit
+    spinner $! "${YELLOW}Starting containers ... ${NORMAL}"
+    has_errors || printf "${YELLOW}Starting containers ... ${NORMAL}${GREEN}done${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop all or specific containers
 elif [ "$1" == "stop" ]; then
     shift
     ( $COMPOSE stop $@ ) &> $OUTPUT_FILE &
-    spinner $! "Stopping containers ... "
-    has_errors || printf "${GREEN}Containers stopped${NORMAL}\n" && exit
+    spinner $! "${YELLOW}Stopping containers ... ${NORMAL}"
+    has_errors || printf "${YELLOW}Stopping containers ... ${NORMAL}${GREEN}Containers stopped${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop and destroy all containers
 elif [ "$1" == "down" ]; then
     ( $COMPOSE down ) &> $OUTPUT_FILE &
-    spinner $! "Shutting down containers ... "
-    has_errors || printf "${GREEN}Containers stopped and removed${NORMAL}\n" && exit
+    spinner $! "${YELLOW}Removing containers ... ${NORMAL}"
+    has_errors || printf "${YELLOW}Removing containers ... ${NORMAL}${GREEN}done${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # restart by using down & up commands
