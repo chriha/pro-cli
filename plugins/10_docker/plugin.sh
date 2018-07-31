@@ -90,7 +90,7 @@ elif [ "$1" == "stop" ]; then
     shift
     ( $COMPOSE stop $@ ) &> $OUTPUT_FILE &
     spinner $! "${YELLOW}Stopping containers ... ${NORMAL}"
-    has_errors || printf "${YELLOW}Stopping containers ... ${NORMAL}${GREEN}Containers stopped${NORMAL}\n" && exit
+    has_errors || printf "${YELLOW}Stopping containers ... ${NORMAL}${GREEN}done${NORMAL}\n" && exit
 
 # # # # # # # # # # # # # # # # # # # #
 # stop and destroy all containers
