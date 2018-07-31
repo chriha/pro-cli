@@ -2,14 +2,14 @@
 
 # # # # # # # # # # # # # # # # # # # #
 # execute npm commands
-if [ "$1" == "npm" ]; then
-    if ( needs_help $@ ); then
-        printf "${YELLOW}usage:${NORMAL} project npm [command]\n\n"
-        printf "OPTIONS:\n"
-        printf "    ${BLUE}--auth='user:password'${NORMAL}${HELP_SPACE:22}Secure the application with basic auth.${NORMAL}\n"
-        exit 1
-    fi
+if [ "$1" == "node" ]; then
+    shift
+    $RUN $DOCKER_USER_PARAM -v "$(pwd)/temp/npm":"/.npm" node node $@
+    exit
 
+# # # # # # # # # # # # # # # # # # # #
+# execute npm commands
+elif [ "$1" == "npm" ]; then
     shift
     $RUN $DOCKER_USER_PARAM -v "$(pwd)/temp/npm":"/.npm" node npm $@
     exit
