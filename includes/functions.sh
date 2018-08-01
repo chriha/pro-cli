@@ -280,6 +280,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
+            'query-logs:Manage query logs.'
             'clone:Clone Git repo and install project.'
             'config:Read and write local config settings.'
             'hints:Show a random hint.'
