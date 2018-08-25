@@ -4,6 +4,11 @@ BASE_DIR="$HOME/.pro-cli"
 
 . "$BASE_DIR/includes/bootstrap.sh"
 
+if tmate_status && [ "$1" != "support" ]; then
+    printf "${YELLOW}You have active tmate sessions!${NORMAL}\n"
+    sleep 1
+fi
+
 # # # # # # # # # # # # # # # # # # # #
 # show new version info if available
 if [ "$VERSION" != "$VERSION_NEW" ] && [ ! -f $ASKED_FILE ]; then

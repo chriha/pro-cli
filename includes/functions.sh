@@ -647,12 +647,12 @@ tmate_start() {
     ( tmate -S /tmp/tmate.sock new-session -d && sleep 2 ) &
     spinner $! "Starting tmate session ... "
     printf "Starting tmate session ... ${GREEN}done!${NORMAL}\n"
-    printf "${BLUE}Here are your connection strings to share:${NORMAL} --------\n"
-    tmate_details
     return 0
 }
 
 tmate_status() {
+    if ( ! which tmate > /dev/null 2>&1 ); then return 1; fi
+
     ( ! tmate -S /tmp/tmate.sock list-sessions > /dev/null 2>&1 ) && return 1 || return 0
 }
 
