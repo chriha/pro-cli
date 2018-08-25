@@ -234,7 +234,14 @@ elif [ "$1" == "support" ]; then
     fi
 
     if [ -z "$1" ]; then
+        if tmate_status; then
+            tmate_details
+            exit
+        fi
+
         tmate_start
+        printf "${BLUE}Here are your connection strings to share:${NORMAL} --------\n"
+        tmate_details
     elif [ "$1" == "attach" ]; then
         if ! tmate_status; then
             tmate_start

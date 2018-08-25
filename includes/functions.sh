@@ -282,7 +282,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
-            'support:Get help by sharing a CLI session.'
+            'support:Get help by sharing a CLI session. tmate required.'
             'query-logs:Manage query logs.'
             'clone:Clone Git repo and install project.'
             'config:Read and write local config settings.'
