@@ -27,7 +27,7 @@ services:
       DB_PASSWORD: "${DB_PASS}"
       DB_DATABASE: "${DB_NAME}"
     volumes:
-      - ./temp/postgres:/var/lib/postgresql
+      - ./temp/postgres:/var/lib/postgresql:delegated
     networks:
       - default
   yarn:
@@ -41,14 +41,14 @@ services:
   redis:
     image: redis:alpine
     volumes:
-      - ./temp/redis:/data
+      - ./temp/redis:/data:cached
     networks:
       - default
     command: redis-server
   rabbit:
     image: rabbitmq:3.6-management
     volumes:
-      - ./temp/rabbit:/var/lib/rabbitmq@rabbit
+      - ./temp/rabbit:/var/lib/rabbitmq@rabbit:delegated
     networks:
       - default
     environment:
