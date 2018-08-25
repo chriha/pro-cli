@@ -1,5 +1,5 @@
 # pro-cli
-- initialize and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
+- initialize, install and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
 - specify the services depending on your projects needs in your own `docker-compose.local.yml`
 - install even complex projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
 - temporarily [expose](#expose-your-local-server-securely-to-the-internet) the application securely to the internet (ngrok required)
@@ -84,11 +84,15 @@ The most used commands while working with *pro-cli*. Remember, every command tha
 project init FOLDER --type=laravel|php|nodejs|django
 ```
 
+### Clone and automatically install an existing project
+For automatic installation, you need to add an `install` command to the `pro-cli.json`.
+```shell
+project clone URL_TO_REPOSITORY
+```
+
 ### Start and stop environment and its services
 ```shell
-project up
-project down
-project restart
+project up|down|restart
 ```
 
 ### Run any service specific command
@@ -110,13 +114,28 @@ project expose [--auth='user:password']
 
 ### Show service status and resource statistics
 ```shell
-project status
-project top
+project status|top
 ```
 
 ### Open / tail logs
 ```shell
-project logs SERVICE
+project logs [-f] SERVICE
+```
+
+### Enable Xdebug
+You still need to configure your IDE
+```
+project xdebug enable|disable|status
+```
+
+### Enable, disable, tail and clear MySQL query logs
+```
+project query-logs enable|disable|tail|clear
+```
+
+### Run Docker Compose commands with your `docker-compose.yml`
+```shell
+project compose ...
 ```
 
 ### Using bash inside a container / service
@@ -126,5 +145,7 @@ project exec SERVICE bash
 
 ### Start Jenkins build
 ```shell
+# install the jenkins plugin for pro-cli
+project plugins install jenkins
 project build [-o|--output] stage [--branch=develop]
 ```
