@@ -1,7 +1,7 @@
 # pro-cli
 - initialize, install and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
-- specify the services depending on your projects needs in your own `docker-compose.local.yml`
-- install even complex projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-install-command-and-scripts)
+- specify the services depending on your projects needs in your `docker-compose.yml`
+- install even complex projects with a single command by using [individual commands](https://github.com/chriha/pro-cli/wiki/Using-the-scripts---commands-in-pro-cli.json)
 - temporarily [expose](#expose-your-local-server-securely-to-the-internet) the application securely to the internet (ngrok required)
 - [start Jenkins builds](https://github.com/chriha/pro-cli/wiki/Jenkins) and print its console output
 - reduce amount of necessary commands for each developer
@@ -14,7 +14,7 @@
 - switch between projects that you worked on with a single command
 - write your own [plugins](https://github.com/chriha/pro-cli/wiki/Plugins) to extend **pro-cli**
 
-See how you can [use it](#usage), take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help or play around with the [pro-cli-example](https://github.com/chriha/pro-cli-example) project.
+See how you can [use it](#usage), take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help or play around with the [pro-cli-example](https://github.com/chriha/pro-cli-example) project. For a list of available plugins see [pro-cli/plugins](https://github.com/pro-cli/plugins/blob/master/list.json).
 
 [![asciicast](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA.png)](https://asciinema.org/a/fJZoP83vfpNkT2k05v8K8WmFA)
 
