@@ -5,6 +5,7 @@
 - temporarily [expose](#expose-your-local-server-securely-to-the-internet) the application securely to the internet (ngrok required)
 - [start Jenkins builds](https://github.com/chriha/pro-cli/wiki/Jenkins) and print its console output
 - reduce amount of necessary commands for each developer
+- get support by sharing your terminal session via [tmate](https://tmate.io)
 - use the `project` command everywhere in your project, not only in your root directory
 - every developer is using the exact same environment and tools
 - use (force) the same project structure in **every** project
@@ -141,6 +142,11 @@ project compose ...
 ### Using bash inside a container / service
 ```shell
 project exec SERVICE bash
+```
+
+### Share your terminal, even in the browser
+```shell
+project support [-h|--help] [attach|close|status|tmate]
 ```
 
 ### Start Jenkins build

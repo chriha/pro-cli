@@ -7,23 +7,25 @@ help() {
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
     if [ -f "$PROJECT_CONFIG" ]; then
-        printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.${NORMAL}\n"
+        printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.\n"
         printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
         printf "    ${BLUE}plugins${NORMAL}${HELP_SPACE:7}Install, uninstall, update and list plugins.\n"
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
+        printf "    ${BLUE}support${NORMAL}${HELP_SPACE:7}Get help by sharing a CLI session. ${YELLOW}tmate required.${NORMAL}\n"
         printf "    ${BLUE}sync${NORMAL}${HELP_SPACE:4}Sync directory structure with pro-cli.\n"
     else
-        printf "    ${BLUE}clone${NORMAL}${HELP_SPACE:5}Clone Git repo and install project.${NORMAL}\n"
-        printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.${NORMAL}\n"
+        printf "    ${BLUE}clone${NORMAL}${HELP_SPACE:5}Clone Git repo and install project.\n"
+        printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.\n"
         printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
         printf "    ${BLUE}plugins${NORMAL}${HELP_SPACE:7}Install, uninstall, update and list plugins.\n"
         printf "    ${BLUE}self-update${NORMAL}${HELP_SPACE:11}Update pro-cli manually.\n"
+        printf "    ${BLUE}support${NORMAL}${HELP_SPACE:7}Get help by sharing a CLI session. ${YELLOW}tmate required.${NORMAL}\n"
     fi
 
     # # # # # # # # # # # # # # # # # # # #
@@ -280,6 +282,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
+            'support:Get help by sharing a CLI session.'
             'query-logs:Manage query logs.'
             'clone:Clone Git repo and install project.'
             'config:Read and write local config settings.'
@@ -635,4 +638,37 @@ is_env() {
     fi
 
     return 1
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Start a tmate session
+# # # # # # # # # # # # # # # # # # # #
+tmate_start() {
+    ( tmate -S /tmp/tmate.sock new-session -d && sleep 2 ) &
+    spinner $! "Starting tmate session ... "
+    printf "Starting tmate session ... ${GREEN}done!${NORMAL}\n"
+    printf "${BLUE}Here are your connection strings to share:${NORMAL} --------\n"
+    tmate_details
+    return 0
+}
+
+tmate_status() {
+    ( ! tmate -S /tmp/tmate.sock list-sessions > /dev/null 2>&1 ) && return 1 || return 0
+}
+
+tmate_details() {
+    if ! tmate_status; then
+        printf "${YELLOW}No active session.${NORMAL}\n" && exit
+    fi
+
+    TMATE_CONN_STRING=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
+    TMATE_CONN_STRING_RO=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh_ro}')
+    TMATE_CONN_STRING_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
+    TMATE_CONN_STRING_WEB_RO=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web_ro}')
+
+    printf "${TMATE_CONN_STRING} ${YELLOW}(read & write)${NORMAL}\n"
+    printf "${TMATE_CONN_STRING_RO} ${YELLOW}(read only)${NORMAL}\n"
+    printf "${BLUE}Browser view:${NORMAL} -------------------------------------\n"
+    printf "${TMATE_CONN_STRING_WEB} ${YELLOW}(read & write)${NORMAL}\n"
+    printf "${TMATE_CONN_STRING_WEB_RO} ${YELLOW}(read only)${NORMAL}\n"
 }

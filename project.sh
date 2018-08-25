@@ -204,6 +204,59 @@ elif [ "$1" == "open" ]; then
     fi
 
     exit
+
+# # # # # # # # # # # # # # # # # # # #
+# project support
+elif [ "$1" == "support" ]; then
+    shift
+    # check for requirements
+    if ( ! which tmate > /dev/null 2>&1 ); then
+        printf "${RED}tmate is not installed!${NORMAL} "
+
+        ( ! $IS_MAC || ! which brew > /dev/null 2>&1 ) && echo "You can find further information at https://tmate.io/" && exit
+
+        echo && read -p "Shall I install tmate for you? [y|n]: " -n 1 -r
+
+        [[ $REPLY =~ ^[Yy]$ ]] && brew install tmate
+
+        exit
+    fi
+
+    # show help
+    if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+        printf "${BLUE}project support [command]\n\n"
+        printf "COMMANDS:\n"
+        printf "    ${BLUE}attach${NORMAL}${HELP_SPACE:6}Attach to a new or an existing session.\n"
+        printf "    ${BLUE}close${NORMAL}${HELP_SPACE:5}Close all existing (tmux) clients and sessions.\n"
+        printf "    ${BLUE}status${NORMAL}${HELP_SPACE:6}Show details of an existing session.\n"
+        printf "    ${BLUE}tmate${NORMAL}${HELP_SPACE:5}Run commands on the tmate socket.\n"
+        exit
+    fi
+
+    if [ -z "$1" ]; then
+        tmate_start
+    elif [ "$1" == "attach" ]; then
+        if ! tmate_status; then
+            tmate_start
+            read -p "Press [ENTER] to attach to the session"
+        fi
+
+        tmate -S /tmp/tmate.sock attach
+    elif [ "$1" == "close" ]; then
+        ( tmate -S /tmp/tmate.sock kill-session -t 0 && sleep 1 ) &
+        spinner $! "Closing tmate session ... "
+        printf "Closing tmate session ... ${GREEN}done!${NORMAL}\n"
+    elif [ "$1" == "status" ]; then
+        if tmate_status; then
+            tmate_details && exit 0
+        fi
+
+        printf "${YELLOW}No active session.${NORMAL}\n"
+    elif [ "$1" == "tmate" ]; then
+        tmate -S /tmp/tmate.sock $@
+    fi
+
+    exit
 fi
 
 # # # # # # # # # # # # # # # # # # # #
