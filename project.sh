@@ -211,6 +211,53 @@ elif [ "$1" == "open" ]; then
     exit
 
 # # # # # # # # # # # # # # # # # # # #
+# project api
+elif [ "$1" == "api" ]; then
+    shift
+
+    # show help
+    if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ -z "$1" ]; then
+        printf "${BLUE}project api [command]\n"
+        printf "${NORMAL}Your ${BOLD}index.apib${NORMAL} needs to be in ${BOLD}./doc/api/.${NORMAL}${BLUE}\n\n"
+        printf "COMMANDS:\n"
+        printf "    ${BLUE}doc${NORMAL}${HELP_SPACE:3}Render and serve API documentation.\n"
+        printf "    ${BLUE}lint${NORMAL}${HELP_SPACE:4}Validate your API blueprint.\n"
+        printf "    ${BLUE}render${NORMAL}${HELP_SPACE:6}Render API blueprint.\n"
+        printf "    ${BLUE}serve${NORMAL}${HELP_SPACE:5}Run mock server based on API blueprint.\n"
+        printf "    ${BLUE}snowboard${NORMAL}${HELP_SPACE:9}Run Snowboard commands directly.\n"
+        printf "\n${NORMAL}Using the API blueprint toolkit ${BOLD}https://github.com/bukalapak/snowboard${NORMAL}.\n"
+        exit
+    fi
+
+    API_DOC_IMAGE="bukalapak/snowboard"
+    API_DOC_PORT=$(grep API_DOC_PORT "${WDIR}/.env" | sed -e 's/API_DOC_PORT=\(.*\)/\1/')
+    API_DOC_PORT=${API_DOC_PORT:=8088}
+    API_MOCK_PORT=$(grep API_MOCK_PORT "${WDIR}/.env" | sed -e 's/API_MOCK_PORT=\(.*\)/\1/')
+    API_MOCK_PORT=${API_MOCK_PORT:=8087}
+    API_DOC_DIR="${WDIR}/doc/api"
+    API_TEMP_DIR="${WDIR}/temp/api"
+
+    if [ ! -f "${WDIR}/doc/api/index.apib" ]; then
+        err "${RED}API blueprint ${BOLD}./doc/api/index.apib${NORMAL}${RED} does not exist.${NORMAL}" && exit 1
+    fi
+
+    if [ "$1" == "serve" ]; then
+        printf "${YELLOW}Server available at ${BOLD}http://localhost:${API_MOCK_PORT}${NORMAL}\n"
+        docker run -it --rm -p $API_MOCK_PORT:8087 -v $API_DOC_DIR:/doc -v $API_TEMP_DIR:/tmp $API_DOC_IMAGE mock -b 0.0.0.0:8087 index.apib
+    elif [ "$1" == "doc" ]; then
+        printf "${YELLOW}Server available at ${BOLD}http://localhost:${API_DOC_PORT}${NORMAL}\n"
+        docker run -it --rm -p $API_DOC_PORT:8088 -v $API_DOC_DIR:/doc -v $API_TEMP_DIR:/tmp $API_DOC_IMAGE --watch html -o /tmp/output.html -b 0.0.0.0:8088 -s index.apib
+    elif [ "$1" == "render" ]; then
+        docker run -it --rm -v $API_DOC_DIR:/doc -v $API_TEMP_DIR:/tmp $API_DOC_IMAGE html -o /tmp/output.html index.apib
+    elif [ "$1" == "lint" ]; then
+        docker run -it --rm -v $API_DOC_DIR:/doc -v $API_TEMP_DIR:/tmp $API_DOC_IMAGE html -o /tmp/output.html index.apib
+    elif [ "$1" == "snowboard" ]; then
+        shift && docker run -it --rm -v $API_DOC_DIR:/doc -p $API_MOCK_PORT:8087 -p $API_DOC_PORT:8088 $API_DOC_IMAGE $@
+    fi
+
+    exit
+
+# # # # # # # # # # # # # # # # # # # #
 # project support
 elif [ "$1" == "support" ]; then
     shift

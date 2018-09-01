@@ -7,6 +7,7 @@ help() {
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
     if [ -f "$PROJECT_CONFIG" ]; then
+        printf "    ${BLUE}api${NORMAL}${HELP_SPACE:3}Render to HTML, lint and mock API blueprints via ${BOLD}Snowboard${NORMAL}.\n"
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.\n"
         printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
@@ -282,6 +283,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
+            'api:Render to HTML, lint and mock API blueprints via Snowboard.'
             'support:Get help by sharing a CLI session. tmate required.'
             'query-logs:Manage query logs.'
             'clone:Clone Git repo and install project.'
