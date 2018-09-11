@@ -91,10 +91,10 @@ fi
 
 # # # # # # # # # # # # # # # # # # # #
 # include plugins now to allow overwriting commands
-for d in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d | sort -t '\0' -n) ; do
-    [ ! -f "$d/plugin.sh" ] && continue
+for PC_PLUGIN_DIR in $(find "$BASE_DIR/plugins" -maxdepth 1 -mindepth 1 -type d | sort -t '\0' -n) ; do
+    [ ! -f "$PC_PLUGIN_DIR/plugin.sh" ] && continue
 
-   . "$d/plugin.sh"
+   . "$PC_PLUGIN_DIR/plugin.sh"
 done
 
 # # # # # # # # # # # # # # # # # # # #
