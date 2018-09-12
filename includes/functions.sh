@@ -10,6 +10,7 @@ help() {
         printf "    ${BLUE}api${NORMAL}${HELP_SPACE:3}Render to HTML, lint and mock API blueprints via ${BOLD}Snowboard${NORMAL}.\n"
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.\n"
         printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
+        printf "    ${BLUE}hosts${NORMAL}${HELP_SPACE:5}Manage your local hosts file.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
@@ -21,6 +22,7 @@ help() {
         printf "    ${BLUE}clone${NORMAL}${HELP_SPACE:5}Clone Git repo and install project.\n"
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.\n"
         printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
+        printf "    ${BLUE}hosts${NORMAL}${HELP_SPACE:5}Manage your local hosts file.\n"
         printf "    ${BLUE}init${NORMAL}${HELP_SPACE:4}Setup default project structure in the specified directory.\n"
         printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List all projects.\n"
         printf "    ${BLUE}open${NORMAL}${HELP_SPACE:4}Open a project in a new tab.\n"
@@ -283,6 +285,7 @@ update_completions() {
     _project() {
         local -a commands
             commands=(
+            'hosts:Manage your local hosts file.'
             'api:Render to HTML, lint and mock API blueprints via Snowboard.'
             'support:Get help by sharing a CLI session. tmate required.'
             'query-logs:Manage query logs.'
@@ -673,4 +676,151 @@ tmate_details() {
     printf "${BLUE}Browser view:${NORMAL} -------------------------------------\n"
     printf "${TMATE_CONN_STRING_WEB} ${YELLOW}(read & write)${NORMAL}\n"
     printf "${TMATE_CONN_STRING_WEB_RO} ${YELLOW}(read only)${NORMAL}\n"
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Get editable content of the hosts file
+# # # # # # # # # # # # # # # # # # # #
+get_hosts_content() {
+    local output=""
+    local is_safe=false
+
+    while IFS='' read -r line || [[ -n "$line" ]]; do
+        if [[ $line = *"DO NOT CHANGE THE LINES ABOVE"* ]]; then
+            is_safe=true
+            continue
+        fi
+
+        [ -z "$line" ] && continue
+        [[ ${line:0:2} == '##' ]] && continue
+        [ "$is_safe" != true ] && continue
+
+        output="${output}"$'\n'"$(show_host "$line")"
+    done < "$HOSTS_FILE"
+
+    echo "${output}" | tail -n +2
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Get the host with enabled / disabled flag
+#
+# Arguments:
+#   HOSTNAME_LINE
+# # # # # # # # # # # # # # # # # # # #
+show_host() {
+    [ -z "${1// }" ] && return 0
+
+    if [ ${1:0:1} == "#" ]; then
+        echo "[-] ${1:1}"
+    else
+        echo "[✓] $1"
+    fi
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Get editable content of the hosts file
+#
+# Arguments:
+#   HOSTNAME
+# # # # # # # # # # # # # # # # # # # #
+get_hosts_mapping() {
+    local hostname=$(echo "$1" | sed 's/\./\\./g')
+
+    grep --color=never "[[:space:]]${hostname}" $HOSTS_FILE && return 0
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Check if script was executed with sudo
+# # # # # # # # # # # # # # # # # # # #
+check_sudo() {
+    [ "$EUID" -ne 0 ] && return 1
+
+    return 0
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Enable host
+#
+# Arguments:
+#   HOSTNAME
+# # # # # # # # # # # # # # # # # # # #
+enable_host() {
+    ( ! check_sudo ) && printf "${RED}Please run as root to change your hosts file.${NORMAL} Just type: sudo !!\n" && return 1
+
+    [ -z "$1" ] && printf "${RED}Please provide a hostname${NORMAL}\n" && exit
+
+    local hostname=$(echo "$1" | sed 's/\./\\./g')
+    local ip=$(grep "[[:space:]]*$hostname" /etc/hosts | awk '{print $1}' | sed 's/\./\\./g')
+    ip="${ip//#}"
+
+    sed -i.bak -e "s/#*$ip *$hostname/$ip $1/g" $HOSTS_FILE && return 0
+
+    printf "${RED}Unable to enable host. Please check your hosts file.${NORMAL}\n"
+    return 1
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Get editable content of the hosts file
+#
+# Arguments:
+#   HOSTNAME
+# # # # # # # # # # # # # # # # # # # #
+disable_host() {
+    ( ! check_sudo ) && printf "${RED}Please run as root to change your hosts file.${NORMAL} Just type: sudo !!\n" && return 1
+
+    [ -z "$1" ] && printf "${RED}Please provide a hostname${NORMAL}\n" && exit
+
+    local hostname=$(echo "$1" | sed 's/\./\\./g')
+    local ip=$(grep "[[:space:]]*$hostname" /etc/hosts | awk '{print $1}' | sed 's/\./\\./g')
+    ip="${ip//#}"
+
+    sed -i.bak -e "s/#*$ip *$hostname/#$ip $hostname/g" $HOSTS_FILE && return 0
+
+    printf "${RED}Unable to disable host. Please check your hosts file.${NORMAL}\n"
+    return 1
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Get editable content of the hosts file
+#
+# Arguments:
+#   HOSTNAME
+# # # # # # # # # # # # # # # # # # # #
+remove_host() {
+    ( ! check_sudo ) && printf "${RED}Please run as root to change your hosts file.${NORMAL} Just type: sudo !!\n" && return 1
+
+    [ -z "$1" ] && printf "${RED}Please provide hostname to remove${NORMAL}\n" && exit
+
+    local hostname=$(echo "$1" | sed 's/\./\\./g')
+
+    if sed -i.bak "/.*$hostname/d" $HOSTS_FILE; then
+        printf "${GREEN}Host removed${NORMAL}\n"
+    else
+        printf "${RED}Unable to remove host. Please check your hosts file.${NORMAL}\n"
+    fi
+
+    return 0
+}
+
+# # # # # # # # # # # # # # # # # # # #
+# Get editable content of the hosts file
+#
+# Arguments:
+#   HOSTNAME
+#   IP
+# # # # # # # # # # # # # # # # # # # #
+add_host() {
+    ( ! check_sudo ) && printf "${RED}Please run as root to change your hosts file.${NORMAL} Just type: sudo !!\n" && return 1
+
+    [ -z "$1" ] || [ -z "$2" ] && printf "${RED}Please provide hostname and IP${NORMAL}\n" && exit
+
+    ip=$([ "$2" == "local" ] && echo "127.0.0.1" || echo "$2")
+
+    if echo "${ip} ${1}" >> $HOSTS_FILE; then
+        printf "${GREEN}Host added${NORMAL}\n"
+    else
+        printf "${RED}Unable to remove host. Please check your hosts file.${NORMAL}\n"
+    fi
+
+    return 0
 }

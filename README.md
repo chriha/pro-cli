@@ -13,6 +13,7 @@
 - simple access to log files; tail and concat all or just specific services
 - switch between projects that you worked on with a single command
 - write your own [plugins](https://github.com/chriha/pro-cli/wiki/Plugins) to extend **pro-cli**
+- easily list, enable, disable, add and remove your local hosts for existance 
 
 See how you can [use it](#usage), take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help or play around with the [pro-cli-example](https://github.com/chriha/pro-cli-example) project. For a list of available plugins see [pro-cli/plugins](https://github.com/pro-cli/plugins/blob/master/list.json).
 
@@ -133,6 +134,15 @@ project xdebug enable|disable|status
 ```
 project query-logs enable|disable|tail|clear
 ```
+
+### List, enable, disable, add, remove and check hosts for existance
+```
+project hosts list|enable|disable|add|rm|has [HOSTNAME] [IP]
+project hosts enable|disable my.website.local
+sudo project hosts add my.website.local local|127.0.0.1
+sudo project hosts rm my-old.website.local
+```
+Whenever you change the hosts file (eg enable, disable, add, rm), you have to run the command with sudo / as root. **There will always be a backup of your hosts file with the previous version.**
 
 ### Run Docker Compose commands with your `docker-compose.yml`
 ```shell

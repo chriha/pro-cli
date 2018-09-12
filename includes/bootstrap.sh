@@ -21,6 +21,7 @@ readonly CLEAR_LINE="\r\033[K"
 readonly CACHE_DIR="$BASE_DIR/cache"
 readonly CURDAY=$(date +%Y%m%d)
 readonly BASE_CONFIG="$BASE_DIR/config.json"
+readonly HOSTS_FILE="/etc/hosts"
 readonly PLUGINS_LIST_URL="https://rawgit.com/pro-cli/plugins/master/list.json"
 readonly HINTS_LIST_URL="https://rawgit.com/pro-cli/hints/master/list.json"
 readonly HINTS_FILE="$CACHE_DIR/hints.$CURDAY.json"

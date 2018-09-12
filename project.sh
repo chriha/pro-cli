@@ -257,6 +257,74 @@ elif [ "$1" == "api" ]; then
 
     exit
 
+elif [ "$1" == "hosts" ]; then
+    shift
+
+    # show help
+    if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ -z "$1" ]; then
+        printf "${BLUE}project hosts [COMMAND] [HOSTNAME] [IP|local]\n"
+        printf "COMMANDS:\n"
+        printf "    ${BLUE}list${NORMAL}${HELP_SPACE:4}List available hostname mappings.\n"
+        printf "    ${BLUE}enable${NORMAL}${HELP_SPACE:6}Enable a specific hostname.\n"
+        printf "    ${BLUE}disable${NORMAL}${HELP_SPACE:7}Disable a specific hostname.\n"
+        printf "    ${BLUE}has${NORMAL}${HELP_SPACE:3}Check if a hostname exists.\n"
+        printf "    ${BLUE}add${NORMAL}${HELP_SPACE:3}Add a new hostname.\n"
+        printf "    ${BLUE}rm${NORMAL}${HELP_SPACE:2}Remove an existing host.\n"
+        exit
+    fi
+
+    if [ "$1" == "list" ]; then
+        echo "$(get_hosts_content)" | column -t
+        exit
+
+    elif [ "$1" == "has" ]; then
+        pc_hosts_mapping=$(get_hosts_mapping "$2")
+
+        if [ -z "$pc_hosts_mapping" ]; then
+            printf "${RED}No mapping found${NORMAL}\n"
+        else
+            show_host "$pc_hosts_mapping" | column -t
+        fi
+
+        exit
+    elif [ "$1" == "enable" ]; then
+        pc_hosts_mapping=$(get_hosts_mapping "$2")
+
+        if [ -z "$pc_hosts_mapping" ]; then
+            printf "${RED}Mapping not found${NORMAL}\n" && exit
+        fi
+
+        ( enable_host "$2" ) && show_host "$(get_hosts_mapping "$2")" | column -t
+        exit
+    elif [ "$1" == "disable" ]; then
+        pc_hosts_mapping=$(get_hosts_mapping "$2")
+
+        if [ -z "$pc_hosts_mapping" ]; then
+            printf "${RED}Mapping not found${NORMAL}\n" && exit
+        fi
+
+        ( disable_host "$2" ) && show_host "$(get_hosts_mapping "$2")" | column -t
+        exit
+    elif [ "$1" == "add" ]; then
+        pc_hosts_mapping=$(get_hosts_mapping "$2")
+
+        if [ ! -z "$pc_hosts_mapping" ]; then
+            printf "${RED}Mapping already exists${NORMAL}\n" && exit
+        fi
+
+        add_host "$2" "$3"
+        exit
+    elif [ "$1" == "rm" ]; then
+        pc_hosts_mapping=$(get_hosts_mapping "$2")
+
+        if [ -z "$pc_hosts_mapping" ]; then
+            printf "${RED}Mapping doesn't exist${NORMAL}\n" && exit
+        fi
+
+        remove_host "$2"
+        exit
+    fi
+
 # # # # # # # # # # # # # # # # # # # #
 # project support
 elif [ "$1" == "support" ]; then
