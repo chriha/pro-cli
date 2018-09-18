@@ -13,7 +13,7 @@
 - simple access to log files; tail and concat all or just specific services
 - switch between projects that you worked on with a single command
 - write your own [plugins](https://github.com/chriha/pro-cli/wiki/Plugins) to extend **pro-cli**
-- easily list, enable, disable, add and remove your local hosts for existance 
+- easily list, enable, disable, add and remove your local hosts 
 
 See how you can [use it](#usage), take a look at the [wiki](https://github.com/chriha/pro-cli/wiki) for further help or play around with the [pro-cli-example](https://github.com/chriha/pro-cli-example) project. For a list of available plugins see [pro-cli/plugins](https://github.com/pro-cli/plugins/blob/master/list.json).
 

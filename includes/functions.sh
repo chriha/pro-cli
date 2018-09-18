@@ -7,7 +7,7 @@ help() {
     printf "help: project [command]\n\n"
     printf "COMMANDS:\n"
     if [ -f "$PROJECT_CONFIG" ]; then
-        printf "    ${BLUE}api${NORMAL}${HELP_SPACE:3}Render to HTML, lint and mock API blueprints via ${BOLD}Snowboard${NORMAL}.\n"
+        printf "    ${BLUE}api${NORMAL}${HELP_SPACE:3}Render API blueprints to HTML${NORMAL}.\n"
         printf "    ${BLUE}config${NORMAL}${HELP_SPACE:6}Read and write project configurations.\n"
         printf "    ${BLUE}hints${NORMAL}${HELP_SPACE:5}Show a random hint.\n"
         printf "    ${BLUE}hosts${NORMAL}${HELP_SPACE:5}Manage your local hosts file.\n"
@@ -286,7 +286,7 @@ update_completions() {
         local -a commands
             commands=(
             'hosts:Manage your local hosts file.'
-            'api:Render to HTML, lint and mock API blueprints via Snowboard.'
+            'api:Render API blueprints to HTML.'
             'support:Get help by sharing a CLI session. tmate required.'
             'query-logs:Manage query logs.'
             'clone:Clone Git repo and install project.'
