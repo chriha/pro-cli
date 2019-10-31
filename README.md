@@ -1,3 +1,5 @@
+**This project is not maintained anymore. The new version available here: https://github.com/chriha/project-cli**
+
 # pro-cli
 - initialize, install and start whole environments (web server, database, caching, mail server, RabbitMQ, etc.) in seconds
 - specify the services depending on your projects needs in your `docker-compose.yml`
